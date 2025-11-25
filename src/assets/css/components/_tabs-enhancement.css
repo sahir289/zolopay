@@ -1,0 +1,125 @@
+/* Dashboard Tab Enhancements */
+
+/* Better tab styling for mobile */
+@media (max-width: 640px) {
+  /* Make tabs more prominent on mobile */
+  .tab-button-mobile {
+    min-height: 60px;
+    padding: 0.75rem 0.5rem;
+  }
+  
+  /* Better active state for mobile tabs */
+  [role="tab"][aria-selected="true"] {
+    position: relative;
+  }
+  
+  [role="tab"][aria-selected="true"]::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgb(var(--color-primary));
+  }
+}
+
+/* Tab hover effects */
+[role="tab"] {
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+[role="tab"]:hover:not([aria-selected="true"]) {
+  background: rgba(var(--color-primary), 0.05);
+}
+
+/* Active tab indicator */
+[role="tab"][aria-selected="true"] {
+  font-weight: 600;
+}
+
+/* Better focus states for accessibility */
+[role="tab"]:focus-visible {
+  outline: 2px solid rgb(var(--color-primary));
+  outline-offset: 2px;
+  z-index: 10;
+}
+
+/* Tab panel animations */
+[role="tabpanel"] {
+  animation: fadeInTab 0.3s ease-in-out;
+}
+
+@keyframes fadeInTab {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tab list wrapper improvements */
+[role="tablist"] {
+  gap: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+[role="tablist"]::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ensure tabs don't shrink too much */
+[role="tab"] {
+  flex-shrink: 0;
+  min-width: fit-content;
+}
+
+/* Better spacing for tab content */
+[role="tabpanel"] > * {
+  animation: slideUpFade 0.4s ease-out;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark mode adjustments */
+.dark [role="tab"]:hover:not([aria-selected="true"]) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.dark [role="tab"][aria-selected="true"] {
+  background: rgba(var(--color-primary), 0.1);
+}
+
+/* Mobile tab text alignment */
+@media (max-width: 640px) {
+  [role="tab"] span {
+    line-height: 1.2;
+    text-align: center;
+  }
+}
+
+/* Desktop tab improvements */
+@media (min-width: 641px) {
+  [role="tab"] {
+    padding: 0.75rem 1.5rem;
+  }
+  
+  [role="tablist"] {
+    justify-content: flex-start;
+  }
+}
