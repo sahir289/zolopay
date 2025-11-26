@@ -447,53 +447,71 @@ function Main() {
 
   return (
     <>
-      <div className="container grid lg:h-screen grid-cols-12 lg:max-w-[1550px] 2xl:max-w-[1750px] py-10 px-5 sm:py-14 sm:px-10 md:px-36 lg:py-0 lg:pl-14 lg:pr-12 xl:px-24">
-        <div
-          className={clsx([
-            'relative z-50 h-full col-span-12 p-7 sm:p-14 bg-white rounded-2xl lg:bg-transparent lg:pr-10 lg:col-span-5 xl:pr-24 2xl:col-span-4 lg:p-0 dark:bg-darkmode-600',
-            "before:content-[''] before:absolute before:inset-0 before:-mb-3.5 before:bg-white/40 before:rounded-2xl before:mx-5 dark:before:hidden",
-          ])}
-        >
-          <div className="relative z-10 flex flex-col justify-center w-full h-full py-2 lg:py-32">
-            <div className="rounded-[0.8rem] w-[55px] h-[55px] border border-primary/30 flex items-center justify-center">
-              <div className="relative flex items-center justify-center w-[50px] rounded-[0.6rem] h-[50px] bg-gradient-to-b from-theme-1/90 to-theme-2/90 bg-white">
-                <div className="w-[26px] h-[26px] relative -rotate-45 [&_div]:bg-white">
-                  <div className="absolute w-[20%] left-0 inset-y-0 my-auto rounded-full opacity-50 h-[75%]"></div>
-                  <div className="absolute w-[20%] inset-0 m-auto h-[120%] rounded-full"></div>
-                  <div className="absolute w-[20%] right-0 inset-y-0 my-auto rounded-full opacity-50 h-[75%]"></div>
+      {/* Background */}
+      <div className="min-h-screen w-full relative overflow-hidden bg-slate-50 dark:bg-slate-950/95 transition-colors">
+        {/* Soft radial glow */}
+        <div className="pointer-events-none absolute inset-0 opacity-80">
+          <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-theme-1/25 blur-3xl dark:bg-theme-1/30" />
+          <div className="absolute -bottom-40 -right-10 h-[26rem] w-[26rem] rounded-full bg-theme-2/20 blur-3xl dark:bg-theme-2/25" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.35),_transparent_55%),radial-gradient(circle_at_bottom,_rgba(148,163,184,0.25),_transparent_55%)] dark:bg-[radial-gradient(circle_at_top,_rgba(248,250,252,0.06),_transparent_55%),radial-gradient(circle_at_bottom,_rgba(148,163,184,0.16),_transparent_55%)]" />
+        </div>
+
+        {/* Content wrapper */}
+        <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
+          <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-[1.1fr_1.2fr] gap-8 lg:gap-10">
+            {/* Left panel – login */}
+            <div className="backdrop-blur-xl bg-white/90 border border-slate-200 rounded-3xl p-6 sm:p-8 lg:p-9 shadow-[0_22px_60px_rgba(15,23,42,0.10)] flex flex-col dark:bg-slate-900/80 dark:border-slate-800/70 dark:shadow-[0_24px_80px_rgba(15,23,42,0.85)] transition-colors">
+              {/* Brand mark */}
+              <div className="flex items-center gap-3">
+                <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 border border-slate-700/70 shadow-sm dark:bg-slate-900 dark:border-slate-700/70">
+                  <div className="absolute inset-px rounded-[0.9rem] bg-gradient-to-br from-theme-1/85 via-theme-2/85 to-emerald-400/70 opacity-90" />
+                  <div className="relative flex h-7 w-7 -rotate-45 items-center justify-center">
+                    <div className="absolute inset-y-0 left-0 w-[22%] rounded-full bg-white/40" />
+                    <div className="absolute inset-0 m-auto h-[120%] w-[22%] rounded-full bg-white" />
+                    <div className="absolute inset-y-0 right-0 w-[22%] rounded-full bg-white/40" />
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium tracking-[0.18em] uppercase text-slate-500 dark:text-slate-400">
+                    TrustPay
+                  </span>
+                  <span className="text-xs text-slate-500 dark:text-slate-500">Control Center</span>
                 </div>
               </div>
-            </div>
-            <div className="mt-10">
-              {showForgotPassword ? (
-                <ForgotPassword
-                  onBack={() => setShowForgotPassword(false)}
-                  onSuccess={() => {
-                    setShowForgotPassword(false);
-                    // dispatch(
-                    //   addAllNotification({
-                    //     status: Status.SUCCESS,
-                    //     message: 'Password reset successful. Please login with your new password.',
-                    //   })
-                    // );
-                  }}
-                />
-              ) : (
-                <>
-                  <div className="text-2xl font-medium">
-                    {isLoginFirst ? 'Please change your password' : 'Log In'}
-                  </div>
-                  <div className="mt-6">
-                    <form onSubmit={handleForm} className="mt-6 space-y-4">
-                      {!isLoginFirst && (
-                        <>
-                          <FormLabel>
-                            UserName<span className="text-danger">*</span>
+
+              {/* Heading */}
+              <div className="mt-8">
+                <h1 className="text-2xl sm:text-[1.7rem] font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+                  {isLoginFirst ? 'Update your password' : 'Welcome back'}
+                </h1>
+                <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+                  {isLoginFirst
+                    ? 'For security, please choose a new password before accessing your dashboard.'
+                    : 'Sign in to review transactions, manage payouts, and keep your payment operations in sync.'}
+                </p>
+              </div>
+
+              {/* Form */}
+              <div className="mt-7 flex-1">
+                {showForgotPassword ? (
+                  <ForgotPassword
+                    onBack={() => setShowForgotPassword(false)}
+                    onSuccess={() => {
+                      setShowForgotPassword(false);
+                    }}
+                  />
+                ) : (
+                  <form onSubmit={handleForm} className="space-y-5">
+                    {!isLoginFirst && (
+                      <>
+                        <div className="space-y-2">
+                          <FormLabel className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                            Username<span className="text-danger ml-0.5">*</span>
                           </FormLabel>
                           <FormInput
                             type="text"
-                            className="block px-4 py-3.5 rounded-[0.6rem] border-slate-300/80"
-                            placeholder={'Enter your username'}
+                            className="block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-theme-1/70 focus:ring-2 focus:ring-theme-1/25 focus:outline-none transition-all dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-100 dark:placeholder:text-slate-500"
+                            placeholder="Enter your username"
                             value={loginObj.username}
                             onChange={(e) => {
                               getUserRole(e.target.value);
@@ -504,20 +522,22 @@ function Main() {
                             }}
                             required
                           />
-                          {/* Error message below button */}
                           {userRoleError && (
-                            <div className="text-danger text-sm mt-2">
+                            <p className="text-xs text-danger mt-1">
                               {userRoleError}
-                            </div>
+                            </p>
                           )}
-                          <FormLabel className="mt-4">
-                            Password<span className="text-danger">*</span>
+                        </div>
+
+                        <div className="space-y-2">
+                          <FormLabel className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                            Password<span className="text-danger ml-0.5">*</span>
                           </FormLabel>
                           <div className="relative">
                             <FormInput
                               type={showPassword ? 'text' : 'password'}
-                              className="block px-4 py-3.5 rounded-[0.6rem] border-slate-300/80"
-                              placeholder="************"
+                              className="block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 pr-11 text-sm text-slate-900 placeholder:text-slate-400 focus:border-theme-1/70 focus:ring-2 focus:ring-theme-1/25 focus:outline-none transition-all dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-100 dark:placeholder:text-slate-500"
+                              placeholder="Enter your password"
                               value={loginObj.password}
                               onChange={(e) =>
                                 updateFormValue({
@@ -527,105 +547,84 @@ function Main() {
                               }
                               required
                             />
-                            <div
-                              className="absolute right-4 top-4 cursor-pointer text-slate-600"
+                            <button
+                              type="button"
+                              className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 transition-colors dark:text-slate-500 dark:hover:text-slate-300"
                               onClick={togglePasswordVisibility}
                             >
                               {showPassword ? (
-                                <Lucide className="stroke-[1]" icon="Eye" />
+                                <Lucide className="stroke-[1.4] h-4 w-4" icon="Eye" />
                               ) : (
-                                <Lucide className="stroke-[1]" icon="EyeOff" />
+                                <Lucide className="stroke-[1.4] h-4 w-4" icon="EyeOff" />
                               )}
-                            </div>
-                          </div>
-                          {/* <div className="flex mt-4 text-xs text-slate-500 sm:text-sm">
-                            <div className="flex items-center mr-auto">
-                              <FormCheck.Input
-                                id="admin-login"
-                                type="checkbox"
-                                className="mr-2.5 border"
-                                checked={loginObj.isAdminLogin}
-                                onChange={(e) =>
-                                  updateFormValue({
-                                    updateType: 'isAdminLogin',
-                                    value: e.target.checked,
-                                  })
-                                }
-                              />
-                              <label
-                                className="cursor-pointer select-none"
-                                htmlFor="admin-login"
-                              >
-                                Admin Login
-                              </label>
-                            </div>
-                          </div> */}
-                          {loginObj.isAdminLogin && (
-                            <div className="mt-4">
-                              <FormLabel>
-                                Unique ID<span className="text-danger">*</span>
-                              </FormLabel>
-                              <FormInput
-                                type="text"
-                                className="block px-4 py-3.5 rounded-[0.6rem] border-slate-300/80"
-                                placeholder="Enter unique ID"
-                                value={loginObj.uniqueId}
-                                onChange={(e) =>
-                                  updateFormValue({
-                                    updateType: 'uniqueId',
-                                    value: e.target.value,
-                                  })
-                                }
-                                required
-                              />
-                            </div>
-                          )}
-                          <div className="flex mt-4 text-xs text-slate-500 sm:text-sm">
-                            <div className="flex items-center mr-auto">
-                              <FormCheck.Input
-                                id="remember-me"
-                                type="checkbox"
-                                className="mr-2.5 border"
-                                checked={loginObj.rememberMe}
-                                onChange={(e) =>
-                                  updateFormValue({
-                                    updateType: 'rememberMe',
-                                    value: e.target.value,
-                                  })
-                                }
-                              />
-                              <label
-                                className="cursor-pointer select-none"
-                                htmlFor="remember-me"
-                              >
-                                Remember me
-                              </label>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => setShowForgotPassword(true)}
-                              className="text-primary hover:underline"
-                            >
-                              Forgot Password?
                             </button>
                           </div>
-                        </>
-                      )}
+                        </div>
 
-                      {isLoginFirst && (
-                        <>
-                          <FormLabel className="mt-4">
-                            New Password<span className="text-danger">*</span>
+                        {loginObj.isAdminLogin && (
+                          <div className="space-y-2">
+                            <FormLabel className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                              Unique ID<span className="text-danger ml-0.5">*</span>
+                            </FormLabel>
+                            <FormInput
+                              type="text"
+                              className="block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-theme-1/70 focus:ring-2 focus:ring-theme-1/25 focus:outline-none transition-all dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-100 dark:placeholder:text-slate-500"
+                              placeholder="Enter unique admin ID"
+                              value={loginObj.uniqueId}
+                              onChange={(e) =>
+                                updateFormValue({
+                                  updateType: 'uniqueId',
+                                  value: e.target.value,
+                                })
+                              }
+                              required
+                            />
+                          </div>
+                        )}
+
+                        <div className="flex items-center justify-between pt-1 text-xs text-slate-500 dark:text-slate-400">
+                          <label className="inline-flex items-center gap-2 cursor-pointer select-none">
+                            <FormCheck.Input
+                              id="remember-me"
+                              type="checkbox"
+                              className="border-slate-300 rounded-md dark:border-slate-600"
+                              checked={loginObj.rememberMe}
+                              onChange={(e) =>
+                                updateFormValue({
+                                  updateType: 'rememberMe',
+                                  value: e.target.checked,
+                                })
+                              }
+                            />
+                            <span>Remember this device</span>
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => setShowForgotPassword(true)}
+                            className="font-medium text-[0.78rem] text-theme-1 hover:text-theme-2 transition-colors"
+                          >
+                            Forgot password?
+                          </button>
+                        </div>
+                      </>
+                    )}
+
+                    {isLoginFirst && (
+                      <>
+                        <div className="space-y-2">
+                          <FormLabel className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                            New password<span className="text-danger ml-0.5">*</span>
                           </FormLabel>
                           <div className="relative">
                             <FormInput
                               type={showPassword ? 'text' : 'password'}
-                              className={`block px-4 py-3.5 rounded-[0.6rem] border-slate-300/80 ${
+                              className={clsx(
+                                'block w-full rounded-xl border bg-white px-4 py-3 pr-11 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none transition-all focus:ring-2 dark:bg-slate-900/70 dark:text-slate-100 dark:placeholder:text-slate-500',
                                 passwordError && passwords.newPassword
-                                  ? 'border-danger'
-                                  : ''
-                              }`}
-                              placeholder="Enter new password"
+                                  ? 'border-danger focus:ring-danger/40'
+                                  : 'border-slate-700/70 focus:border-theme-1/70 focus:ring-theme-1/30',
+                              )}
+                              placeholder="Create a new password"
                               value={passwords.newPassword}
                               onChange={(e) =>
                                 handlePasswordChange(
@@ -635,31 +634,34 @@ function Main() {
                               }
                               required
                             />
-                            <div
-                              className="absolute right-4 top-4 cursor-pointer text-slate-600"
+                            <button
+                              type="button"
+                              className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 transition-colors dark:text-slate-500 dark:hover:text-slate-300"
                               onClick={togglePasswordVisibility}
                             >
                               {showPassword ? (
-                                <Lucide className="stroke-[1]" icon="Eye" />
+                                <Lucide className="stroke-[1.4] h-4 w-4" icon="Eye" />
                               ) : (
-                                <Lucide className="stroke-[1]" icon="EyeOff" />
+                                <Lucide className="stroke-[1.4] h-4 w-4" icon="EyeOff" />
                               )}
-                            </div>
+                            </button>
                           </div>
+                        </div>
 
-                          <FormLabel className="mt-4">
-                            Confirm New Password
-                            <span className="text-danger">*</span>
+                        <div className="space-y-2">
+                          <FormLabel className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                            Confirm new password<span className="text-danger ml-0.5">*</span>
                           </FormLabel>
                           <div className="relative">
                             <FormInput
                               type={showPassword ? 'text' : 'password'}
-                              className={`block px-4 py-3.5 rounded-[0.6rem] border-slate-300/80 ${
+                              className={clsx(
+                                'block w-full rounded-xl border bg-white px-4 py-3 pr-11 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none transition-all focus:ring-2 dark:bg-slate-900/70 dark:text-slate-100 dark:placeholder:text-slate-500',
                                 passwordError && passwords.confirmPassword
-                                  ? 'border-danger'
-                                  : ''
-                              }`}
-                              placeholder="Confirm new password"
+                                  ? 'border-danger focus:ring-danger/40'
+                                  : 'border-slate-700/70 focus:border-theme-1/70 focus:ring-theme-1/30',
+                              )}
+                              placeholder="Re-enter new password"
                               value={passwords.confirmPassword}
                               onChange={(e) =>
                                 handlePasswordChange(
@@ -669,86 +671,152 @@ function Main() {
                               }
                               required
                             />
-                            <div
-                              className="absolute right-4 top-4 cursor-pointer text-slate-600"
+                            <button
+                              type="button"
+                              className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 transition-colors dark:text-slate-500 dark:hover:text-slate-300"
                               onClick={togglePasswordVisibility}
                             >
                               {showPassword ? (
-                                <Lucide className="stroke-[1]" icon="Eye" />
+                                <Lucide className="stroke-[1.4] h-4 w-4" icon="Eye" />
                               ) : (
-                                <Lucide className="stroke-[1]" icon="EyeOff" />
+                                <Lucide className="stroke-[1.4] h-4 w-4" icon="EyeOff" />
                               )}
-                            </div>
+                            </button>
                           </div>
-                          {passwordError && (
-                            <div className="text-danger text-sm mt-2">
-                              {passwordError}
-                            </div>
-                          )}
-                        </>
-                      )}
+                        </div>
 
-                      <div className="mt-5 text-center xl:mt-8 xl:text-left">
-                        <Button
-                          variant="primary"
-                          rounded
-                          disabled={userLogin.loading || isButtonDisabled}
-                          className="bg-gradient-to-r from-theme-1/70 to-theme-2/70 w-full py-3.5 xl:mr-3 dark:border-darkmode-400"
-                        >
-                          {userLogin.loading
-                            ? 'Loading...'
-                            : isLoginFirst
-                            ? 'Update Password'
-                            : 'Log In'}
-                        </Button>
-                      </div>
-                    </form>
+                        {passwordError && (
+                          <p className="text-xs text-danger mt-1">
+                            {passwordError}
+                          </p>
+                        )}
+                      </>
+                    )}
+
+                    <div className="pt-2">
+                      <Button
+                        variant="primary"
+                        rounded
+                        disabled={userLogin.loading || isButtonDisabled}
+                        className="w-full py-3.5 text-sm font-medium tracking-wide rounded-xl bg-gradient-to-r from-theme-1 via-theme-2 to-emerald-400 text-slate-950 shadow-[0_14px_45px_rgba(34,197,94,0.35)] hover:shadow-[0_18px_60px_rgba(34,197,94,0.45)] transition-shadow disabled:opacity-60 disabled:shadow-none border-0"
+                      >
+                        {userLogin.loading
+                          ? 'Signing you in...'
+                          : isLoginFirst
+                          ? 'Update password & continue'
+                          : 'Sign in'}
+                      </Button>
+                    </div>
+                  </form>
+                )}
+              </div>
+
+              {/* Footer small build info (mobile) */}
+              <div className="mt-6 flex items-center justify-between text-[0.7rem] text-slate-500 dark:text-slate-500">
+                <span>Protected workspace</span>
+                <span className="rounded-full bg-slate-100 px-2 py-1 border border-slate-200 text-[0.65rem] font-mono uppercase tracking-wide dark:bg-slate-900/70 dark:border-slate-700/60">
+                  {getShortBuildInfo()}
+                </span>
+              </div>
+            </div>
+
+            {/* Right panel – marketing / illustration */}
+            <div className="relative hidden lg:flex flex-col justify-between rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 px-8 py-8 overflow-hidden shadow-[0_22px_60px_rgba(148,163,184,0.25)] dark:border-slate-800/70 dark:bg-gradient-to-br dark:from-slate-900/90 dark:via-slate-900/80 dark:to-slate-950/95 dark:shadow-[0_24px_80px_rgba(15,23,42,0.85)] transition-colors">
+              {/* Top: theme switcher aligned top-right */}
+              <div className="flex justify-end ">
+                  <ThemeSwitcher />
+              </div>
+
+              {/* Middle content */}
+              <div>
+                <h2 className="text-[2rem] leading-tight font-semibold text-slate-900 dark:text-slate-50">
+                  Seamless payments,
+                  <br />
+                  <span className="bg-gradient-to-r from-theme-1 via-theme-2 to-emerald-400 bg-clip-text text-transparent">
+                    built for modern teams
+                  </span>
+                </h2>
+                <p className="mt-4 text-sm text-slate-600 max-w-md dark:text-slate-400">
+                  Monitor every transaction in real time, catch anomalies
+                  early, and keep your payout flows running without friction.
+                  Opinions, alerts, and insights — all in one place.
+                </p>
+
+                {/* Metrics row */}
+                <div className="mt-7 flex flex-wrap gap-5 text-xs text-slate-600 dark:text-slate-300">
+                  <div>
+                    <div className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                      180k+
+                    </div>
+                    <div className="text-slate-500 dark:text-slate-400">Active merchants</div>
                   </div>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="fixed container grid w-screen inset-0 h-screen grid-cols-12 lg:max-w-[1550px] 2xl:max-w-[1750px] pl-14 pr-12 xl:px-24">
-        <div
-          className={clsx([
-            'relative h-screen col-span-12 lg:col-span-5 2xl:col-span-4 z-20',
-            "after:bg-white after:hidden after:lg:block after:content-[''] after:absolute after:right-0 after:inset-y-0 after:bg-gradient-to-b after:from-white after:to-slate-100/80 after:w-[800%] after:rounded-[0_1.2rem_1.2rem_0/0_1.7rem_1.7rem_0] dark:after:bg-darkmode-600 dark:after:from-darkmode-600 dark:after:to-darkmode-600",
-            "before:content-[''] before:hidden before:lg:block before:absolute before:right-0 before:inset-y-0 before:my-6 before:bg-gradient-to-b before:from-white/10 before:to-slate-50/10 before:bg-white/50 before:w-[800%] before:-mr-4 before:rounded-[0_1.2rem_1.2rem_0/0_1.7rem_1.7rem_0] dark:before:from-darkmode-300 dark:before:to-darkmode-300",
-          ])}
-        ></div>
-        <div
-          className={clsx([
-            'h-full col-span-7 2xl:col-span-8 lg:relative',
-            "before:content-[''] before:absolute before:lg:-ml-10 before:left-0 before:inset-y-0 before:bg-gradient-to-b before:from-theme-1 before:to-theme-2 before:w-screen before:lg:w-[800%]",
-            "after:content-[''] after:absolute after:inset-y-0 after:left-0 after:w-screen after:lg:w-[800%] after:bg-texture-white after:bg-fixed after:bg-center after:lg:bg-[25rem_-25rem] after:bg-no-repeat",
-          ])}
-        >
-          <div className="sticky top-0 z-10 flex-col justify-center hidden h-screen ml-16 lg:flex xl:ml-28 2xl:ml-36">
-            <div className="leading-[1.4] text-[2.6rem] xl:text-5xl font-medium xl:leading-[1.2] text-white">
-              Seamless Payments, <br /> Powered by Simplicity
-            </div>
-            <div className="mt-5 text-base leading-relaxed xl:text-lg text-white/70">
-              Our payment solution streamlines transactions with speed,
-              security, and ease. Whether you're a small business or a global
-              enterprise, our platform ensures hassle-free payments, supporting
-              multiple methods and currencies while keeping your data safe.
-              Focus on growth—let us handle the rest.
-            </div>
-            <div className="flex flex-col gap-3 mt-10 xl:items-center xl:flex-row">
-              <div className="text-base xl:ml-2 2xl:ml-3 text-white/70">
-                Over 180k+ strong and growing! Your journey begins here.
+                  <div>
+                    <div className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                      &lt;120ms
+                    </div>
+                    <div className="text-slate-500 dark:text-slate-400">Avg. payment latency</div>
+                  </div>
+                  <div>
+                    <div className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                      99.99%
+                    </div>
+                    <div className="text-slate-500 dark:text-slate-400">Uptime this quarter</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom: simple mock timeline / cards */}
+              <div className="relative mt-8">
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.22),_transparent_60%)] opacity-60 dark:opacity-70" />
+                <div className="relative grid grid-cols-2 gap-4 text-xs">
+                  <div className="rounded-2xl border border-slate-200 bg-white/90 px-4 py-3 flex flex-col gap-1 dark:border-slate-700/70 dark:bg-slate-900/80">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[0.7rem] uppercase tracking-[0.16em] text-slate-500 dark:text-slate-500">
+                        Realtime feed
+                      </span>
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                    </div>
+                    <p className="mt-1 text-slate-700 text-[0.82rem] dark:text-slate-200">
+                      High‑value payouts cleared with no delays.
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200 bg-white/90 px-4 py-3 flex flex-col gap-1 dark:border-slate-700/70 dark:bg-slate-900/80">
+                    <span className="text-[0.7rem] uppercase tracking-[0.16em] text-slate-500 dark:text-slate-500">
+                      Risk signals
+                    </span>
+                    <p className="mt-1 text-slate-700 text-[0.82rem] dark:text-slate-200">
+                      Anomaly detection keeps fraud attempts in check.
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200 bg-white/90 px-4 py-3 col-span-2 flex items-center justify-between dark:border-slate-700/70 dark:bg-slate-900/80">
+                    <div>
+                      <p className="text-[0.8rem] text-slate-700 dark:text-slate-300">
+                        Log in once. Stay in sync across tabs.
+                      </p>
+                      <p className="text-[0.7rem] text-slate-500 mt-1">
+                        SSO-ready & cross‑tab session awareness.
+                      </p>
+                    </div>
+                    <div className="rounded-full bg-emerald-400/10 px-3 py-1 text-[0.7rem] text-emerald-700 border border-emerald-400/40 dark:text-emerald-300 dark:border-emerald-400/30">
+                      Secure by design
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Theme switcher floating (for smaller screens) */}
+        <div className="fixed bottom-4 left-4 z-40 lg:hidden">
+          <ThemeSwitcher />
+        </div>
+
+        {/* Global notification manager */}
+        <NotificationManager />
       </div>
-      <div className="fixed bottom-4 right-4 z-50 text-sm text-slate-500 dark:text-slate-400 bg-white/80 dark:bg-darkmode-600/80 px-3 py-1.5 rounded-lg shadow-sm backdrop-blur-sm">
-        {getShortBuildInfo()}
-      </div>
-      <ThemeSwitcher />
-      <NotificationManager />
     </>
   );
 }

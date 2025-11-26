@@ -331,6 +331,7 @@ function Main() {
     setVendorCodes(vendorCodesList);
     dispatch(getVendorCodes(vendorCodesList));
   }, []);
+  
 
   useEffect(() => {
     handleGetAllVendorCodes();
@@ -401,6 +402,7 @@ function Main() {
     handleGetAllCalculations(queryParams.toString());
     setNewTransactionModal(false);
   };
+  
 
   // Debounced effect for filter changes
   useEffect(() => {
@@ -423,20 +425,145 @@ function Main() {
   );
   const { startDate: vendorStartDate, endDate: vendorEndDate } =
     getFilterDateRange(vendorSelectedFilterDates);
+
+
   return (
-    <>
-      <div className="flex flex-col h-10 w-full px-2 sm:px-4">
-        <div className="flex flex-col md:h-10 gap-y-3 md:items-center md:flex-row">
-          <div className="text-lg sm:text-xl font-medium group-[.mode--light]:text-white">
-            DashBoard
-          </div>
+    <div className="min-h-[calc(100vh-5rem)] w-full bg-slate-50 dark:bg-slate-950/95 transition-colors relative overflow-hidden">
+      {/* Background wrapper to echo login aesthetics */}
+        <div className="pointer-events-none absolute inset-0 opacity-80">
+          <div className="absolute -top-32 -left-32 h-64 w-64 rounded-full bg-theme-1/20 blur-3xl dark:bg-theme-1/30" />
+          <div className="absolute -bottom-40 -right-6 h-72 w-72 rounded-full bg-theme-2/15 blur-3xl dark:bg-theme-2/25" />
         </div>
-      </div>
-      <div className="grid grid-cols-12 gap-y-6 gap-x-4 lg:gap-y-10 lg:gap-x-6 mt-2">
-        <div className="col-span-12">
-          <div className="relative flex flex-col col-span-12 lg:col-span-12 xl:col-span-12 gap-y-7">
-            <div className="flex flex-col p-3 sm:p-5 box box--stacked">
-              <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
+
+        <div className="relative z-10 px-3 sm:px-6 lg:px-8 pt-4 pb-8 space-y-5">
+          {/* Header row with title, search and quick metrics */}
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="space-y-1">
+              <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+                Dashboard overview
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                Net balances, deposits and withdrawals at a glance for your {title.toLowerCase()} accounts.
+              </p>
+            </div>
+
+            {/* Search / filter pill */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="flex items-center rounded-full border border-slate-200 bg-white/90 px-3 py-2 shadow-sm text-xs sm:text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300 w-full sm:w-72">
+                <Lucide icon="Search" className="w-4 h-4 mr-2 text-slate-400 dark:text-slate-500" />
+                <span className="truncate">
+                  {startDate === endDate
+                    ? `Showing activity for ${startDate}`
+                    : `Showing activity from ${startDate} to ${endDate}`}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Summary cards row */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
+            {/* Net balance card */}
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-400 via-orange-500 to-amber-400 text-white shadow-[0_18px_60px_rgba(249,115,22,0.45)]">
+              <div className="px-5 py-4 sm:px-6 sm:py-5 flex flex-col justify-between h-full">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.18em] text-white/70">Balance</p>
+                  <div className="mt-3 text-2xl sm:text-3xl font-semibold">
+                    ₹
+                    {((calculationData.netBalance.merchant || 0) +
+                      (calculationData.netBalance.vendor || 0)
+                    ).toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+                  </div>
+                  <p className="mt-1 text-[0.7rem] text-white/80">
+                    Updated for {title.toLowerCase()} view
+                  </p>
+                </div>
+                <div className="mt-4 flex gap-6 text-xs text-white/90">
+                  <div>
+                    <p className="text-[0.7rem] uppercase tracking-[0.18em] text-white/70">
+                      Merchant
+                    </p>
+                    <p className="mt-1 text-sm font-medium">
+                      ₹
+                      {(calculationData.netBalance.merchant || 0).toLocaleString('en-IN', {
+                        maximumFractionDigits: 2,
+                      })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[0.7rem] uppercase tracking-[0.18em] text-white/70">
+                      Vendor
+                    </p>
+                    <p className="mt-1 text-sm font-medium">
+                      ₹
+                      {(calculationData.netBalance.vendor || 0).toLocaleString('en-IN', {
+                        maximumFractionDigits: 2,
+                      })}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Deposits card */}
+            <div className="rounded-3xl bg-slate-900/95 text-white shadow-[0_18px_55px_rgba(15,23,42,0.8)] border border-slate-800/80 relative overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.22),_transparent_55%)] opacity-60" />
+              <div className="relative px-5 py-4 sm:px-6 sm:py-5 flex flex-col justify-between h-full">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[0.7rem] uppercase tracking-[0.18em] text-slate-400">
+                      Deposits
+                    </p>
+                    <p className="mt-3 text-xl font-semibold">
+                      ₹
+                      {(calculationData.merchantTotalCalculations?.totalPayins || 0).toLocaleString(
+                        'en-IN',
+                        { maximumFractionDigits: 2 },
+                      )}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-center h-9 w-9 rounded-full bg-emerald-400/10 border border-emerald-300/40 text-emerald-300">
+                    <Lucide icon="ArrowUpRight" className="w-4 h-4" />
+                  </div>
+                </div>
+                <p className="mt-2 text-[0.7rem] text-slate-400">
+                  Includes all successful incoming transactions in the selected period.
+                </p>
+              </div>
+            </div>
+
+            {/* Withdrawals card */}
+            <div className="rounded-3xl bg-slate-900/95 text-white shadow-[0_18px_55px_rgba(15,23,42,0.8)] border border-slate-800/80 relative overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(248,113,113,0.22),_transparent_55%)] opacity-60" />
+              <div className="relative px-5 py-4 sm:px-6 sm:py-5 flex flex-col justify-between h-full">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[0.7rem] uppercase tracking-[0.18em] text-slate-400">
+                      Withdrawals
+                    </p>
+                    <p className="mt-3 text-xl font-semibold">
+                      ₹
+                      {(calculationData.merchantTotalCalculations?.totalPayouts || 0).toLocaleString(
+                        'en-IN',
+                        { maximumFractionDigits: 2 },
+                      )}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-center h-9 w-9 rounded-full bg-rose-400/10 border border-rose-300/40 text-rose-300">
+                    <Lucide icon="ArrowDownRight" className="w-4 h-4" />
+                  </div>
+                </div>
+                <p className="mt-2 text-[0.7rem] text-slate-400">
+                  Outgoing settlements and payouts processed within the range.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Tabbed boards container */}
+          <div className="mt-4">
+            <div className="relative flex flex-col gap-y-5">
+              <div className="flex flex-col p-3 sm:p-5 rounded-3xl bg-white/90 border border-slate-200 shadow-sm dark:bg-darkmode-800/90 dark:border-darkmode-600/80">
+                <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
                 <Tab.List className="flex border-b-0 bg-transparent relative">
                   {[
                     Role.ADMIN,
@@ -655,7 +782,7 @@ function Main() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
