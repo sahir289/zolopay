@@ -1,10 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import Lucide from '@/components/Base/Lucide';
-import BarChart from '@/components/VerticalBarChart';
-import { useEffect, useMemo, useState } from 'react';
-import MultiSelect from '@/components/MultiSelect/MultiSelect';
-import Litepicker from '@/components/Base/Litepicker';
+import { useMemo } from 'react';
 import DashboardStatCard from '@/components/dashboard-stat-card';
 import DashboardFilter from '@/components/dashboard-filter';
 import DashboardListCard from '@/components/dashboard-list-card';

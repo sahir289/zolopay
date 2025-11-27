@@ -5,109 +5,32 @@ import AuthRoutes from '../components/ProtectedRoute/AuthRoutes';
 import VendorBankResponseProtectedRoute from '../components/VendorBankResponseProtectedRoute';
 import { Role } from '@/constants';
 // import { withLazyLoading } from '@/utils/lazyStrategies';
-
-// Normal imports instead of lazy loading
-// import DashboardOverview1 from '@/pages/DashboardOverview1/index';
 import Users from '@/pages/Users/index';
-import Clients from '@/pages/Clients';
+import MerchantsClients from '@/pages/Clients/Merchant';
+import VendorsClients from '@/pages/Clients/Vendors';
 import Roles from '@/pages/Roles/index';
-import Reports from '@/pages/Reports/index';
-import TransactionList from '@/pages/TransactionList/index';
+import PayInTransaction from '@/pages/TransactionList/Payin/payin';
+import PayOutTransaction from '@/pages/TransactionList/Payout/payout';
 import Chat from '@/pages/Chat/index';
 import Login from '@/pages/Login/index';
 import Register from '@/pages/Register/index';
 import LandingPage from '@/pages/LandingPage/index';
-import Settlement from '@/pages/Settlement/index';
 import ChargeBack from '@/pages/ChargeBack/index';
 import AddData from '@/pages/AddData/index';
 import Designation from '@/pages/Designation/index';
-import BankAccount from '@/pages/BankAccount/index';
+import PayOutBanks from '@/pages/BankAccount/payOutBanks';
+import PayInBanks from '@/pages/BankAccount/payInBanks';
 import Unauthorized from '@/pages/Unauthorized/index';
 import NotFound from '@/pages/NotFound';
-import BeneficiaryAccounts from '@/pages/BeneficiaryAccounts';
+import  VendorBeneficiary from '@/pages/BeneficiaryAccounts/VendorBeneficiary';
+import MerchnatBeneficiary from '@/pages/BeneficiaryAccounts/MerchnatBeneficiary';
 import  MerchantBoard  from "@/pages/DashboardOverview1/MerchantBoard";
 import  VendorBoard  from "@/pages/DashboardOverview1/VendorBoard";
 import LazyLayout from '../themes';
-
-// Commented out lazy loading approach:
-// const DashboardOverview1 = withLazyLoading(() => import('@/pages/DashboardOverview1/index'), { 
-//   chunkName: 'dashboard', 
-//   retries: 3 
-// });
-// const Users = withLazyLoading(() => import('@/pages/Users/index'), { 
-//   chunkName: 'users', 
-//   retries: 3 
-// });
-// const Clients = withLazyLoading(() => import('@/pages/Clients'), { 
-//   chunkName: 'clients', 
-//   retries: 3 
-// });
-// const Roles = withLazyLoading(() => import('@/pages/Roles/index'), { 
-//   chunkName: 'roles', 
-//   retries: 3 
-// });
-// const Reports = withLazyLoading(() => import('@/pages/Reports/index'), { 
-//   chunkName: 'reports', 
-//   retries: 3 
-// });
-// const TransactionList = withLazyLoading(() => import('@/pages/TransactionList/index'), { 
-//   chunkName: 'transaction-list', 
-//   retries: 3 
-// });
-// const Chat = withLazyLoading(() => import('@/pages/Chat/index'), { 
-//   chunkName: 'chat', 
-//   retries: 3 
-// });
-// const Login = withLazyLoading(() => import('@/pages/Login/index'), { 
-//   chunkName: 'auth', 
-//   retries: 3 
-// });
-// const Register = withLazyLoading(() => import('@/pages/Register/index'), { 
-//   chunkName: 'auth', 
-//   retries: 3 
-// });
-// const LandingPage = withLazyLoading(() => import('@/pages/LandingPage/index'), { 
-//   chunkName: 'landing', 
-//   retries: 3 
-// });
-// const Settlement = withLazyLoading(() => import('@/pages/Settlement/index'), { 
-//   chunkName: 'settlement', 
-//   retries: 3 
-// });
-// const ChargeBack = withLazyLoading(() => import('@/pages/ChargeBack/index'), { 
-//   chunkName: 'chargeback', 
-//   retries: 3 
-// });
-// const AddData = withLazyLoading(() => import('@/pages/AddData/index'), { 
-//   chunkName: 'add-data', 
-//   retries: 3 
-// });
-// const Designation = withLazyLoading(() => import('@/pages/Designation/index'), { 
-//   chunkName: 'admin', 
-//   retries: 3 
-// });
-// const BankAccount = withLazyLoading(() => import('@/pages/BankAccount/index'), { 
-//   chunkName: 'bank-account', 
-//   retries: 3 
-// });
-// const Unauthorized = withLazyLoading(() => import('@/pages/Unauthorized/index'), { 
-//   chunkName: 'errors', 
-//   retries: 3 
-// });
-// const NotFound = withLazyLoading(() => import('@/pages/NotFound'), { 
-//   chunkName: 'errors', 
-//   retries: 3 
-// });
-// const BeneficiaryAccounts = withLazyLoading(() => import('@/pages/BeneficiaryAccounts'), { 
-//   chunkName: 'beneficiary', 
-//   retries: 3 
-// });
-
-// Wrapper for Layout with lazy loading
-// const LazyLayout = withLazyLoading(() => import('../themes'), { 
-//   chunkName: 'layout', 
-//   retries: 3 
-// });
+import MerchantSettlement from '@/pages/Settlement/MerchantSettlement';
+import VendorSettlement from '@/pages/Settlement/VendorSettlement';
+import VendorAccountReports from '@/pages/Reports/VendorAccountReports';
+import AccountReports from '@/pages/Reports/AccountReports';
 
 function Router(): React.ReactElement | null {
   const routes = [
@@ -140,7 +63,6 @@ function Router(): React.ReactElement | null {
                 Role.VENDOR_OPERATIONS,
               ]}
             >
-              {/* <DashboardOverview1 /> */}
             </ProtectedRoute>
           ),
           children: [
@@ -174,12 +96,12 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/clients',
-              element: <Clients />,
+              path: 'merchants',
+              element: <MerchantsClients />,
             },
             {
-              path: '/auth/clientss',
-              element: <Clients />,
+              path: 'vendors',
+              element: <VendorsClients />,
             },
           ],
         },
@@ -221,8 +143,12 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/reports',
-              element: <Reports />,
+              path: 'merchants',
+              element: <AccountReports role={''} name={''} />,
+            },
+            {
+              path: 'vendors',
+              element: <VendorAccountReports role={''} />,
             },
           ],
         },
@@ -246,8 +172,12 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/transaction-list',
-              element: <TransactionList />,
+              path: 'payins',
+              element: <PayInTransaction />,
+            },
+            {
+              path: 'payouts',
+              element: <PayOutTransaction />,
             },
           ],
         },
@@ -270,8 +200,12 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/settlement',
-              element: <Settlement />,
+              path: 'merchants',
+              element: <MerchantSettlement refreshSettlement={true} />,
+            },
+            {
+              path: 'vendors',
+              element: <VendorSettlement refreshSettlement={true} />,
             },
           ],
         },
@@ -294,8 +228,12 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/beneficiaryaccounts',
-              element: <BeneficiaryAccounts />,
+              path: 'merchants',
+              element: <MerchnatBeneficiary />,
+            },
+            {
+              path: 'vendors',
+              element: <VendorBeneficiary />,
             },
           ],
         },
@@ -368,8 +306,12 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/bankaccounts',
-              element: <BankAccount />,
+              path: 'payins',
+              element: <PayInBanks />,
+            },
+            {
+              path: 'payouts',
+              element: <PayOutBanks />,
             },
           ],
         },

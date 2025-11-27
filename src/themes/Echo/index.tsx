@@ -539,7 +539,11 @@ function Main() {
             'fixed top-0 left-0 z-50 h-full bg-white shadow-lg transition-transform duration-300',
             isSidebarFixed ? 'translate-x-0' : '-translate-x-full',
           ])}
-          style={{ width: '275px' }}
+          style={{
+            width: '275px',
+            overflowY: 'auto', // Enable vertical scrolling
+            maxHeight: '100vh', // Ensure it doesn't exceed the viewport height
+          }}
         >
           {/* Sidebar Header */}
           <div className="flex items-center justify-between px-4 py-4 bg-gray-100 shadow-md">
