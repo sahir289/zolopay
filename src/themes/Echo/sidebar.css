@@ -1,0 +1,49 @@
+.sidebar-container {
+  background-color: #f9fafb;
+  border-right: 1px solid #e5e7eb;
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  height: 65px;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  margin-bottom: 0.5rem;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.menu-icon {
+  flex-shrink: 0;
+}
+
+.submenu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.submenu-item {
+  margin-bottom: 0.5rem;
+}
+
+.submenu-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.submenu-icon {
+  flex-shrink: 0;
+}

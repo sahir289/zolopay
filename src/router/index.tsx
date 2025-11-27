@@ -7,7 +7,7 @@ import { Role } from '@/constants';
 // import { withLazyLoading } from '@/utils/lazyStrategies';
 
 // Normal imports instead of lazy loading
-import DashboardOverview1 from '@/pages/DashboardOverview1/index';
+// import DashboardOverview1 from '@/pages/DashboardOverview1/index';
 import Users from '@/pages/Users/index';
 import Clients from '@/pages/Clients';
 import Roles from '@/pages/Roles/index';
@@ -25,6 +25,8 @@ import BankAccount from '@/pages/BankAccount/index';
 import Unauthorized from '@/pages/Unauthorized/index';
 import NotFound from '@/pages/NotFound';
 import BeneficiaryAccounts from '@/pages/BeneficiaryAccounts';
+import  MerchantBoard  from "@/pages/DashboardOverview1/MerchantBoard";
+import  VendorBoard  from "@/pages/DashboardOverview1/VendorBoard";
 import LazyLayout from '../themes';
 
 // Commented out lazy loading approach:
@@ -137,12 +139,18 @@ function Router(): React.ReactElement | null {
                 Role.VENDOR_ADMIN,
                 Role.VENDOR_OPERATIONS,
               ]}
-            />
+            >
+              {/* <DashboardOverview1 /> */}
+            </ProtectedRoute>
           ),
           children: [
             {
-              path: '/auth/dashboard',
-              element: <DashboardOverview1 />,
+              path: 'merchant',
+              element: < MerchantBoard/>,
+            },
+            {
+              path: 'vendor',
+              element: <VendorBoard />,
             },
           ],
         },
@@ -167,6 +175,10 @@ function Router(): React.ReactElement | null {
           children: [
             {
               path: '/auth/clients',
+              element: <Clients />,
+            },
+            {
+              path: '/auth/clientss',
               element: <Clients />,
             },
           ],
