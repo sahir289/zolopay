@@ -1,11 +1,22 @@
-import { cn } from "@/lib/utils";
+import { asINR, cn } from "@/lib/utils";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import StatCard from "./stat-card";
 import { ArrowLeftCircle, ArrowRightCircle, BadgeIndianRupee, BadgePercent, NotebookText } from "lucide-react";
 import SubCard from "./sub-card";
 
+type DashboardStatCardProps = {
+    netBalance: number,
+    currentBalance: number,
+    deposits: number,
+    withdrawals: number,
+    settlements: number,
+    reverseWithdrawals: number,
+    commission: number,
+    chargebacks: number,
+    adjustments: number
+}
 
-export default function DashboardStatCard () {
+export default function DashboardStatCard (props: DashboardStatCardProps) {
     return (
         <>
         <div className={cn(
@@ -14,12 +25,12 @@ export default function DashboardStatCard () {
             <div className="flex flex-col justify-between text-white w-1/3 pl-6">
                 <div className="space-y-2">
                     <h3 className="text-base font-medium tracking-wide">Net Balance</h3>
-                    <p className="text-2xl font-semibold">$655336.55</p>
+                    <p className="text-2xl font-semibold">{asINR(props.netBalance)}</p>
                 </div>
                 <div className="flex gap-4">
                     <div>
                         <p className="text-white/90">Current Balance</p>
-                        <p className="text-lg font-medium">$5604</p>
+                        <p className="text-lg font-medium">{asINR(props.currentBalance)}</p>
                     </div>
                 </div>
             </div>
@@ -29,21 +40,21 @@ export default function DashboardStatCard () {
                         <CarouselItem className="basis-auto">
                             <StatCard
                                 title="Deposits"
-                                value="$65022"
+                                value={asINR(props.deposits)}
                                 description="Includes all successful incoming transactions in the selected period."
                                 icon={<BadgeIndianRupee className="w-5 h-5"/>}/>
                         </CarouselItem>
                         <CarouselItem className="basis-auto">
                             <StatCard
                                 title="Withdrawals"
-                                value="$6022"
+                                value={asINR(props.withdrawals)}
                                 description="Outgoing settlements and payouts processed within the range."
                                 icon={<ArrowRightCircle className="w-5 h-5"/>}/>
                         </CarouselItem>
                         <CarouselItem className="basis-auto">
                             <StatCard
                                 title="Settlements"
-                                value="$635"
+                                value={asINR(props.settlements)}
                                 description="Includes all successful incoming transactions"
                                 icon={<NotebookText className="w-5 h-5"/>}/>
                         </CarouselItem>
@@ -51,11 +62,11 @@ export default function DashboardStatCard () {
                 </Carousel>
             </div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <SubCard title="Reverse Withdrawals" value="$10" icon={<ArrowRightCircle className="w-5 h-5"/>}/>
-            <SubCard title="Commission" value="$336" icon={<BadgePercent className="w-5 h-5"/>}/>
-            <SubCard title="ChargeBacks" value="$310" icon={<ArrowLeftCircle className="w-5 h-5"/>}/>
-            <SubCard title="Adjustments" value="$100" icon={<ArrowLeftCircle className="w-5 h-5"/>}/>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            <SubCard title="Reverse Withdrawals" value={asINR(props.reverseWithdrawals)} icon={<ArrowRightCircle className="w-5 h-5"/>}/>
+            <SubCard title="Commission" value={asINR(props.commission)} icon={<BadgePercent className="w-5 h-5"/>}/>
+            <SubCard title="ChargeBacks" value={asINR(props.chargebacks)} icon={<ArrowLeftCircle className="w-5 h-5"/>}/>
+            <SubCard title="Adjustments" value={asINR(props.adjustments)} icon={<ArrowLeftCircle className="w-5 h-5"/>}/>
         </div>
         </>
     )
