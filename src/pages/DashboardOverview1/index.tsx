@@ -26,6 +26,7 @@ import MerchantBoard from '@/pages/DashboardOverview1/MerchantBoard/index';
 import VendorBoard from '@/pages/DashboardOverview1/VendorBoard/index';
 import Miscellaneous from '@/pages/DashboardOverview1/Miscellaneous/index';
 import { getVendorCodes } from '@/redux-toolkit/slices/vendor/vendorSlice';
+import DashboardStatCard from '@/components/dashboard-stat-card';
 
 // Commented out lazy loading approach:
 // const MerchantBoard = withLazyLoading(
@@ -460,9 +461,10 @@ function Main() {
             </div>
           </div>
 
+          <DashboardStatCard />
           {/* Summary cards row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
-            {/* Net balance card */}
+          {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
+            
             <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-400 via-orange-500 to-amber-400 text-white shadow-[0_18px_60px_rgba(249,115,22,0.45)]">
               <div className="px-5 py-4 sm:px-6 sm:py-5 flex flex-col justify-between h-full">
                 <div>
@@ -504,7 +506,7 @@ function Main() {
               </div>
             </div>
 
-            {/* Deposits card */}
+            
             <div className="rounded-3xl bg-slate-900/95 text-white shadow-[0_18px_55px_rgba(15,23,42,0.8)] border border-slate-800/80 relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.22),_transparent_55%)] opacity-60" />
               <div className="relative px-5 py-4 sm:px-6 sm:py-5 flex flex-col justify-between h-full">
@@ -531,7 +533,7 @@ function Main() {
               </div>
             </div>
 
-            {/* Withdrawals card */}
+            
             <div className="rounded-3xl bg-slate-900/95 text-white shadow-[0_18px_55px_rgba(15,23,42,0.8)] border border-slate-800/80 relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(248,113,113,0.22),_transparent_55%)] opacity-60" />
               <div className="relative px-5 py-4 sm:px-6 sm:py-5 flex flex-col justify-between h-full">
@@ -557,7 +559,7 @@ function Main() {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Tabbed boards container */}
           <div className="mt-4">
