@@ -44,11 +44,11 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
         pathname: item.pathname,
         subMenu: item.subMenu,
         ignore: item.ignore,
+        activeDropdown: false, // Default to closed
+        active: false, // Default to not active
       };
 
-      // Check if the menu item has children and set activeDropdown dynamically
-      menuItem.activeDropdown = menuItem.subMenu && menuItem.subMenu.length > 0;
-
+      // Determine if the menu item is active
       menuItem.active =
         ((location.forceActiveMenu !== undefined &&
           menuItem.pathname === location.forceActiveMenu) ||
@@ -57,12 +57,19 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           (menuItem.subMenu && findActiveMenu(menuItem.subMenu, location))) &&
         !menuItem.ignore;
 
+      // Open the submenu if the menu item is active
+      if (menuItem.active && menuItem.subMenu) {
+        menuItem.activeDropdown = true;
+      }
+
       if (menuItem.subMenu) {
         // Recursively process nested submenus
         const subMenu: Array<FormattedMenu> = [];
-        nestedMenu(menuItem.subMenu, location).map(
-          (menu) => typeof menu !== "string" && subMenu.push(menu)
-        );
+        nestedMenu(menuItem.subMenu, location).map((subItem) => {
+          if (typeof subItem !== "string") {
+            subMenu.push(subItem);
+          }
+        });
         menuItem.subMenu = subMenu;
       }
 
@@ -80,24 +87,23 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             icon: "BarChart2",
           },
         ];
-        menuItem.activeDropdown = menuItem.subMenu.length > 0;
+        menuItem.activeDropdown = false;
       }
 
       if (menuItem.title === "Transactions") {
         menuItem.subMenu = [
           {
-            title: "payin Transactions",
+            title: "Payin Transactions",
             pathname: "/auth/transaction-list/payins",
             icon: "List",
           },
           {
-            title: "payout Transactions",
+            title: "Payout Transactions",
             pathname: "/auth/transaction-list/payouts",
             icon: "Clock",
           },
         ];
-        menuItem.activeDropdown = menuItem.subMenu.length > 0;
-        
+        menuItem.activeDropdown = false;
       }
       if (menuItem.title === "Settlements") {
         menuItem.subMenu = [
@@ -112,7 +118,7 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             icon: "CreditCard",
           },
         ];
-        menuItem.activeDropdown = menuItem.subMenu.length > 0;
+        menuItem.activeDropdown = false;
       }
 
       if (menuItem.title === "Reports") {
@@ -128,7 +134,7 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             icon: "BarChart2",
           },
         ];
-        menuItem.activeDropdown = menuItem.subMenu.length > 0;
+        menuItem.activeDropdown = false;
       }
       console.log("menuItem.title", menuItem.title);
       if (menuItem.title === "BeneficiaryAccounts") {
@@ -144,7 +150,7 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             icon: "BarChart2",
           },
         ];
-        menuItem.activeDropdown = menuItem.subMenu.length > 0;
+        menuItem.activeDropdown = false;
       }
 
       if (menuItem.title === "Clients") {
@@ -160,7 +166,7 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             icon: "BarChart2",
           },
         ];
-        menuItem.activeDropdown = menuItem.subMenu.length > 0;
+        menuItem.activeDropdown = false;
       }
 
       if (menuItem.title === "Bank Details") {
@@ -176,9 +182,8 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             icon: "BarChart2",
           },
         ];
-        menuItem.activeDropdown = menuItem.subMenu.length > 0;
+        menuItem.activeDropdown = false;
       }
-
 
       formattedMenu.push(menuItem);
     } else {
@@ -190,8 +195,10 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
 };
 
 const linkTo = (menu: FormattedMenu, navigate: NavigateFunction) => {
+  console.log('menu', menu);
+  menu.activeDropdown = !menu.activeDropdown;
   if (menu.subMenu) {
-    menu.activeDropdown = !menu.activeDropdown;
+    // menu.activeDropdown = !menu.activeDropdown;
   } else {
     if (menu.pathname !== undefined) {
       navigate(menu.pathname);
