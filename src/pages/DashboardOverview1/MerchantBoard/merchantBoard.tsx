@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import Lucide from '@/components/Base/Lucide';
-import BarChart from '@/components/VerticalBarChart';
+// import BarChart from '@/components/VerticalBarChart';
 import { useEffect, useState } from 'react';
 import MultiSelect from '@/components/MultiSelect/MultiSelect';
 import Litepicker from '@/components/Base/Litepicker';
 
 function MerchantBoard({
   calculationData,
-  payinChartData,
-  payoutChartData,
-  ChargebackChartData,
-  ReverseChartData,
-  totalMerchantCommissionData,
-  settlementChartData,
+  // payinChartData,
+  // payoutChartData,
+  // ChargebackChartData,
+  // ReverseChartData,
+  // totalMerchantCommissionData,
+  // settlementChartData,
   merchantSelectedFilterDates,
   setMerchantSelectedFilterDates,
   merchantSelectedFilter,
@@ -283,7 +283,7 @@ function MerchantBoard({
         </div>
 
         {/* Calculation Chart */}
-        <div className="p-4 bg-white rounded-lg shadow-md">
+        {/* <div className="p-4 bg-white rounded-lg shadow-md">
           <h3 className="text-lg font-semibold text-gray-700 mb-4">
             Merchant Calculations
           </h3>
@@ -323,7 +323,7 @@ function MerchantBoard({
               },
             ]}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

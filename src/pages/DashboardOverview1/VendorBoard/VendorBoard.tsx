@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Lucide from '@/components/Base/Lucide';
-import BarChart from '@/components/VerticalBarChart';
+// import BarChart from '@/components/VerticalBarChart';
 import { useEffect, useState } from 'react';
 import MultiSelect from '@/components/MultiSelect/MultiSelect';
 import Litepicker from '@/components/Base/Litepicker';
 
 function VendorBoard({
   calculationData,
-  vendorPayinChartData,
-  vendorPayoutChartData,
-  ChargebackChartData,
-  ReverseChartData,
-  totalVendorCommissionData,
-  vendorSettlementChartData,
+  // vendorPayinChartData,
+  // vendorPayoutChartData,
+  // ChargebackChartData,
+  // ReverseChartData,
+  // totalVendorCommissionData,
+  // vendorSettlementChartData,
   vendorSelectedFilterDates,
   setVendorSelectedFilterDates,
   vendorSelectedFilter,
@@ -144,38 +144,38 @@ function VendorBoard({
     },
   ];
 
-  const calculationChartDatasets = [
-    {
-      data: vendorPayinChartData || [],
-      label: 'Deposits Amount',
-      color: '0, 0, 255', // blue
-    },
-    {
-      data: vendorPayoutChartData || [],
-      label: 'Withdrawals Amount',
-      color: '255, 165, 0', // orange
-    },
-    {
-      data: totalVendorCommissionData || [],
-      label: 'Commissions Amount',
-      color: '128, 0, 128', // purple
-    },
-    {
-      data: ReverseChartData || [],
-      label: 'Reverse Withdrawals Amount',
-      color: '255, 206, 86', // yellow
-    },
-    {
-      data: vendorSettlementChartData || [],
-      label: 'Settlements Amount',
-      color: '153, 102, 255', // purple
-    },
-    {
-      data: ChargebackChartData || [],
-      label: 'Chargebacks Amount',
-      color: '255, 99, 132', // red
-    },
-  ];
+  // const calculationChartDatasets = [
+  //   {
+  //     data: vendorPayinChartData || [],
+  //     label: 'Deposits Amount',
+  //     color: '0, 0, 255', // blue
+  //   },
+  //   {
+  //     data: vendorPayoutChartData || [],
+  //     label: 'Withdrawals Amount',
+  //     color: '255, 165, 0', // orange
+  //   },
+  //   {
+  //     data: totalVendorCommissionData || [],
+  //     label: 'Commissions Amount',
+  //     color: '128, 0, 128', // purple
+  //   },
+  //   {
+  //     data: ReverseChartData || [],
+  //     label: 'Reverse Withdrawals Amount',
+  //     color: '255, 206, 86', // yellow
+  //   },
+  //   {
+  //     data: vendorSettlementChartData || [],
+  //     label: 'Settlements Amount',
+  //     color: '153, 102, 255', // purple
+  //   },
+  //   {
+  //     data: ChargebackChartData || [],
+  //     label: 'Chargebacks Amount',
+  //     color: '255, 99, 132', // red
+  //   },
+  // ];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-y-6 gap-x-4 lg:gap-y-10 lg:gap-x-6">
@@ -319,7 +319,7 @@ function VendorBoard({
         </div>
 
         {/* Calculation Chart */}
-        <div className="w-full p-4 bg-white dark:bg-darkmode-700 rounded-lg shadow">
+        {/* <div className="w-full p-4 bg-white dark:bg-darkmode-700 rounded-lg shadow">
           <h3 className="text-lg font-semibold text-gray-700 dark:text-white mb-4">
             Calculations
           </h3>
@@ -328,7 +328,7 @@ function VendorBoard({
             className="relative z-10 w-full"
             datasets={calculationChartDatasets}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

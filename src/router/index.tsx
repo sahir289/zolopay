@@ -9,15 +9,15 @@ import { Role } from '@/constants';
 // Normal imports instead of lazy loading
 // import DashboardOverview1 from '@/pages/DashboardOverview1/index';
 import Users from '@/pages/Users/index';
-import Clients from '@/pages/Clients';
+import MerchantsClients from '@/pages/Clients/Merchant';
+import VendorsClients from '@/pages/Clients/Vendors';
 import Roles from '@/pages/Roles/index';
-import Reports from '@/pages/Reports/index';
-import TransactionList from '@/pages/TransactionList/index';
+import PayInTransaction from '@/pages/TransactionList/Payin/payin';
+import PayOutTransaction from '@/pages/TransactionList/Payout/payout';
 import Chat from '@/pages/Chat/index';
 import Login from '@/pages/Login/index';
 import Register from '@/pages/Register/index';
 import LandingPage from '@/pages/LandingPage/index';
-import Settlement from '@/pages/Settlement/index';
 import ChargeBack from '@/pages/ChargeBack/index';
 import AddData from '@/pages/AddData/index';
 import Designation from '@/pages/Designation/index';
@@ -28,6 +28,10 @@ import BeneficiaryAccounts from '@/pages/BeneficiaryAccounts';
 import  MerchantBoard  from "@/pages/DashboardOverview1/MerchantBoard";
 import  VendorBoard  from "@/pages/DashboardOverview1/VendorBoard";
 import LazyLayout from '../themes';
+import MerchantSettlement from '@/pages/Settlement/MerchantSettlement';
+import VendorSettlement from '@/pages/Settlement/VendorSettlement';
+import VendorAccountReports from '@/pages/Reports/VendorAccountReports';
+import AccountReports from '@/pages/Reports/AccountReports';
 
 // Commented out lazy loading approach:
 // const DashboardOverview1 = withLazyLoading(() => import('@/pages/DashboardOverview1/index'), { 
@@ -140,7 +144,6 @@ function Router(): React.ReactElement | null {
                 Role.VENDOR_OPERATIONS,
               ]}
             >
-              {/* <DashboardOverview1 /> */}
             </ProtectedRoute>
           ),
           children: [
@@ -174,12 +177,12 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/clients',
-              element: <Clients />,
+              path: 'merchants',
+              element: <MerchantsClients />,
             },
             {
-              path: '/auth/clientss',
-              element: <Clients />,
+              path: 'vendors',
+              element: <VendorsClients />,
             },
           ],
         },
@@ -221,8 +224,12 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/reports',
-              element: <Reports />,
+              path: 'merchants',
+              element: <AccountReports role={''} name={''} />,
+            },
+            {
+              path: 'vendors',
+              element: <VendorAccountReports role={''} />,
             },
           ],
         },
@@ -246,8 +253,12 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/transaction-list',
-              element: <TransactionList />,
+              path: 'payins',
+              element: <PayInTransaction />,
+            },
+            {
+              path: 'payouts',
+              element: <PayOutTransaction />,
             },
           ],
         },
@@ -270,8 +281,12 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/settlement',
-              element: <Settlement />,
+              path: 'merchants',
+              element: <MerchantSettlement refreshSettlement={true} />,
+            },
+            {
+              path: 'vendors',
+              element: <VendorSettlement refreshSettlement={true} />,
             },
           ],
         },
@@ -294,7 +309,11 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/beneficiaryaccounts',
+              path: 'merchants',
+              element: <BeneficiaryAccounts />,
+            },
+            {
+              path: 'vendors',
               element: <BeneficiaryAccounts />,
             },
           ],
@@ -368,7 +387,11 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/bankaccounts',
+              path: 'payins',
+              element: <BankAccount />,
+            },
+            {
+              path: 'payouts',
               element: <BankAccount />,
             },
           ],
