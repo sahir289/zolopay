@@ -45,6 +45,10 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
         subMenu: item.subMenu,
         ignore: item.ignore,
       };
+
+      // Check if the menu item has children and set activeDropdown dynamically
+      menuItem.activeDropdown = menuItem.subMenu && menuItem.subMenu.length > 0;
+
       menuItem.active =
         ((location.forceActiveMenu !== undefined &&
           menuItem.pathname === location.forceActiveMenu) ||
@@ -54,14 +58,29 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
         !menuItem.ignore;
 
       if (menuItem.subMenu) {
-        menuItem.activeDropdown = findActiveMenu(menuItem.subMenu, location);
-
-        // Nested menu
+        // Recursively process nested submenus
         const subMenu: Array<FormattedMenu> = [];
         nestedMenu(menuItem.subMenu, location).map(
           (menu) => typeof menu !== "string" && subMenu.push(menu)
         );
         menuItem.subMenu = subMenu;
+      }
+
+      // Example: Add submenus under "Dashboard"
+      if (menuItem.title === "Dashboard") {
+        menuItem.subMenu = [
+          {
+            title: "Merchant Dashboard",
+            pathname: "/auth/dashboard/merchant",
+            icon: "BarChart",
+          },
+          {
+            title: "Vendor Dashboard",
+            pathname: "/auth/dashboard/vendor",
+            icon: "BarChart2",
+          },
+        ];
+        menuItem.activeDropdown = menuItem.subMenu.length > 0;
       }
 
       formattedMenu.push(menuItem);

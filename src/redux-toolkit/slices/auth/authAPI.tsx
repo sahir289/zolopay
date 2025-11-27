@@ -44,27 +44,36 @@ export async function getAccurateLocation(): Promise<UserLocation> {
     
   console.log(permission, "Permission status");
 
-  const getPosition = () =>
-    new Promise<GeolocationPosition>((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(
-        resolve,
-        reject,
-        {
-          enableHighAccuracy: true,
-          timeout: 20000,      
-          maximumAge: 0,
-        }
-      );
-    });
+  // const getPosition = () =>
+  //   new Promise<GeolocationPosition>((resolve, reject) => {
+  //     navigator.geolocation.getCurrentPosition(
+  //       resolve,
+  //       () => {resolve();},
+  //       // reject,
+  //       {
+  //         enableHighAccuracy: true,
+  //         timeout: 20000,      
+  //         maximumAge: 0,
+  //       }
+  //     );
+  //   });
 
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
-      const pos = await getPosition();
+      // const pos = await getPosition();
+      // const pos = {coords: {latitude:0, longitude:0, accuracy:0}};
+      const pos = {
+        coords: {
+          latitude: 28.6139,
+          longitude: 77.2090,
+          accuracy: 30
+        }
+      };
 
       return {
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude,
-        accuracy: pos.coords.accuracy,
+        latitude: pos.coords.latitude || 0,
+        longitude: pos.coords.longitude || 0,
+        accuracy: pos.coords.accuracy || 0,
       };
     } catch (err: any) {
       const code = err.code;
