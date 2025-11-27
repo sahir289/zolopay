@@ -478,7 +478,7 @@ function Main() {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium tracking-[0.18em] uppercase text-slate-500 dark:text-slate-400">
-                    TrustPay
+                    ZoloPay
                   </span>
                   <span className="text-xs text-slate-500 dark:text-slate-500">Control Center</span>
                 </div>
