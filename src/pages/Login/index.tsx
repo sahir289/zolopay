@@ -7,7 +7,7 @@
 // import Button from '@/components/Base/Button';
 import { getShortBuildInfo } from '@/utils/buildInfo';
 // import clsx from 'clsx';
-import ThemeSwitcher from '@/components/ThemeSwitcher';
+// import ThemeSwitcher from '@/components/ThemeSwitcher';
 import {
   getUserRoleDetails,
   loginUser,
@@ -728,9 +728,9 @@ function Main() {
             {/* Right panel – marketing / illustration */}
             <div className="relative hidden lg:flex flex-col justify-between rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 px-8 py-8 overflow-hidden shadow-[0_22px_60px_rgba(148,163,184,0.25)] dark:border-slate-800/70 dark:bg-gradient-to-br dark:from-slate-900/90 dark:via-slate-900/80 dark:to-slate-950/95 dark:shadow-[0_24px_80px_rgba(15,23,42,0.85)] transition-colors">
               {/* Top: theme switcher aligned top-right */}
-              <div className="flex justify-end ">
+              {/* <div className="flex justify-end ">
                   <ThemeSwitcher />
-              </div>
+              </div> */}
 
               {/* Middle content */}
               <div>
@@ -815,9 +815,9 @@ function Main() {
         </div>
 
         {/* Theme switcher floating (for smaller screens) */}
-        <div className="fixed bottom-4 left-4 z-40 lg:hidden">
+        {/* <div className="fixed bottom-4 left-4 z-40 lg:hidden">
           <ThemeSwitcher />
-        </div>
+        </div> */}
 
         {/* Global notification manager */}
         <NotificationManager />

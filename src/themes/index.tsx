@@ -3,7 +3,7 @@ import { getTheme } from "@/redux-toolkit/slices/theme/themeSlice";
 import { selectTheme } from "@/redux-toolkit/slices/theme/themeSelectors";
 import { selectPageLoader } from "@/redux-toolkit/slices/common/pageLoader/pageLoaderSelectors";
 import { useAppSelector } from "@/redux-toolkit/hooks/useAppSelector";
-import ThemeSwitcher from "@/components/ThemeSwitcher";
+// import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { Transition } from "@headlessui/react";
 import NotificationManager from "@/components/Base/Notification/NotificationManager";
 
@@ -57,7 +57,7 @@ function Main() {
           ></path>
         </svg>
       </Transition>
-      <ThemeSwitcher />
+      {/* <ThemeSwitcher /> */}
       <NotificationManager />
     </div>
   );
