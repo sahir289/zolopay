@@ -744,16 +744,16 @@ const BankAccount: React.FC = () => {
     }
   };
 
-  const handleDataTabChange = (value: string) => {
-    if (value !== selectedMethod) {
-      setSearchQuery('');
-      setDebouncedSearchQuery('');
-      setSelectedMethod(value);
-      setSelectedSubTab(true); 
-      dispatch(resetPagination());
-      // fetchBankAccounts(value);
-    }
-  };
+  // const handleDataTabChange = (value: string) => {
+  //   if (value !== selectedMethod) {
+  //     setSearchQuery('');
+  //     setDebouncedSearchQuery('');
+  //     setSelectedMethod(value);
+  //     setSelectedSubTab(true); 
+  //     dispatch(resetPagination());
+  //     // fetchBankAccounts(value);
+  //   }
+  // };
   const handleSubTabChange = (active: boolean) => {
     setSelectedSubTab(active);
     dispatch(resetPagination());

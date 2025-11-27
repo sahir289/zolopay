@@ -551,7 +551,7 @@ function Main() {
               <div className="flex items-center justify-center w-10 h-10 bg-blue-500 rounded-full">
                 <Lucide icon="Home" className="w-6 h-6 text-white" />
               </div>
-              <span className="ml-3 text-xl font-semibold text-gray-800">TrustPay</span>
+              <span className="ml-3 text-xl font-semibold text-gray-800">ZoloPay</span>
             </div>
             <button
               className="p-2 rounded-full hover:bg-gray-200"

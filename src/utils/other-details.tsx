@@ -31,25 +31,23 @@ const FieldRenderer: React.FC<{
 
   return (
     <div 
-      className={`group relative transition-all duration-200 hover:shadow-md rounded-lg sm:rounded-xl p-2 sm:p-4 
-        bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700
+      className={`group relative transition-all duration-200 rounded-lg sm:rounded-xl py-2 sm:py-3
         ${isLong ? 'col-span-12 sm:col-span-6' : 'col-span-6'}
         `}
     >
-      <span className="block text-[10px] sm:text-xs font-medium text-gray-600 dark:text-gray-400 mb-1 sm:mb-1.5 tracking-wide uppercase">
+      <span className="block text-[10px] sm:text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1 sm:mb-1.5 tracking-wide">
         {keyName}
       </span>
       <div className="relative flex items-center">
-        <span className="flex-1 text-xs sm:text-sm text-gray-900 dark:text-gray-100 
-          bg-white dark:bg-gray-950 px-2 sm:px-3 py-1.5 sm:py-2 rounded-md sm:rounded-lg border 
-          border-gray-200 dark:border-gray-800 font-mono break-all overflow-hidden">
+        <span className="flex-1 text-xs sm:text-sm text-gray-600 dark:text-gray-400 
+          px-1 sm:px-2 py-1 rounded-md break-all">
           {value}
         </span>
         <button
           onClick={handleCopy}
-          className="absolute right-1 sm:right-2 opacity-0 group-hover:opacity-100 transition-opacity 
-            p-1 sm:p-1.5 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 
-            bg-gray-100 hover:bg-gray-200 dark:bg-gray-900/90 dark:hover:bg-gray-800 rounded shadow-sm"
+          className="opacity-0 group-hover:opacity-100 transition-opacity 
+            p-1 sm:p-1.5 ml-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 
+            bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded shadow-sm"
           title="Copy to clipboard"
         >
           <Clipboard size={14} className="sm:w-4 sm:h-4" />
@@ -68,31 +66,37 @@ const NestedObjectRenderer: React.FC<{
   value: DataType;
   parentKey: string;
 }> = memo(({ keyName, value, parentKey }) => {
+
   const [isOpen, setIsOpen] = useState(false);
   const displayKey = parentKey ? `${parentKey}.${keyName}` : keyName;
 
   return (
-    <div className="border border-gray-200 dark:border-gray-800 rounded-xl 
-      bg-white dark:bg-gray-900 overflow-hidden mb-4">
+    <div className="border-b border-gray-300 dark:border-gray-700">
+
+      {/* Header */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-4 py-3 
-          bg-gray-50 dark:bg-gray-950 hover:bg-gray-100 dark:hover:bg-gray-900 
-          transition-colors duration-200"
+        className="w-full flex items-center justify-between py-2"
       >
         <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
           {keyName}
         </span>
-        {isOpen ? (
-          <ChevronDown size={18} className="text-gray-500" />
-        ) : (
-          <ChevronRight size={18} className="text-gray-500" />
-        )}
+
+        <ChevronDown
+          size={16}
+          className={`text-gray-500 transition-transform ${isOpen ? "rotate-0" : "rotate-180"}`}
+        />
       </button>
-      <div 
-        className={`transition-all duration-300 ${isOpen ? 'p-4' : 'h-0 p-0 overflow-hidden'}`}
+
+      {/* Content */}
+      <div
+        className={`transition-all duration-300 ${
+          isOpen ? "pl-3 py-2" : "h-0 overflow-hidden"
+        }`}
       >
-        <div className="space-y-4">{renderObjectData(value, displayKey)}</div>
+        <div className="space-y-2 border-l border-gray-300 dark:border-gray-700 pl-3">
+          {renderObjectData(value, displayKey)}
+        </div>
       </div>
     </div>
   );
