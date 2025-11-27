@@ -1408,166 +1408,140 @@ const CommonTable: React.FC<CommonTableProps> = ({
                               const actions = actionMenuItems
                                 ? actionMenuItems(row)
                                 : [];
-                              return (actions?.length ?? 0) >
+
+                              // Add ChevronRight arrow as first action to open details modal
+                              const actionsWithArrow = [
+                                {
+                                  label: 'View Details',
+                                  icon: 'ChevronRight' as keyof typeof icons,
+                                  onClick: (row: any) =>
+                                    handleShowAllData && handleShowAllData(row),
+                                },
+                                ...actions,
+                              ];
+
+                              return (actionsWithArrow?.length ?? 0) >
                                 ([
                                   'BankDetails',
                                   'Beneficiaries',
                                   'Vendors',
                                 ].includes(source ?? '')
-                                  ? 5
-                                  : 3) ? (
+                                  ? 6 // Changed from 5 to 6
+                                  : 4) ? ( // Changed from 3 to 4
                                 <CustomTooltip
                                   content={
                                     <div className="w-40 shadow-md rounded-md z-[9999] p-2">
                                       <div className="flex flex-col">
-                                        {actions.map((action, index) => (
-                                          <div
-                                            key={index}
-                                            className="relative"
-                                            onMouseLeave={() =>
-                                              debouncedSetHoveredAction({
-                                                rowIndex: null,
-                                                actionIndex: null,
-                                                type: 'menu',
-                                              })
-                                            }
-                                          >
-                                            <CustomTooltip
-                                              content={
-                                                action.label ? (
-                                                  <div className="text-white p-2 shadow-md rounded-md z-[9999] dark:bg-darkmode-600 dark:text-gray-200">
-                                                    {action.label}
-                                                    {action.hover &&
-                                                      row.merchant_details && (
-                                                        <div className="mt-2">
-                                                          <div className="font-bold">
-                                                            {row
-                                                              .merchant_details
-                                                              .length > 0
-                                                              ? 'Merchant List'
-                                                              : 'No Merchants'}
-                                                          </div>
-                                                          {row.merchant_details.map(
-                                                            (merchant: any) => (
-                                                              <p
-                                                                key={
-                                                                  merchant.id
-                                                                }
-                                                              >
-                                                                {merchant.code}
-                                                              </p>
-                                                            ),
-                                                          )}
-                                                        </div>
-                                                      )}
-                                                    {action.hover &&
-                                                      row.vendors && (
-                                                        <div className="mt-2">
-                                                          <div className="font-bold">
-                                                            {row.vendors
-                                                              .length > 0
-                                                              ? 'Vendor List'
-                                                              : 'No Vendors'}
-                                                          </div>
-                                                          {row.vendors.map(
-                                                            (
-                                                              vendor: any,
-                                                              vendorIndex: number,
-                                                            ) => (
-                                                              <p
-                                                                key={
-                                                                  vendorIndex
-                                                                }
-                                                              >
-                                                                {vendor}
-                                                              </p>
-                                                            ),
-                                                          )}
-                                                        </div>
-                                                      )}
-                                                  </div>
-                                                ) : (
-                                                  <div />
-                                                )
+                                        {actionsWithArrow.map(
+                                          (action, index) => (
+                                            <div
+                                              key={index}
+                                              className="relative"
+                                              onMouseLeave={() =>
+                                                debouncedSetHoveredAction({
+                                                  rowIndex: null,
+                                                  actionIndex: null,
+                                                  type: 'menu',
+                                                })
                                               }
                                             >
-                                              <button
-                                                onClick={() =>
-                                                  !action.hover &&
-                                                  action.onClick &&
-                                                  action.onClick(row)
-                                                }
-                                                onMouseEnter={() => {
-                                                  if (action.hover) {
-                                                    debouncedSetHoveredAction({
-                                                      rowIndex,
-                                                      actionIndex: index,
-                                                      type: 'menu',
-                                                    });
-                                                  }
-                                                  if (action.onMouseEnter)
-                                                    action.onMouseEnter(row);
-                                                }}
-                                                className={`flex items-center rounded-md ${
-                                                  action.icon === 'Download'
-                                                    ? 'text-blue-500'
-                                                    : action.icon === 'Plus'
-                                                    ? 'text-green-500'
-                                                    : action.label === 'Edit'
-                                                    ? 'text-yellow-500'
-                                                    : action.icon === 'Trash2'
-                                                    ? 'text-red-500'
-                                                    : action.label === 'Delete'
-                                                    ? 'text-red-500'
-                                                    : action.label === 'Approve'
-                                                    ? 'text-green-500'
-                                                    : action.label === 'Link'
-                                                    ? 'text-green-500'
-                                                    : action.label === 'Unlink'
-                                                    ? 'text-red-500'
-                                                    : action.label === 'Reject'
-                                                    ? 'text-red-500'
-                                                    : action.icon === 'Bell'
-                                                    ? 'text-blue-500'
-                                                    : action.icon === 'Repeat'
-                                                    ? 'text-blue-500'
-                                                    : action.label === 'Reset'
-                                                    ? 'text-yellow-500'
-                                                    : action.icon === 'Eye'
-                                                    ? 'text-pink-300'
-                                                    : 'text-gray-500 bg-gray-100 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-darkmode-500'
-                                                } 
-                                                ${
-                                                  (row.disabled === true &&
-                                                    action.icon !==
-                                                      'Download' &&
-                                                    action.icon !== 'Trash2') ||
-                                                  (row.is_obsolete === true &&
-                                                    action.icon !== 'Download')
-                                                    ? 'opacity-50 cursor-not-allowed'
-                                                    : ''
-                                                }`}
-                                                disabled={
-                                                  (row.disabled === true ||
-                                                    row.is_obsolete) &&
-                                                  action.icon !== 'Download' &&
-                                                  action.icon !== 'Trash2'
+                                              <CustomTooltip
+                                                content={
+                                                  action.label ? (
+                                                    <div className="text-white p-2 shadow-md rounded-md z-[9999] dark:bg-darkmode-600 dark:text-gray-200">
+                                                      {action.label}
+                                                      {action.hover &&
+                                                        row.merchant_details && (
+                                                          <div className="mt-2">
+                                                            <div className="font-bold">
+                                                              {row
+                                                                .merchant_details
+                                                                .length > 0
+                                                                ? 'Merchant List'
+                                                                : 'No Merchants'}
+                                                            </div>
+                                                            {row.merchant_details.map(
+                                                              (
+                                                                merchant: any,
+                                                              ) => (
+                                                                <p
+                                                                  key={
+                                                                    merchant.id
+                                                                  }
+                                                                >
+                                                                  {
+                                                                    merchant.code
+                                                                  }
+                                                                </p>
+                                                              ),
+                                                            )}
+                                                          </div>
+                                                        )}
+                                                      {action.hover &&
+                                                        row.vendors && (
+                                                          <div className="mt-2">
+                                                            <div className="font-bold">
+                                                              {row.vendors
+                                                                .length > 0
+                                                                ? 'Vendor List'
+                                                                : 'No Vendors'}
+                                                            </div>
+                                                            {row.vendors.map(
+                                                              (
+                                                                vendor: any,
+                                                                vendorIndex: number,
+                                                              ) => (
+                                                                <p
+                                                                  key={
+                                                                    vendorIndex
+                                                                  }
+                                                                >
+                                                                  {vendor}
+                                                                </p>
+                                                              ),
+                                                            )}
+                                                          </div>
+                                                        )}
+                                                    </div>
+                                                  ) : (
+                                                    <div />
+                                                  )
                                                 }
                                               >
-                                                <Lucide
-                                                  style={{
-                                                    stroke: 'currentColor',
-                                                    strokeWidth: 2.1,
+                                                <button
+                                                  onClick={() =>
+                                                    !action.hover &&
+                                                    action.onClick &&
+                                                    action.onClick(row)
+                                                  }
+                                                  onMouseEnter={() => {
+                                                    if (action.hover) {
+                                                      debouncedSetHoveredAction(
+                                                        {
+                                                          rowIndex,
+                                                          actionIndex: index,
+                                                          type: 'menu',
+                                                        },
+                                                      );
+                                                    }
+                                                    if (action.onMouseEnter)
+                                                      action.onMouseEnter(row);
                                                   }}
-                                                  icon={action.icon}
-                                                  className={`w-5 h-5 rounded-sm ${
-                                                    action.icon === 'Download'
+                                                  className={`flex items-center rounded-md ${
+                                                    action.icon ===
+                                                    'ChevronRight'
+                                                      ? 'text-purple-500'
+                                                      : action.icon ===
+                                                        'Download'
                                                       ? 'text-blue-500'
                                                       : action.icon === 'Plus'
                                                       ? 'text-green-500'
                                                       : action.label === 'Edit'
                                                       ? 'text-yellow-500'
                                                       : action.icon === 'Trash2'
+                                                      ? 'text-red-500'
+                                                      : action.label ===
+                                                        'Delete'
                                                       ? 'text-red-500'
                                                       : action.label ===
                                                         'Approve'
@@ -1587,42 +1561,109 @@ const CommonTable: React.FC<CommonTableProps> = ({
                                                       : action.label === 'Reset'
                                                       ? 'text-yellow-500'
                                                       : action.icon === 'Eye'
-                                                      ? 'text-orange-700'
-                                                      : 'text-gray-700 bg-gray-100'
-                                                  }`}
-                                                />
-                                              </button>
-                                            </CustomTooltip>
-                                            {hoveredAction.rowIndex ===
-                                              rowIndex &&
-                                            hoveredAction.actionIndex ===
-                                              index &&
-                                            hoveredAction.type === 'menu' &&
-                                            source === 'BankDetails' ? (
-                                              <CustomTooltip
-                                                content={
-                                                  <div className="w-40 text-gray-700 p-2 shadow-md rounded-md z-[10000]">
-                                                    <div className="font-bold">
-                                                      {row.merchant_details
-                                                        .length > 0
-                                                        ? 'Merchant List'
-                                                        : 'No Merchants'}
-                                                    </div>
-                                                    {row.merchant_details.map(
-                                                      (merchant: any) => (
-                                                        <p key={merchant.id}>
-                                                          {merchant.code}
-                                                        </p>
-                                                      ),
-                                                    )}
-                                                  </div>
-                                                }
-                                              >
-                                                <span className="absolute inset-0" />
+                                                      ? 'text-pink-300'
+                                                      : 'text-gray-500 bg-gray-100 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-darkmode-500'
+                                                  } 
+                        ${
+                          (row.disabled === true &&
+                            action.icon !== 'Download' &&
+                            action.icon !== 'Trash2' &&
+                            action.icon !== 'ChevronRight') ||
+                          (row.is_obsolete === true &&
+                            action.icon !== 'Download' &&
+                            action.icon !== 'ChevronRight')
+                            ? 'opacity-50 cursor-not-allowed'
+                            : ''
+                        }`}
+                                                  disabled={
+                                                    (row.disabled === true ||
+                                                      row.is_obsolete) &&
+                                                    action.icon !==
+                                                      'Download' &&
+                                                    action.icon !== 'Trash2' &&
+                                                    action.icon !==
+                                                      'ChevronRight'
+                                                  }
+                                                >
+                                                  <Lucide
+                                                    style={{
+                                                      stroke: 'currentColor',
+                                                      strokeWidth: 2.1,
+                                                    }}
+                                                    icon={action.icon}
+                                                    className={`w-5 h-5 rounded-sm ${
+                                                      action.icon ===
+                                                      'ChevronRight'
+                                                        ? 'text-purple-500'
+                                                        : action.icon ===
+                                                          'Download'
+                                                        ? 'text-blue-500'
+                                                        : action.icon === 'Plus'
+                                                        ? 'text-green-500'
+                                                        : action.label ===
+                                                          'Edit'
+                                                        ? 'text-yellow-500'
+                                                        : action.icon ===
+                                                          'Trash2'
+                                                        ? 'text-red-500'
+                                                        : action.label ===
+                                                          'Approve'
+                                                        ? 'text-green-500'
+                                                        : action.label ===
+                                                          'Link'
+                                                        ? 'text-green-500'
+                                                        : action.label ===
+                                                          'Unlink'
+                                                        ? 'text-red-500'
+                                                        : action.label ===
+                                                          'Reject'
+                                                        ? 'text-red-500'
+                                                        : action.icon === 'Bell'
+                                                        ? 'text-blue-500'
+                                                        : action.icon ===
+                                                          'Repeat'
+                                                        ? 'text-blue-500'
+                                                        : action.label ===
+                                                          'Reset'
+                                                        ? 'text-yellow-500'
+                                                        : action.icon === 'Eye'
+                                                        ? 'text-orange-700'
+                                                        : 'text-gray-700 bg-gray-100'
+                                                    }`}
+                                                  />
+                                                </button>
                                               </CustomTooltip>
-                                            ) : null}
-                                          </div>
-                                        ))}
+                                              {hoveredAction.rowIndex ===
+                                                rowIndex &&
+                                              hoveredAction.actionIndex ===
+                                                index &&
+                                              hoveredAction.type === 'menu' &&
+                                              source === 'BankDetails' ? (
+                                                <CustomTooltip
+                                                  content={
+                                                    <div className="w-40 text-gray-700 p-2 shadow-md rounded-md z-[10000]">
+                                                      <div className="font-bold">
+                                                        {row.merchant_details
+                                                          .length > 0
+                                                          ? 'Merchant List'
+                                                          : 'No Merchants'}
+                                                      </div>
+                                                      {row.merchant_details.map(
+                                                        (merchant: any) => (
+                                                          <p key={merchant.id}>
+                                                            {merchant.code}
+                                                          </p>
+                                                        ),
+                                                      )}
+                                                    </div>
+                                                  }
+                                                >
+                                                  <span className="absolute inset-0" />
+                                                </CustomTooltip>
+                                              ) : null}
+                                            </div>
+                                          ),
+                                        )}
                                       </div>
                                     </div>
                                   }
@@ -1630,32 +1671,34 @@ const CommonTable: React.FC<CommonTableProps> = ({
                                   <button
                                     className={`w-5 h-5 text-slate-500 focus:outline-none ${
                                       row.disabled === true &&
-                                      !actions.some(
+                                      !actionsWithArrow.some(
                                         (action) =>
                                           action.icon === 'Download' ||
-                                          action.icon === 'Trash2',
+                                          action.icon === 'Trash2' ||
+                                          action.icon === 'ChevronRight',
                                       )
                                         ? 'opacity-50 cursor-not-allowed'
                                         : ''
                                     }`}
                                     disabled={
                                       row.disabled === true &&
-                                      !actions.some(
+                                      !actionsWithArrow.some(
                                         (action) =>
                                           action.icon === 'Download' ||
-                                          action.icon === 'Trash2',
+                                          action.icon === 'Trash2' ||
+                                          action.icon === 'ChevronRight',
                                       )
                                     }
                                   >
-                                    <Lucide
-                                      icon="MoreVertical"
-                                      className="w-5 h-5 stroke-slate-400/70 fill-slate-400/70"
-                                    />
+                                 <Lucide
+    icon="MoreVertical"
+    className="w-5 h-5 text-white"
+  />
                                   </button>
                                 </CustomTooltip>
                               ) : (
                                 <div className="flex space-x-3">
-                                  {actions.map((action, index) => (
+                                  {actionsWithArrow.map((action, index) => (
                                     <div
                                       key={index}
                                       className="relative"
@@ -1715,149 +1758,104 @@ const CommonTable: React.FC<CommonTableProps> = ({
                                           )
                                         }
                                       >
-                                        <button
-                                          onClick={() =>
-                                            !action.hover &&
-                                            action.onClick &&
-                                            action.onClick(row)
-                                          }
-                                          onMouseEnter={() => {
-                                            if (action.hover) {
-                                              debouncedSetHoveredAction({
-                                                rowIndex,
-                                                actionIndex: index,
-                                                type: 'menu',
-                                              });
-                                            }
-                                            if (action.onMouseEnter)
-                                              action.onMouseEnter(row);
-                                          }}
-                                          className={`flex items-center rounded-md ${
-                                            action.icon === 'Download'
-                                              ? 'text-blue-500'
-                                              : action.icon === 'Plus'
-                                              ? 'text-green-500'
-                                              : action.label === 'Edit'
-                                              ? 'text-yellow-500'
-                                              : action.icon === 'Trash2'
-                                              ? 'text-red-500'
-                                              : action.label === 'Delete'
-                                              ? 'text-red-500'
-                                              : action.label === 'Approve'
-                                              ? 'text-green-500'
-                                              : action.label === 'Link'
-                                              ? 'text-green-500'
-                                              : action.label === 'Unlink'
-                                              ? 'text-red-500'
-                                              : action.label === 'Reject'
-                                              ? 'text-red-500'
-                                              : action.icon === 'Bell'
-                                              ? 'text-blue-500'
-                                              : action.icon === 'Repeat'
-                                              ? 'text-blue-500'
-                                              : action.label === 'Reset'
-                                              ? 'text-yellow-500'
-                                              : action.icon === 'Eye'
-                                              ? 'text-pink-300'
-                                              : action.label === 'Unrestrict'
-                                              ? 'text-green-700 bg-none'
-                                              : 'text-gray-500 bg-gray-100 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-darkmode-500'
-                                          } 
-                                          ${
-                                            (row.disabled === true &&
-                                              action.icon !== 'Download' &&
-                                              action.icon !== 'Trash2') ||
-                                            (row.is_obsolete === true &&
-                                              action.icon !== 'Download')
-                                              ? 'opacity-50 cursor-not-allowed'
-                                              : ''
-                                          }`}
-                                          disabled={
-                                            ((row.disabled === true ||
-                                              row.is_obsolete) &&
-                                              action.icon !== 'Download' &&
-                                              action.icon !== 'Trash2') ||
-                                            (row.is_obsolete &&
-                                              action.icon === 'Trash2')
-                                          }
-                                        >
-                                          <Lucide
-                                            style={{
-                                              stroke: 'currentColor',
-                                              strokeWidth: 2.1,
-                                            }}
-                                            icon={action.icon}
-                                            className={`w-5 h-5 rounded-sm ${
-                                              action.icon === 'Download'
-                                                ? 'text-blue-500'
-                                                : action.icon === 'Plus'
-                                                ? 'text-green-500'
-                                                : action.label === 'Edit'
-                                                ? 'text-yellow-500'
-                                                : action.icon === 'Trash2'
-                                                ? 'text-red-500'
-                                                : action.label === 'Approve'
-                                                ? 'text-green-500'
-                                                : action.label === 'Link'
-                                                ? 'text-green-500'
-                                                : action.label === 'Unlink'
-                                                ? 'text-red-500'
-                                                : action.label === 'Reject'
-                                                ? 'text-red-500'
-                                                : action.icon === 'Bell'
-                                                ? 'text-blue-500'
-                                                : action.icon === 'Repeat'
-                                                ? 'text-blue-500'
-                                                : action.label === 'Reset'
-                                                ? 'text-yellow-500'
-                                                : action.icon === 'Eye'
-                                                ? 'text-orange-700'
-                                                : action.label === 'Unrestrict'
-                                                ? 'text-green-700 bg-none'
-                                                : 'text-gray-700 bg-gray-100'
-                                            }`}
-                                          />
-                                        </button>
+                                       <button
+  onClick={() => !action.hover && action.onClick && action.onClick(row)}
+  onMouseEnter={() => {
+    if (action.hover) {
+      debouncedSetHoveredAction({
+        rowIndex,
+        actionIndex: index,
+        type: 'menu',
+      });
+    }
+    if (action.onMouseEnter) action.onMouseEnter(row);
+  }}
+  className={`
+    flex items-center justify-center rounded-full 
+    w-8 h-8 transition-all duration-200
+    ${
+      action.icon === 'ChevronRight'
+        ? 'bg-slate-800 hover:bg-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800'
+        : action.icon === 'Download'
+        ? 'bg-blue-500 hover:bg-blue-600'
+        : action.icon === 'Plus'
+        ? 'bg-green-500 hover:bg-green-600'
+        : action.label === 'Edit'
+        ? 'bg-yellow-500 hover:bg-yellow-600'
+        : action.icon === 'Trash2'
+        ? 'bg-red-500 hover:bg-red-600'
+        : action.label === 'Delete'
+        ? 'bg-red-500 hover:bg-red-600'
+        : action.label === 'Approve'
+        ? 'bg-green-500 hover:bg-green-600'
+        : action.label === 'Link'
+        ? 'bg-green-500 hover:bg-green-600'
+        : action.label === 'Unlink'
+        ? 'bg-red-500 hover:bg-red-600'
+        : action.label === 'Reject'
+        ? 'bg-red-500 hover:bg-red-600'
+        : action.icon === 'Bell'
+        ? 'bg-blue-500 hover:bg-blue-600'
+        : action.icon === 'Repeat'
+        ? 'bg-blue-500 hover:bg-blue-600'
+        : action.label === 'Reset'
+        ? 'bg-yellow-500 hover:bg-yellow-600'
+        : action.icon === 'Eye'
+        ? 'bg-pink-300 hover:bg-pink-400'
+        : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600'
+    } 
+    ${
+      (row.disabled === true &&
+        action.icon !== 'Download' &&
+        action.icon !== 'Trash2' &&
+        action.icon !== 'ChevronRight') ||
+      (row.is_obsolete === true &&
+        action.icon !== 'Download' &&
+        action.icon !== 'ChevronRight')
+        ? 'opacity-50 cursor-not-allowed'
+        : ''
+    }
+  `}
+  disabled={
+    (row.disabled === true || row.is_obsolete) &&
+    action.icon !== 'Download' &&
+    action.icon !== 'Trash2' &&
+    action.icon !== 'ChevronRight'
+  }
+>
+  <Lucide
+    style={{
+      stroke: 'currentColor',
+      strokeWidth: 2.1,
+    }}
+    icon={action.icon}
+    className={`w-4 h-4 ${
+      action.icon === 'ChevronRight'
+        ? 'text-white'
+        : action.icon === 'Download' ||
+          action.icon === 'Plus' ||
+          action.label === 'Edit' ||
+          action.icon === 'Trash2' ||
+          action.label === 'Approve' ||
+          action.label === 'Link' ||
+          action.label === 'Unlink' ||
+          action.label === 'Reject' ||
+          action.icon === 'Bell' ||
+          action.icon === 'Repeat' ||
+          action.label === 'Reset'
+        ? 'text-white'
+        : action.icon === 'Eye'
+        ? 'text-orange-700'
+        : 'text-gray-700 dark:text-gray-200'
+    }`}
+  />
+</button>
                                       </CustomTooltip>
                                     </div>
                                   ))}
                                 </div>
                               );
                             })()}
-                          </div>
-                        ) : col.type === 'button' && actionButtonItems ? (
-                          <div
-                            className="flex space-x-2"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            {actionButtonItems(row).map((button, index) => (
-                              <div
-                                key={index}
-                                className="relative"
-                                onMouseLeave={() =>
-                                  debouncedSetHoveredAction({
-                                    rowIndex: null,
-                                    actionIndex: null,
-                                    type: 'button',
-                                  })
-                                }
-                              >
-                                <button
-                                  onClick={() => {
-                                    if (!row.is_obsolete) {
-                                      button.onClick(row);
-                                    }
-                                  }}
-                                  className={`px-2 py-1 text-white rounded-md text-sm ${
-                                    button.color
-                                      ? `bg-${button.color}-500 hover:bg-${button.color}-600`
-                                      : 'bg-blue-500 hover:bg-blue-600'
-                                  }`}
-                                >
-                                  {button.label || 'Action'}
-                                </button>
-                              </div>
-                            ))}
                           </div>
                         ) : col.type === 'toggle' ? (
                           source === 'Beneficiaries' && row.vendors ? null : (
@@ -1885,15 +1883,26 @@ const CommonTable: React.FC<CommonTableProps> = ({
                                         : false
                                     }
                                     onClick={() => {
-                                      if (row && !row.disabled && !row.is_obsolete && handleToggleClick) {
+                                      if (
+                                        row &&
+                                        !row.disabled &&
+                                        !row.is_obsolete &&
+                                        handleToggleClick
+                                      ) {
                                         // Get current value considering both direct property and config
-                                        const currentValue = typeof row[col.key] === 'undefined'
-                                          ? (row.config && row.config[col.key] !== undefined
+                                        const currentValue =
+                                          typeof row[col.key] === 'undefined'
+                                            ? row.config &&
+                                              row.config[col.key] !== undefined
                                               ? row.config[col.key]
-                                              : false)
-                                          : row[col.key];
-                                        
-                                        handleToggleClick(row.id, !currentValue, col.key);
+                                              : false
+                                            : row[col.key];
+
+                                        handleToggleClick(
+                                          row.id,
+                                          !currentValue,
+                                          col.key,
+                                        );
                                       }
                                     }}
                                     disabled={

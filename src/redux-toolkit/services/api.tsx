@@ -3,7 +3,7 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 const endPoint = import.meta.env.VITE_API_BACKEND_URL;
 
 const api = axios.create({
-  baseURL: endPoint || "http://localhost:8090/v1/",
+  baseURL: endPoint || "https://api.staging.zolopay.co/v1",
   headers: {
     "Content-Type": "application/json",
   },
