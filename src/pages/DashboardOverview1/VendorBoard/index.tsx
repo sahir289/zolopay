@@ -421,33 +421,31 @@ function Main() {
           </h1>
           </div>
         </div>
-        <div className="mt-8">
-                <VendorBoard
-                  calculationData={calculationData}
-                  vendorPayinChartData={chartData.vendorPayinData}
-                  ChargebackChartData={chartData.vendorChargebackData}
-                  ReverseChartData={chartData.vendorReverseData}
-                  vendorPayoutChartData={chartData.vendorPayoutData}
-                  payInCommissionData={chartData.vendorPayinCommissionData}
-                  payoutCommissionData={chartData.vendorPayoutCommissionData}
-                  vendorSettlementChartData={chartData.vendorSettlementData}
-                  settlementCommissionData={
-                    chartData.vendorSettlementCommissionData
-                  }
-                  totalVendorCommissionData={
-                    chartData.totalVendorCommissionData
-                  }
-                  vendorSelectedFilterDates={vendorSelectedFilterDates}
-                  setVendorSelectedFilterDates={setVendorSelectedFilterDates}
-                  vendorSelectedFilter={vendorSelectedFilter}
-                  setVendorSelectedFilter={setVendorSelectedFilter}
-                  vendorCodes={vendorCodes}
-                  handleFilterData={handleFilterData}
-                  startDate={vendorStartDate}
-                  endDate={vendorEndDate}
-                  isLoading={isLoading}
-                />
-        </div>
+        <VendorBoard
+          calculationData={calculationData}
+          vendorPayinChartData={chartData.vendorPayinData}
+          ChargebackChartData={chartData.vendorChargebackData}
+          ReverseChartData={chartData.vendorReverseData}
+          vendorPayoutChartData={chartData.vendorPayoutData}
+          payInCommissionData={chartData.vendorPayinCommissionData}
+          payoutCommissionData={chartData.vendorPayoutCommissionData}
+          vendorSettlementChartData={chartData.vendorSettlementData}
+          settlementCommissionData={
+            chartData.vendorSettlementCommissionData
+          }
+          totalVendorCommissionData={
+            chartData.totalVendorCommissionData
+          }
+          vendorSelectedFilterDates={vendorSelectedFilterDates}
+          setVendorSelectedFilterDates={setVendorSelectedFilterDates}
+          vendorSelectedFilter={vendorSelectedFilter}
+          setVendorSelectedFilter={setVendorSelectedFilter}
+          vendorCodes={vendorCodes}
+          handleFilterData={handleFilterData}
+          startDate={vendorStartDate}
+          endDate={vendorEndDate}
+          isLoading={isLoading}
+        />
     </>
   );
 }

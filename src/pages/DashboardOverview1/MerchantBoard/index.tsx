@@ -401,33 +401,31 @@ function Main() {
             Merchant Dashboard
           </h1>
         </div>
-        <div className="mt-8">
-                <MerchantBoard
-                  calculationData={calculationData}
-                  payinChartData={chartData.payinData}
-                  payoutChartData={chartData.payoutData}
-                  ChargebackChartData={chartData.chargebackData}
-                  ReverseChartData={chartData.reverseData}
-                  payInCommissionData={chartData.payinCommissionData}
-                  payoutCommissionData={chartData.payoutCommissionData}
-                  settlementChartData={chartData.settlementData}
-                  settlementCommissionData={chartData.settlementCommissionData}
-                  totalMerchantCommissionData={
-                    chartData.totalMerchantCommissionData
-                  }
-                  merchantSelectedFilterDates={merchantSelectedFilterDates}
-                  setMerchantSelectedFilterDates={
-                    setMerchantSelectedFilterDates
-                  }
-                  merchantSelectedFilter={merchantSelectedFilter}
-                  setMerchantSelectedFilter={setMerchantSelectedFilter}
-                  merchantCodes={merchantCodes}
-                  handleFilterData={handleFilterData}
-                  startDate={vendorStartDate}
-                  endDate={vendorEndDate}
-                  isLoading={isLoading}
-                />
-        </div>
+        <MerchantBoard
+          calculationData={calculationData}
+          payinChartData={chartData.payinData}
+          payoutChartData={chartData.payoutData}
+          ChargebackChartData={chartData.chargebackData}
+          ReverseChartData={chartData.reverseData}
+          payInCommissionData={chartData.payinCommissionData}
+          payoutCommissionData={chartData.payoutCommissionData}
+          settlementChartData={chartData.settlementData}
+          settlementCommissionData={chartData.settlementCommissionData}
+          totalMerchantCommissionData={
+            chartData.totalMerchantCommissionData
+          }
+          merchantSelectedFilterDates={merchantSelectedFilterDates}
+          setMerchantSelectedFilterDates={
+            setMerchantSelectedFilterDates
+          }
+          merchantSelectedFilter={merchantSelectedFilter}
+          setMerchantSelectedFilter={setMerchantSelectedFilter}
+          merchantCodes={merchantCodes}
+          handleFilterData={handleFilterData}
+          startDate={vendorStartDate}
+          endDate={vendorEndDate}
+          isLoading={isLoading}
+        />
       </div>
     </>
   );
