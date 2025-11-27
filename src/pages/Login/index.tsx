@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { FormCheck, FormInput, FormLabel } from '@/components/Base/Form';
+// import { FormCheck, FormInput, FormLabel } from '@/components/Base/Form';
 // import Tippy from "@/components/Base/Tippy";
 // import users from "@/fakers/users";
-import Button from '@/components/Base/Button';
+// import Button from '@/components/Base/Button';
 import { getShortBuildInfo } from '@/utils/buildInfo';
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
 import {
   getUserRoleDetails,
@@ -23,7 +23,7 @@ import {
 } from '@/redux-toolkit/slices/auth/authSlice';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import Lucide from '@/components/Base/Lucide';
+// import Lucide from '@/components/Base/Lucide';
 import { NotificationElement } from '@/components/Base/Notification';
 import { useAuth } from '@/components/context/AuthContext';
 // import socket from "@/socket/socket";
@@ -40,6 +40,11 @@ import {
   removeNotificationById,
 } from '@/redux-toolkit/slices/AllNoti/allNotifications';
 import NotificationManager from '@/components/Base/Notification/NotificationManager';
+import './login.css';
+import { FormCheck, FormInput,FormLabel } from '@/components/Base/Form';
+import Lucide from '@/components/Base/Lucide';
+import clsx from 'clsx';
+import Button from '@/components/Base/Button';
 interface CustomJwtPayload {
   company_id: any;
   user_id: string;
