@@ -50,27 +50,27 @@ function VendorBoard({
 
   const commissionsData = useMemo(() => [
     {
-      type: 'Payin',
+      type: 'Deposits',
       sent: calculationData?.vendorTotalCalculations?.total_payin_commission || 0,
       received: calculationData?.vendorTotalCalculations?.total_payin_received_commission || 0,
     },
     {
-      type: 'Payout',
+      type: 'Withdrawals',
       sent: calculationData?.vendorTotalCalculations?.total_payout_commission || 0,
       received: calculationData?.vendorTotalCalculations?.total_payout_received_commission || 0,
     },
     {
-      type: 'Reversed',
+      type: 'Reversed Payments',
       sent: calculationData?.vendorTotalCalculations?.total_reverse_payout_commission || 0,
       received: calculationData?.vendorTotalCalculations?.total_reverse_received_commission || 0,
     },
     {
-      type: 'Settlements',
+      type: 'Reconciliations',
       sent: calculationData?.vendorTotalCalculations?.total_settlement_commission || 0,
       received: calculationData?.vendorTotalCalculations?.total_settlement_received_commission || 0,
     },
     {
-      type: 'Adjustments',
+      type: 'Balance Adjustments',
       sent: calculationData?.vendorTotalCalculations?.total_adjustment_commission || 0,
       received: calculationData?.vendorTotalCalculations?.total_adjustment_received_commission || 0,
     },
@@ -113,12 +113,12 @@ function VendorBoard({
       <DashboardStatCard {...stats}/>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <DashboardListCard title='Settlements' data={settlementsData}/>
+        <DashboardListCard title='Reconciliations' data={settlementsData}/>
         <DashboardListCard title='Commissions' data={commissionsData}/>
       </div>
 
       <DashboardChart
-        title='Vendor Calculations'
+        title='Banking Partner Metrics'
         deposits={vendorPayinChartData}
         withdrawals={vendorPayoutChartData}
         commission={totalVendorCommissionData}

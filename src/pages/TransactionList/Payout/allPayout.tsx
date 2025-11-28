@@ -1078,14 +1078,14 @@ const AllPayOut: React.FC<AllPayOutProps> = ({
       if (selectedMerchantReports.length > 0) {
         const fieldMappings = {
           sno: 'SNO',
-          merchant_details: 'Merchant Code',
+          merchant_details: 'Payment Partner Code',
           merchant_order_id: 'Merchant Order ID',
           status: 'Status',
           nick_name: 'From Bank',
           utr_id: 'UTR',
           user: 'User',
           amount: 'Requested Amount',
-          vendor_code: 'Vendor Code',
+          vendor_code: 'Banking Partner Code',
           user_bank_details: 'Bank Details',
           payout_merchant_commission: 'Merchant Payout Commission',
           payout_vendor_commission: 'Vendor Payout Commission',
@@ -1321,7 +1321,7 @@ const AllPayOut: React.FC<AllPayOutProps> = ({
                             setSelectedFilterVendor([]);
                           }}
                           forOpen={exportModalOpen}
-                          title="Export PayOuts"
+                          title="Export Withdrawals"
                         >
                           <div className="py-2 my-2 mb-4">
                             <Litepicker
@@ -1739,7 +1739,7 @@ const AllPayOut: React.FC<AllPayOutProps> = ({
         <Modal
           handleModal={transactionModal}
           forOpen={newTransactionModal}
-          title={`Update Payout`}
+          title={`Update Outgoing Payment`}
         >
           <DynamicForm
             sections={

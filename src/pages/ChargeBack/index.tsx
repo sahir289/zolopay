@@ -605,7 +605,7 @@ function ChargeBack() {
           <Modal
             handleModal={() => setEditModalOpen(false)}
             forOpen={editModalOpen}
-            title="Edit ChargeBack"
+            title="Edit Dispute"
           >
             <DynamicForm
               sections={EditChargeBacksFields}
@@ -626,7 +626,7 @@ function ChargeBack() {
               <Modal
                 handleModal={chargebackModal}
                 forOpen={newUserModal}
-                buttonTitle={`Add ChargeBack`}
+                buttonTitle={`Add Dispute`}
               >
                 <DynamicForm
                   sections={ChargeBacksFormFields}
@@ -721,7 +721,7 @@ function ChargeBack() {
                         setExportModalOpen((prev) => !prev);
                       }}
                       forOpen={exportModalOpen}
-                      title="Export Chargebacks"
+                      title="Export Disputes"
                     >
                       <div className="py-2 my-2 mb-4">
                         <Litepicker
@@ -762,7 +762,7 @@ function ChargeBack() {
                                   if (value.length > 0)
                                     setSelectedFilterVendorExport([]);
                                 }}
-                                placeholder="Select Merchant Codes ..."
+                                placeholder="Select Payment Partner Codes ..."
                                 disabled={selectedFilterVendor?.length > 0}
                               />
                             </div>
@@ -778,7 +778,7 @@ function ChargeBack() {
                                     setSelectedFilterExport([]);
                                   }
                                 }}
-                                placeholder="Select Vendor Codes ..."
+                                placeholder="Select Banking Partner Codes ..."
                                 disabled={selectedFilter?.length > 0}
                               />
                             </div>
@@ -788,14 +788,14 @@ function ChargeBack() {
                             codes={merchantCodes}
                             selectedFilter={selectedFilterExport}
                             setSelectedFilter={setSelectedFilterExport}
-                            placeholder="Select Merchant Codes ..."
+                            placeholder="Select Payment Partner Codes ..."
                           />
                         ) : (
                           <MultiSelect
                             codes={vendorCodes}
                             selectedFilter={selectedFilterVendorExport}
                             setSelectedFilter={setSelectedFilterVendorExport}
-                            placeholder="Select Vendor Codes ..."
+                            placeholder="Select Banking Partner Codes ..."
                           />
                         )}
                       </div>

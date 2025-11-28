@@ -1597,7 +1597,7 @@ const BankAccount: React.FC = () => {
                   }))
                 }
                 forOpen={exportModalState.open}
-                title="Export Bank Account"
+                title="Export Banking Account"
               >
                 <div className="py-2 my-2 mb-4">
                   <Litepicker
@@ -1720,7 +1720,7 @@ const BankAccount: React.FC = () => {
                             setSelectedVendorExport((prev) => !prev);
                           }}
                           forOpen={selectedVendorExport}
-                          title="Export Bank Details"
+                          title="Export Banking Details"
                         >
                           <div className="py-2 my-2 mb-4">
                             <Litepicker
@@ -1757,7 +1757,7 @@ const BankAccount: React.FC = () => {
                                 setSelectedFilter={(value: any[]) => {
                                   setSelectedFilterVendorExport(value);
                                 }}
-                                placeholder="Select Vendor Codes ..."
+                                placeholder="Select Banking Partner Codes ..."
                                 // disabled={selectedFilter?.length > 0}
                               />
                             </div>

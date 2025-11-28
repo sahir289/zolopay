@@ -412,13 +412,13 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
 
         const fieldMappings = {
           sno: 'SNO',
-          merchant_details: 'Merchant Code',
+          merchant_details: 'Payment Partner Code',
           merchant_order_id: 'Merchant Order ID',
           // payout_id: 'PayOut ID',
           status: 'Status',
           user: 'User',
           amount: 'Requested Amount',
-          vendor_code: 'Vendor Code',
+          vendor_code: 'Banking Partner Code',
           updated_at: 'Updated At',
           created_at: 'Created At',
           approved_at: 'Approved At',
@@ -1303,7 +1303,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                             setSelectedFilterVendor([]);
                           }}
                           forOpen={exportModalOpen}
-                          title="Export PayIns"
+                          title="Export Deposits"
                         >
                           <div className="py-2 my-2 mb-4">
                             <Litepicker
@@ -1344,7 +1344,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                                     if (value.length > 0)
                                       setSelectedFilterVendor([]);
                                   }}
-                                  placeholder="Select Merchant Codes ..."
+                                  placeholder="Select Payment Partner Codes ..."
                                   disabled={selectedFilterVendor?.length > 0}
                                 />
                               </div>
@@ -1358,7 +1358,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                                     setSelectedFilterVendor(value);
                                     if (value.length > 0) setSelectedFilter([]);
                                   }}
-                                  placeholder="Select Vendor Codes ..."
+                                  placeholder="Select Banking Partner Codes ..."
                                   disabled={selectedFilter?.length > 0}
                                 />
                               </div>
@@ -1368,14 +1368,14 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                               codes={merchantCodes}
                               selectedFilter={selectedFilter}
                               setSelectedFilter={setSelectedFilter}
-                              placeholder="Select Merchant Codes ..."
+                              placeholder="Select Payment Partner Codes ..."
                             />
                           ) : (
                             <MultiSelect
                               codes={vendorCodes}
                               selectedFilter={selectedFilterVendor}
                               setSelectedFilter={setSelectedFilterVendor}
-                              placeholder="Select Vendor Codes ..."
+                              placeholder="Select Banking Partner Codes ..."
                             />
                           )}
 
@@ -1655,7 +1655,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
         <Modal
           handleModal={transactionModal}
           forOpen={newTransactionModal}
-          title={`Update Payout`}
+          title={`Update Outgoing Payment`}
         >
           <DynamicForm
             sections={

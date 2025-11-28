@@ -73,16 +73,16 @@
 //   const refreshSettlement = useAppSelector(getRefreshSettlement);
 //   const getInitialTitle = (role: RoleType | null, parentTab: number) => {
 //     if (role === Role.ADMIN) {
-//       return parentTab === 0 ? 'Merchant Settlement' : 'Vendor Settlement';
+//       return parentTab === 0 ? 'Merchant Reconciliation' : 'Vendor Reconciliation';
 //     }
 //     if (role === Role.MERCHANT) {
-//       return 'Merchant Settlement';
+//       return 'Merchant Reconciliation';
 //     }
-//     return 'Vendor Settlement';
+//     return 'Vendor Reconciliation';
 //   };
 //   useEffect(() => {
 //     if (role === Role.ADMIN) {
-//       setTitle(parentTab === 0 ? 'Merchant Settlement' : 'Vendor Settlement');
+//       setTitle(parentTab === 0 ? 'Merchant Reconciliation' : 'Vendor Reconciliation');
 //     }
 //   }, [parentTab]);
 //   const [title, setTitle] = useState(getInitialTitle(role, parentTab));
@@ -161,13 +161,13 @@
 //         // limit: pagination.limit.toString(),
 //         forSettlementFlag: 'true',
 //         beneficiary_role:
-//           title === 'Merchant Settlement' && parentTab === 0
+//           title === 'Merchant Reconciliation' && parentTab === 0
 //         ? Role.MERCHANT
 //         : Role.VENDOR,
 //         beneficiary_user_id: user_id,
 //       };
 
-//       if (title !== 'Merchant Settlement') {
+//       if (title !== 'Merchant Reconciliation') {
 //         queryParams.is_enabled = 'true';
 //       }
 
@@ -362,7 +362,7 @@
 //       selectedVendor?.value?.toString() ||
 //       selectedMerchant?.value?.toString() ||
 //       null;
-//     // if (title === 'Merchant Settlement') {
+//     // if (title === 'Merchant Reconciliation') {
 //     //   data.bank_id = data.bank_name;
 //     // delete data.bank_name;
 //     // delete data.acc_holder_name;
@@ -458,7 +458,7 @@
 //   const handleParentTabChange = (index: number) => {
 //     setSelectedMethodLabel('');
 //     dispatch(setParentTab(index));
-//     setTitle(index === 0 ? 'Merchant Settlement' : 'Vendor Settlement');
+//     setTitle(index === 0 ? 'Merchant Reconciliation' : 'Vendor Reconciliation');
 //   };
 
 //   return (
@@ -471,13 +471,13 @@
 //           <Modal
 //             handleModal={settlementModal}
 //             forOpen={newSettlementModal}
-//             buttonTitle={`Add Settlement`}
+//             buttonTitle={`Add Reconciliation`}
 //           >
 //             <DynamicForm
 //               sections={{
 //                 Add_Settlement: getSettlementsFormFields(
 //                   options,
-//                   title === 'Merchant Settlement'
+//                   title === 'Merchant Reconciliation'
 //                     ? SettlementOptions.merchantSettlement
 //                     : SettlementOptions.vendorSettlement,
 //                   updated,
@@ -491,7 +491,7 @@
 //                 ).Add_Settlement.filter(Boolean) as any[],
 //                 Bank_Details: getSettlementsFormFields(
 //                   options,
-//                   title === 'Merchant Settlement'
+//                   title === 'Merchant Reconciliation'
 //                     ? SettlementOptions.merchantSettlement
 //                     : SettlementOptions.vendorSettlement,
 //                   updated,
@@ -510,7 +510,7 @@
 //                 ),
 //                 Crypto_Details: getSettlementsFormFields(
 //                   options,
-//                   title === 'Merchant Settlement'
+//                   title === 'Merchant Reconciliation'
 //                     ? SettlementOptions.merchantSettlement
 //                     : SettlementOptions.vendorSettlement,
 //                   updated,
@@ -524,7 +524,7 @@
 //                 ).Crypto_Details(selectedMethodLabel),
 //                 Description: getSettlementsFormFields(
 //                   options,
-//                   title === 'Merchant Settlement'
+//                   title === 'Merchant Reconciliation'
 //                     ? SettlementOptions.merchantSettlement
 //                     : SettlementOptions.vendorSettlement,
 //                   updated,
@@ -538,7 +538,7 @@
 //                 ).Description(selectedMethodLabel),
 //                 Internal_transfer: getSettlementsFormFields(
 //                   options,
-//                   title === 'Merchant Settlement'
+//                   title === 'Merchant Reconciliation'
 //                     ? SettlementOptions.merchantSettlement
 //                     : SettlementOptions.vendorSettlement,
 //                   updated,

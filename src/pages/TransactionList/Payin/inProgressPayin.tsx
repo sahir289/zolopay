@@ -629,7 +629,7 @@ const InProgressPayIn: React.FC<AllPayInProps> = ({
           id: 'Id',
           upi_short_code: 'UPI Short Code',
           payin_merchant_commission: 'PayIn Merchant Commission',
-          merchant_details: 'Merchant Code',
+          merchant_details: 'Payment Partner Code',
           merchant_order_id: 'Merchant Order ID',
           user_submitted_utr: 'User Submitted UTR',
           utr: 'UTR',
@@ -641,7 +641,7 @@ const InProgressPayIn: React.FC<AllPayInProps> = ({
           },
           user: 'User',
           nick_name: 'Bank Name',
-          vendor_code: 'Vendor Code',
+          vendor_code: 'Banking Partner Code',
           updated_at: 'Updated At',
           created_at: 'Created At',
           approved_at: 'Approved At',
@@ -851,7 +851,7 @@ const InProgressPayIn: React.FC<AllPayInProps> = ({
                           setSelectedFilterVendor([]);
                         }}
                         forOpen={exportModalOpen}
-                        title="Export In-Progress PayIns"
+                        title="Export In-Progress Deposits"
                       >
                         <div className="py-2 my-2 mb-4">
                           <Litepicker
@@ -889,7 +889,7 @@ const InProgressPayIn: React.FC<AllPayInProps> = ({
                                   if (value.length > 0)
                                     setSelectedFilterVendor([]);
                                 }}
-                                placeholder="Select Merchant Codes ..."
+                                placeholder="Select Payment Partner Codes ..."
                                 disabled={selectedFilterVendor?.length > 0}
                               />
                             </div>
@@ -902,7 +902,7 @@ const InProgressPayIn: React.FC<AllPayInProps> = ({
                                   setSelectedFilterVendor(value);
                                   if (value.length > 0) setSelectedFilter([]);
                                 }}
-                                placeholder="Select Vendor Codes ..."
+                                placeholder="Select Banking Partner Codes ..."
                                 disabled={selectedFilter?.length > 0}
                               />
                             </div>
@@ -912,14 +912,14 @@ const InProgressPayIn: React.FC<AllPayInProps> = ({
                             codes={merchantCodes}
                             selectedFilter={selectedFilter}
                             setSelectedFilter={setSelectedFilter}
-                            placeholder="Select Merchant Codes ..."
+                            placeholder="Select Payment Partner Codes ..."
                           />
                         ) : (
                           <MultiSelect
                             codes={vendorCodes}
                             selectedFilter={selectedFilterVendor}
                             setSelectedFilter={setSelectedFilterVendor}
-                            placeholder="Select Vendor Codes ..."
+                            placeholder="Select Banking Partner Codes ..."
                           />
                         )}
                         <div className="flex flex-row gap-4 my-4 pt-6">
@@ -1192,7 +1192,7 @@ const InProgressPayIn: React.FC<AllPayInProps> = ({
         <Modal
           handleModal={transactionModal}
           forOpen={newTransactionModal}
-          title={`Reset PayIn`}
+          title={`Reset Incoming Payment`}
         >
           <DynamicForm
             sections={

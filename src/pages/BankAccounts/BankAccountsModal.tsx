@@ -21,7 +21,7 @@ export interface BankDetails {
   showBank: boolean;
   status: 'Active' | 'Inactive';
   action: string;
-  bankUsedFor: 'PayOuts' | 'Settlements' | 'PayIns';
+  bankUsedFor: 'Withdrawals' | 'Reconciliations' | 'Deposits';
   vendors: string;
   createdAt: string;
   lastScheduledAt: string;

@@ -1311,7 +1311,7 @@ const AddDataHistory: React.FC<AddDataHistoryProps> = ({ selectedIndex }) => {
         <Modal
           handleModal={handleEditCancel}
           forOpen={editModal}
-          title="Edit Transaction"
+          title="Edit Payment"
         >
           {!editEditingField ? (
             <div className="p-4">
@@ -1532,7 +1532,7 @@ const AddDataHistory: React.FC<AddDataHistoryProps> = ({ selectedIndex }) => {
         <Modal
           handleModal={() => setImportModalOpen(false)}
           forOpen={importModalOpen}
-          title="Import PayIns"
+          title="Import Deposits"
         >
           <div className="py-4 my-4">
             <div className="w-[90%] mx-4">
@@ -1688,7 +1688,7 @@ const AddDataHistory: React.FC<AddDataHistoryProps> = ({ selectedIndex }) => {
         <Modal
           handleModal={() => setExportModalOpen(false)}
           forOpen={exportModalOpen}
-          title="Export Bank Response Data"
+          title="Export Banking Response Data"
         >
           <div className="py-2 my-2 mb-4">
             <Litepicker

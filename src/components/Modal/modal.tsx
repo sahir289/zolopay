@@ -904,7 +904,7 @@ const Modal: React.FC<ModalProps> = ({
                         <FormInput
                           id="modal-form-1"
                           type="text"
-                          placeholder="Merchant Code"
+                          placeholder="Payment Partner Code"
                         />
                       </div>
                       <div></div>
@@ -1602,7 +1602,7 @@ const Modal: React.FC<ModalProps> = ({
                     </Dialog.Panel>
                   </Dialog>
                 )}
-                {title === "Merchant Board" && (
+                {title === "Payment Partner Board" && (
                   <Dialog
                     open={forOpen}
                     onClose={() => {
@@ -1677,7 +1677,7 @@ const Modal: React.FC<ModalProps> = ({
                     </Dialog.Panel>
                   </Dialog>
                 )}
-                {title === "Vendor Board" && (
+                {title === "Banking Partner Board" && (
                   <Dialog
                     open={forOpen}
                     onClose={() => {

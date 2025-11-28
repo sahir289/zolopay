@@ -1060,7 +1060,7 @@ dispatch(
                         setExportSelectedReportStatus('');
                       }}
                       forOpen={exportModalOpen}
-                      title="Export Settlements"
+                      title="Export Reconciliations"
                     >
                       <div className="py-2 my-2 mb-4">
                         <Litepicker
@@ -1098,7 +1098,7 @@ dispatch(
                             setSelectedFilter={(value: VendorCode[]) => {
                               setExportSelectedFilter(value);
                             }}
-                            placeholder="Select Vendor Codes..."
+                            placeholder="Select Banking Partner Codes..."
                           />
                         </div>
                       </div>
