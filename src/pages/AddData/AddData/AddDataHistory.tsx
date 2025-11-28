@@ -90,7 +90,7 @@ interface FilterState {
 //   tabState: number;
 // }
 
-const AddDataHistory = () => {
+const AddDataHistory = () => { 
   const dispatch = useAppDispatch();
   const pagination = useAppSelector(getPaginationData);
   const [isPageLoading, setIsPageLoading] = useState(false);

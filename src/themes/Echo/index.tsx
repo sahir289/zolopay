@@ -731,6 +731,7 @@ function Main() {
               >
                 <Lucide
                   icon={isFullscreen ? 'Minimize2' : 'Maximize2'}
+                  icon={isFullscreen ? 'Minimize2' : 'Maximize2'}
                   className="w-5 h-5 text-gray-600"
                 />
               </button>
@@ -834,8 +835,11 @@ function Main() {
                           setIsOpen(false);
                         }}
                       >
-                        <Lucide icon="Lock" className="w-4 h-4 text-gray-500" />
-                        <span>Change Password</span>
+                        <Lucide
+                          icon="KeyRound"
+                          className="w-4 h-4 inline-block mr-2"
+                        />
+                        Change Password
                       </button>
                       <button
                         className="flex items-center space-x-3 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
@@ -844,8 +848,11 @@ function Main() {
                           setIsOpen(false);
                         }}
                       >
-                        <Lucide icon="LogOut" className="w-4 h-4 text-gray-500" />
-                        <span>Logout</span>
+                        <Lucide
+                          icon="LogOut"
+                          className="w-4 h-4 inline-block mr-2"
+                        />
+                        Logout
                       </button>
                     </div>
                 )}

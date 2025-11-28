@@ -97,16 +97,16 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
         menuItem.subMenu = [
           ...(Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
-                title: "Payment Partner Overview",
+                title: "Payment Partner",
                 pathname: "/auth/dashboard/merchant",
-                icon: "TrendingUp" as const,
+                icon: "TrendingUp" as "BarChart",
               }]
             : []),
           ...(Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
-                title: "Banking Partner Overview",
+                title: "Banking Partner",
                 pathname: "/auth/dashboard/vendor",
-                icon: "LineChart" as const,
+                icon: "LineChart" as "BarChart2",
               }]
             : []),
         ];
@@ -130,14 +130,14 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
         menuItem.subMenu = [
           ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
-            title: "Payment Partner Settlements",
+            title: "Payment Partner",
             pathname: "/auth/settlement/merchants",
             icon: "Coins" as const,
             }]
             : [],
           ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
-            title: "Banking Partner Settlements",
+            title: "Banking Partner",
             pathname: "/auth/settlement/vendors",
             icon: "Wallet" as const,
             }]
@@ -149,14 +149,14 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
         menuItem.subMenu = [
           ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
-            title: "Payment Partner Analytics",
+            title: "Payment Partner",
             pathname: "/auth/reports/merchants",
             icon: "FileBarChart" as const,
             }]
             : [],
           ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
-            title: "Banking Partner Analytics",
+            title: "Banking Partner",
             pathname: "/auth/reports/vendors",
             icon: "FileSpreadsheet" as const, 
             }]
@@ -167,14 +167,14 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
         menuItem.subMenu = [
           ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
-            title: "Merchant",
+            title: "Payment Partner",
             pathname: "/auth/beneficiaryaccounts/merchants",
             icon: "User" as const,
             }]
             : [],
           ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
-            title: "Vendor",
+            title: "Banking Partner",
             pathname: "/auth/beneficiaryaccounts/vendors",
             icon: "Users" as const,
             }]
@@ -200,33 +200,6 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             : [],
         ];
       }
-      // console.log("Role in side menu:", menuItem.title);
-      if (menuItem.title === "Records") {
-        menuItem.subMenu = [
-          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Add Data",
-            pathname: "/auth/data-entries/add-data",
-            icon: "BarChart" as const,
-            }]
-            : [],
-          ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Check UTR",
-            pathname: "/auth/data-entries/check-utr",
-            icon: "BarChart2" as const,
-            }]
-            : [],
-          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Reset Data",
-            pathname: "/auth/data-entries/reset-data",
-            icon: "BarChart" as const,
-            }]
-            : [],
-        ];
-        menuItem.activeDropdown = false;
-      }
 
       if (menuItem.title === "Banking") {
         menuItem.subMenu = [
@@ -242,6 +215,27 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           },
         ];
       }
+
+      if (menuItem.title === "Records") {
+        menuItem.subMenu = [
+          {
+            title: "Add Data",
+            pathname: "/auth/data-entries/add-data",
+            icon: "ArrowDownCircle" as const,
+          },
+          {
+            title: "Check Utr",
+            pathname: "/auth/data-entries/check-utr",
+            icon: "ArrowUpCircle" as const,
+          },
+          {
+            title: "Reset Data",
+            pathname: "/auth/data-entries/Reset-data",
+            icon: "ArrowUpCircle" as const,
+          },
+        ];
+      } 
+
 
       formattedMenu.push(menuItem);
     } else {
