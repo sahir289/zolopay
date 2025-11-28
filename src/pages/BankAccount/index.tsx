@@ -129,8 +129,14 @@ const BankAccount: React.FC = () => {
   const [selectedBankId, setSelectedBankId] = useState<any>({});
   const allBankDetails = useAppSelector(selectAllBankDetails);
   const parentTab = useAppSelector(getParentTabs);
+  
+  // Helper to map display names to API values
+  const getApiMethod = (displayMethod: string) => {
+    return displayMethod === 'Deposit' ? 'PayIn' : 'PayOut';
+  };
+  
   const [selectedMethod, setSelectedMethod] = useState<string>(
-    parentTab === 0 ? 'PayIn' : 'PayOut',
+    parentTab === 0 ? 'Deposit' : 'Withdrawal',
   );
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
@@ -201,7 +207,7 @@ const BankAccount: React.FC = () => {
     }
   }, [newUserModal]);
   useEffect(() => {
-    setSelectedMethod(parentTab === 0 ? 'PayIn' : 'PayOut');
+    setSelectedMethod(parentTab === 0 ? 'Deposit' : 'Withdrawal');
   }, [parentTab]);
 
   const addMerchantModal = (): void => {
@@ -277,10 +283,11 @@ const BankAccount: React.FC = () => {
 
   const fetchBankAccounts = useCallback(
     async (value: string, query: string = '', active: boolean) => {
+      const apiMethod = getApiMethod(value);
       const queryString = new URLSearchParams({
         page: (pagination?.page || 1).toString(),
         limit: (pagination?.limit || 10).toString(),
-        bank_used_for: value,
+        bank_used_for: apiMethod,
         active: active.toString(), // Add is_enabled filter
         ...(query && { search: query }),
       }).toString();
@@ -603,7 +610,7 @@ const BankAccount: React.FC = () => {
         dispatch(updateBankDetailSlice(updatedBank));
         dispatch(setRefreshBankDetails(true));
       } else {
-        const bank_used_for = selectedMethod;
+        const bank_used_for = getApiMethod(selectedMethod);
         Object.assign(data, { bank_used_for });
         // sending userId for sub vendor and vendor operations
         if (userData.designation === Role.SUB_VENDOR) {
@@ -897,7 +904,7 @@ const BankAccount: React.FC = () => {
   };
 
   const handleParentTabChange = (index: number) => {
-    const newMethod = index === 0 ? 'PayIn' : 'PayOut';
+    const newMethod = index === 0 ? 'Deposit' : 'Withdrawal';
     dispatch(setParentTab(index));
     setSelectedMethod(newMethod);
     setSelectedSubTab(true);
@@ -1631,7 +1638,7 @@ const BankAccount: React.FC = () => {
                   }))
                 }
                 forOpen={exportModalState.open}
-                title="Export Bank Account"
+                title="Export Banking Account"
               >
                 <div className="py-2 my-2 mb-4">
                   <Litepicker
@@ -1777,7 +1784,7 @@ const BankAccount: React.FC = () => {
                             setSelectedVendorExport((prev) => !prev);
                           }}
                           forOpen={selectedVendorExport}
-                          title="Export Bank Details"
+                          title="Export Banking Details"
                         >
                           <div className="py-2 my-2 mb-4">
                             <Litepicker
@@ -1814,7 +1821,7 @@ const BankAccount: React.FC = () => {
                                 setSelectedFilter={(value: any[]) => {
                                   setSelectedFilterVendorExport(value);
                                 }}
-                                placeholder="Select Vendor Codes ..."
+                                placeholder="Select Banking Partner Codes ..."
                                 // disabled={selectedFilter?.length > 0}
                               />
                             </div>

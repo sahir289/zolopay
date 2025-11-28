@@ -54,7 +54,7 @@ function Main() {
   useAppSelector(selectDarkMode); // Subscribe to dark mode to trigger re-render
   const parentTab = useAppSelector(getParentTabs);
   const [newTransactionModal, setNewTransactionModal] = useState(false);
-  const [title, setTitle] = useState('PayOuts');
+  const [title, setTitle] = useState('Withdrawals');
   const [payInModal, setPayInModal] = useState(false);
   const [link, setLink] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -137,7 +137,7 @@ function Main() {
         return;
       }
 
-      if (title === 'PayIns') {
+      if (title === 'Deposits') {
         const transformedValues = {
           ...data,
           user_id: data.user_id.replace(/\s+/g, '_'),
@@ -166,7 +166,7 @@ function Main() {
 
       if (res?.meta?.message || res?.data) {
         //seperate msg for payin payout
-        if (title === 'PayIns') {
+        if (title === 'Deposits') {
           dispatch(
             addAllNotification({
               status: Status.SUCCESS,
@@ -188,7 +188,7 @@ function Main() {
         setFormValues({});
         setOneTime(false);
 
-        if (title === 'PayIns') {
+        if (title === 'Deposits') {
           dispatch(setRefreshPayIn(true));
           if (res.data?.payInUrl) {
             setLink(res.data.payInUrl);
@@ -204,7 +204,7 @@ function Main() {
             message: res.error.message,
           }),
         );
-        title === 'PayIns'
+        title === 'Deposits'
           ? dispatch(setRefreshPayIn(true))
           : dispatch(setRefreshPayOut(true));
         transactionModal();
@@ -234,7 +234,7 @@ function Main() {
   const handleParentTabChange = (index: number) => {
     dispatch(setParentTab(index));
     dispatch(setActiveTab(0)); // Reset child tab to 'All'
-    setTitle('PayOuts');
+    setTitle('Withdrawals');
     if (index === 0) {
       dispatch(payInLoader());
     } else {
@@ -272,7 +272,7 @@ function Main() {
     }
   }, [newTransactionModal]);
   useEffect(() => {
-    setTitle('PayOuts');
+    setTitle('Withdrawals');
   }, [parentTab]);
   return (
     <>
@@ -289,7 +289,7 @@ function Main() {
             >
               <DynamicForm
                 sections={
-                  title === 'PayIns'
+                  title === 'Deposits'
                     ? getTransactionFormFields(merchantOptions, role ?? '', oneTime, handleOneTimeChange).PAYIN
                     : getTransactionFormFields(merchantOptions, role ?? '', oneTime, handleOneTimeChange).PAYOUT
                 }
@@ -326,7 +326,7 @@ function Main() {
                       } : {}}
                     >
                       <Lucide icon="IndianRupee" className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Payins
+                      Deposits
                     </Tab.Button>
                   )}
                 </Tab>
@@ -345,7 +345,7 @@ function Main() {
                       } : {}}
                     >
                       <Lucide icon="CircleDollarSign" className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Payouts
+                      Withdrawals
                     </Tab.Button>
                   )}
                 </Tab>

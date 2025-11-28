@@ -55,7 +55,7 @@
 //   useAppSelector(selectDarkMode); // Subscribe to dark mode to trigger re-render
 //   const parentTab = useAppSelector(getParentTabs);
 //   const [newTransactionModal, setNewTransactionModal] = useState(false);
-//   const [title, setTitle] = useState(parentTab === 0 ? 'PayIns' : 'PayOuts');
+//   const [title, setTitle] = useState(parentTab === 0 ? 'Deposits' : 'Withdrawals');
 //   const [payInModal, setPayInModal] = useState(false);
 //   const [link, setLink] = useState('');
 //   const [isLoading, setIsLoading] = useState(false);
@@ -138,7 +138,7 @@
 //         return;
 //       }
 
-//       if (title === 'PayIns') {
+//       if (title === 'Deposits') {
 //         const transformedValues = {
 //           ...data,
 //           user_id: data.user_id.replace(/\s+/g, '_'),
@@ -167,7 +167,7 @@
 
 //       if (res?.meta?.message || res?.data) {
 //         //seperate msg for payin payout
-//         if (title === 'PayIns') {
+//         if (title === 'Deposits') {
 //           dispatch(
 //             addAllNotification({
 //               status: Status.SUCCESS,
@@ -189,7 +189,7 @@
 //         setFormValues({});
 //         setOneTime(false);
 
-//         if (title === 'PayIns') {
+//         if (title === 'Deposits') {
 //           dispatch(setRefreshPayIn(true));
 //           if (res.data?.payInUrl) {
 //             setLink(res.data.payInUrl);
@@ -205,7 +205,7 @@
 //             message: res.error.message,
 //           }),
 //         );
-//         title === 'PayIns'
+//         title === 'Deposits'
 //           ? dispatch(setRefreshPayIn(true))
 //           : dispatch(setRefreshPayOut(true));
 //         transactionModal();
@@ -235,7 +235,7 @@
 //   const handleParentTabChange = (index: number) => {
 //     dispatch(setParentTab(index));
 //     dispatch(setActiveTab(0)); // Reset child tab to 'All'
-//     setTitle(index === 0 ? 'PayIns' : 'PayOuts');
+//     setTitle(index === 0 ? 'Deposits' : 'Withdrawals');
 //     if (index === 0) {
 //       dispatch(payInLoader());
 //     } else {
@@ -273,7 +273,7 @@
 //     }
 //   }, [newTransactionModal]);
 //   useEffect(() => {
-//     setTitle(parentTab === 0 ? 'PayIns' : 'PayOuts');
+//     setTitle(parentTab === 0 ? 'Deposits' : 'Withdrawals');
 //   }, [parentTab]);
 //   return (
 //     <>
@@ -290,7 +290,7 @@
 //             >
 //               <DynamicForm
 //                 sections={
-//                   title === 'PayIns'
+//                   title === 'Deposits'
 //                     ? getTransactionFormFields(merchantOptions, role ?? '', oneTime, handleOneTimeChange).PAYIN
 //                     : getTransactionFormFields(merchantOptions, role ?? '', oneTime, handleOneTimeChange).PAYOUT
 //                 }

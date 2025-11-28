@@ -996,7 +996,7 @@ function MerchantSettlement({
                         setExportSelectedReportStatus('');
                       }}
                       forOpen={exportModalOpen}
-                      title="Export Settlements"
+                      title="Export Reconciliations"
                     >
                       <div className="py-2 my-2 mb-4">
                         <Litepicker
@@ -1033,7 +1033,7 @@ function MerchantSettlement({
                             setSelectedFilter={(value: MerchantCode[]) => {
                               setExportSelectedFilter(value);
                             }}
-                            placeholder="Select Merchant Codes..."
+                            placeholder="Select Payment Partner Codes..."
                           />
                         </div>
                       </div>

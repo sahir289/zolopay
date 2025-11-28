@@ -29,7 +29,7 @@ function Main() {
   useAppSelector(selectDarkMode); // Subscribe to dark mode to trigger re-render
   const parentTab = useAppSelector(getParentTabs); // Get parent tab from Redux
   const [title, setTitle] = useState(
-    parentTab === 0 ? 'Merchant Account Reports' : 'Vendor Account Reports',
+    parentTab === 0 ? 'Payment Partner Account Analytics' : 'Banking Partner Account Analytics',
   );
 
   const data = localStorage.getItem('userData');
@@ -43,7 +43,7 @@ function Main() {
   const handleParentTabChange = (index: number) => {
     dispatch(setParentTab(index));
     setTitle(
-      index === 0 ? 'Merchant Account Reports' : 'Vendor Account Reports',
+      index === 0 ? 'Payment Partner Account Analytics' : 'Banking Partner Account Analytics',
     );
   };
   return (
@@ -74,7 +74,7 @@ function Main() {
                               : 'bg-slate-50 dark:bg-darkmode-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-darkmode-700'
                           }`}
                           as="button"
-                          onClick={() => setTitle('Merchant Account Reports')}
+                          onClick={() => setTitle('Payment Partner Account Analytics')}
                           title={title}
                           style={selected ? {
                             position: 'relative',
@@ -85,8 +85,8 @@ function Main() {
                             icon="IndianRupee"
                             className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]"
                           />
-                          <span className="hidden sm:inline">Merchant Reports</span>
-                          <span className="sm:hidden">Merchant</span>
+                          <span className="hidden sm:inline">Payment Partner Analytics</span>
+                          <span className="sm:hidden">Payment Partner</span>
                         </Tab.Button>
                       )}
                     </Tab>
@@ -99,7 +99,7 @@ function Main() {
                               : 'bg-slate-50 dark:bg-darkmode-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-darkmode-700'
                           }`}
                           as="button"
-                          onClick={() => setTitle('Vendor Account Reports')}
+                          onClick={() => setTitle('Banking Partner Account Analytics')}
                           title={title}
                           style={selected ? {
                             position: 'relative',
@@ -110,8 +110,8 @@ function Main() {
                             icon="MoveRight"
                             className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]"
                           />
-                          <span className="hidden sm:inline">Vendor Reports</span>
-                          <span className="sm:hidden">Vendor</span>
+                          <span className="hidden sm:inline">Banking Partner Analytics</span>
+                          <span className="sm:hidden">Banking Partner</span>
                         </Tab.Button>
                       )}
                     </Tab>

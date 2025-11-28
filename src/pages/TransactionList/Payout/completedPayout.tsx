@@ -475,7 +475,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
       if (completedReports.length > 0) {
         const fieldMappings = {
           sno: 'SNO',
-          merchant_details: 'Merchant Code',
+          merchant_details: 'Payment Partner Code',
           merchant_order_id: 'Merchant Order ID',
           status: 'Status',
           utr_id: 'UTR',
@@ -484,7 +484,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
           payout_merchant_commission: 'Payout Commission',
           description: 'Description',
           nick_name: 'From Bank',
-          vendor_code: 'Vendor Code',
+          vendor_code: 'Banking Partner Code',
           updated_at: 'Updated At',
           approved_at: 'Approved At',
           created_at: 'Created At',
@@ -733,7 +733,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                           setSelectedFilterVendor([]);
                         }}
                         forOpen={exportModalOpen}
-                        title="Export PayOuts"
+                        title="Export Withdrawals"
                       >
                         <div className="py-2 my-2 mb-4">
                           <Litepicker
@@ -771,7 +771,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                                   if (value.length > 0)
                                     setSelectedFilterVendor([]);
                                 }}
-                                placeholder="Select Merchant Codes ..."
+                                placeholder="Select Payment Partner Codes ..."
                                 disabled={selectedFilterVendor?.length > 0}
                               />
                             </div>
@@ -784,7 +784,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                                   setSelectedFilterVendor(value);
                                   if (value.length > 0) setSelectedFilter([]);
                                 }}
-                                placeholder="Select Vendor Codes ..."
+                                placeholder="Select Banking Partner Codes ..."
                                 disabled={selectedFilter?.length > 0}
                               />
                             </div>
@@ -794,14 +794,14 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                             codes={merchantCodes}
                             selectedFilter={selectedFilter}
                             setSelectedFilter={setSelectedFilter}
-                            placeholder="Select Merchant Codes ..."
+                            placeholder="Select Payment Partner Codes ..."
                           />
                         ) : (
                           <MultiSelect
                             codes={vendorCodes}
                             selectedFilter={selectedFilterVendor}
                             setSelectedFilter={setSelectedFilterVendor}
-                            placeholder="Select Vendor Codes ..."
+                            placeholder="Select Banking Partner Codes ..."
                           />
                         )}
 

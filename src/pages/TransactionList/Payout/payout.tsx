@@ -121,7 +121,8 @@ const PayOut: React.FC = () => {
                 } : {}}
               >
                 <Lucide icon="List" className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]" />
-                All
+                <span className="hidden sm:inline">All Payments</span>
+                <span className="sm:hidden">All</span>
               </Tab.Button>
             )}
           </Tab>
@@ -143,8 +144,8 @@ const PayOut: React.FC = () => {
                   icon="CheckCircle2"
                   className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]"
                 />
-                <span className="hidden sm:inline">Completed</span>
-                <span className="sm:hidden">Done</span>
+                <span className="hidden sm:inline">Successful</span>
+                <span className="sm:hidden">Success</span>
               </Tab.Button>
             )}
           </Tab>
@@ -163,8 +164,8 @@ const PayOut: React.FC = () => {
                 } : {}}
               >
                 <Lucide icon="Clock" className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]" />
-                <span className="hidden sm:inline">In Progress</span>
-                <span className="sm:hidden">Progress</span>
+                <span className="hidden sm:inline">Processing</span>
+                <span className="sm:hidden">Process</span>
               </Tab.Button>
             )}
           </Tab>
@@ -183,7 +184,7 @@ const PayOut: React.FC = () => {
                 } : {}}
               >
                 <Lucide icon="ShieldX" className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]" />
-                Rejected
+                Failed
               </Tab.Button>
             )}
           </Tab>

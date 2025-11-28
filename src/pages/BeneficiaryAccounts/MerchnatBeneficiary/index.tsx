@@ -660,7 +660,7 @@ const BeneficiaryAccounts: React.FC = () => {
             <Modal
               handleModal={beneficiaryModal}
               forOpen={newUserModal}
-              buttonTitle={`Add Beneficiary`}
+              buttonTitle={`Add Payee`}
             >
               <DynamicForm
                 sections={

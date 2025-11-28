@@ -391,7 +391,7 @@ const VendorAccountReports: React.FC<VendorAccountReportsProps> = ({
 
       if (selectedVendor.length > 0) {
         const fieldMappings = {
-          code: 'Vendor Code',
+          code: 'Banking Partner Code',
           updated_at: 'Date',
           total_payin_amount: 'PayIn Amount',
           total_payin_commission: 'PayIn Commission',
@@ -583,7 +583,7 @@ const VendorAccountReports: React.FC<VendorAccountReportsProps> = ({
             <div className="p-3 sm:p-5 w-full flex flex-col sm:flex-row mt-2 sm:mt-3.5 box box--stacked gap-3 sm:gap-0 sm:justify-between">
               <div className="w-full sm:mr-2 sm:w-[70%]">
                 <label className="block text-xs sm:text-sm mb-2 px-1 sm:px-2">
-                  Vendor Codes
+                  Banking Partner Codes
                 </label>
                 <MultiSelect
                   value={selectedVendor}
@@ -744,7 +744,7 @@ const VendorAccountReports: React.FC<VendorAccountReportsProps> = ({
         <Modal
           handleModal={handleEditCancel}
           forOpen={editModalOpen}
-          title="Edit Transaction"
+          title="Edit Payment"
         >
           <ModalContent
             handleCancelDelete={handleEditCancel}

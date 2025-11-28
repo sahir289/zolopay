@@ -287,7 +287,8 @@ const PayInComponent: React.FC = () => {
                 } : {}}
               >
                 <Lucide icon="List" className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]" />
-                All
+                <span className="hidden sm:inline">All Payments</span>
+                <span className="sm:hidden">All</span>
               </Tab.Button>
             )}
           </Tab>
@@ -309,8 +310,8 @@ const PayInComponent: React.FC = () => {
                   icon="CheckCircle2"
                   className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]"
                 />
-                <span className="hidden sm:inline">Completed</span>
-                <span className="sm:hidden">Done</span>
+                <span className="hidden sm:inline">Successful</span>
+                <span className="sm:hidden">Success</span>
               </Tab.Button>
             )}
           </Tab>
@@ -329,8 +330,8 @@ const PayInComponent: React.FC = () => {
                 } : {}}
               >
                 <Lucide icon="Clock" className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]" />
-                <span className="hidden sm:inline">InProgress</span>
-                <span className="sm:hidden">Progress</span>
+                <span className="hidden sm:inline">Processing</span>
+                <span className="sm:hidden">Process</span>
               </Tab.Button>
             )}
           </Tab>
@@ -349,7 +350,7 @@ const PayInComponent: React.FC = () => {
                 } : {}}
               >
                 <Lucide icon="XOctagon" className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]" />
-                Dropped
+                Failed
               </Tab.Button>
             )}
           </Tab>
@@ -371,7 +372,8 @@ const PayInComponent: React.FC = () => {
                   icon="AlertTriangle"
                   className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]"
                 />
-                Review
+                <span className="hidden sm:inline">Under Review</span>
+                <span className="sm:hidden">Review</span>
               </Tab.Button>
             )}
           </Tab>
