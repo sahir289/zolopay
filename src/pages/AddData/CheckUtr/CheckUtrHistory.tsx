@@ -37,7 +37,7 @@ interface CheckUTR {
   selectedIndex: number;
 }
 
-const CheckUtrHistory: React.FC<CheckUTR> = ({selectedIndex}) => {
+const CheckUtrHistory: React.FC<CheckUTR> = () => {
   const dispatch = useAppDispatch();
   const pagination = useAppSelector(getPaginationData);
   const refreshDataEntries = useAppSelector(getRefreshDataEntries);
@@ -157,9 +157,9 @@ const CheckUtrHistory: React.FC<CheckUTR> = ({selectedIndex}) => {
           ]);
   // Fetch data when pagination changes
   useEffect(() => {
-    if( selectedIndex){
+    // if( selectedIndex){
       fetchCheckUtrData();
-    }
+    // }
   }, [pagination?.page, pagination?.limit, fetchCheckUtrData]);
 
   // Fetch data when refresh flag changes

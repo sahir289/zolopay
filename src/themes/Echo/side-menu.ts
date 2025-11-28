@@ -200,8 +200,8 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             : [],
         ];
       }
-      console.log("Role in side menu:", menuItem.title);
-      if (menuItem.title === "Data Entries") {
+      // console.log("Role in side menu:", menuItem.title);
+      if (menuItem.title === "Records") {
         menuItem.subMenu = [
           ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{

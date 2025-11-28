@@ -9,15 +9,15 @@ import { getTabs } from '@/redux-toolkit/slices/common/tabs/tabSelectors';
 import { useAppSelector } from '@/redux-toolkit/hooks/useAppSelector';
 import { selectDarkMode } from '@/redux-toolkit/slices/common/darkMode/darkModeSlice';
 import { setActiveTab } from '@/redux-toolkit/slices/common/tabs/tabSlice';
-import CheckUtrHistory from '../CheckUtr/CheckUtrHistory';
+// import CheckUtrHistory from '../CheckUtr/CheckUtrHistory';
 import ResetHistory from '../ResetData/ResetHistory';
 import AddDataHistory from '../AddData/AddDataHistory';
 import { Role } from '@/constants';
-interface dataEntries {
-  tabState: number;
-}
+// interface dataEntries {
+//   tabState: number;
+// }
 
-function DataEntries({ tabState }: dataEntries) {
+function DataEntries() {
   const dispatch = useAppDispatch();
   useAppSelector(selectDarkMode); // Subscribe to dark mode to trigger re-render
   const activeTab = useAppSelector(getTabs);
@@ -135,20 +135,14 @@ function DataEntries({ tabState }: dataEntries) {
                 <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400">
                   <Tab.Panel className="p-2 sm:p-4 md:p-5 leading-relaxed">
                     <AddDataHistory
-                      selectedIndex={activeTab}
-                      tabState={tabState}
                     />
                   </Tab.Panel>
                   <Tab.Panel className="p-2 sm:p-4 md:p-5 leading-relaxed">
-                    <CheckUtrHistory
-                      selectedIndex={activeTab}
-                      tabState={tabState}
-                    />
+                    {/* <CheckUtrHistory
+                    /> */}
                   </Tab.Panel>
                   <Tab.Panel className="p-2 sm:p-4 md:p-5 leading-relaxed">
                     <ResetHistory
-                      selectedIndex={activeTab}
-                      tabState={tabState}
                     />
                   </Tab.Panel>
                 </Tab.Panels>
