@@ -25,8 +25,6 @@ import { getAllMerchantCodes } from '@/redux-toolkit/slices/merchants/merchantAP
 import { getAllBankNames } from '@/redux-toolkit/slices/bankDetails/bankDetailsAPI';
 import { getBankNames } from '@/redux-toolkit/slices/bankDetails/bankDetailsSlice';
 import { selectAllBankNames } from '@/redux-toolkit/slices/bankDetails/bankDetailsSelectors';
-// import { getSumPayIn } from '@/redux-toolkit/slices/payin/payinSelectors';
-// import { setSumPayIn } from '@/redux-toolkit/slices/payin/payinSlice';
 interface PayInSummary {
   status: string;
   totalAmount: number;
