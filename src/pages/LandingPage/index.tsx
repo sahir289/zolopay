@@ -832,7 +832,7 @@ function Main() {
                         className="w-full mt-5"
                       >
                         <Lucide
-                          icon="SendHorizonal"
+                          icon="SendHorizontal"
                           className="w-4 h-4 stroke-[1.3] mr-2"
                         />
                         Subscribe Now
@@ -1052,7 +1052,7 @@ function Main() {
                         className="w-full mt-10"
                       >
                         <Lucide
-                          icon="SendHorizonal"
+                          icon="SendHorizontal"
                           className="w-4 h-4 stroke-[1.3] mr-2"
                         />
                         Assign to Task
@@ -1337,7 +1337,7 @@ function Main() {
                             className="flex items-center justify-center rounded-full cursor-pointer bg-white/5 border-white/[0.13] w-9 h-9 box"
                           >
                             <Lucide
-                              icon="SendHorizonal"
+                              icon="SendHorizontal"
                               className="stroke-[1.3] w-4 h-4 -ml-0.5 text-white/70"
                             />
                           </a>
@@ -1412,7 +1412,7 @@ function Main() {
                           className="w-full mt-5 bg-white/5 border-white/[0.15]"
                         >
                           <Lucide
-                            icon="SendHorizonal"
+                            icon="SendHorizontal"
                             className="w-4 h-4 stroke-[1.3] mr-2"
                           />
                           Continue

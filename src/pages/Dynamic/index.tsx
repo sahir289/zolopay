@@ -161,7 +161,7 @@ function Main() {
                   variant="primary"
                   className="w-full mt-5"
                 >
-                  <Lucide icon="SendHorizonal" className="w-4 h-4 stroke-[1.3] mr-2" />
+                  <Lucide icon="SendHorizontal" className="w-4 h-4 stroke-[1.3] mr-2" />
                   Continue
                 </Button>
               </div>
@@ -501,12 +501,12 @@ function Main() {
                   </div>
                 </div>
                 <div>
-                  <div className="text-base font-medium">
-                    Waiting confirmation...
-                  </div>
-                  <div className="flex items-center gap-2 mt-1 text-slate-500">
-                    <Lucide icon="FileEdit" className="w-4 h-4 stroke-[1.3]" />
-                    <div>Annual_Report_2023.pdf</div>
+                <div className="text-base font-medium">
+                  Waiting confirmation...
+                </div>
+                <div className="flex items-center gap-2 mt-1 text-slate-500">
+                  <Lucide icon="FilePenLine" className="w-4 h-4 stroke-[1.3]" />
+                  <div>Annual_Report_2023.pdf</div>
                   </div>
                 </div>
                 <a href="" className="ml-auto">
@@ -756,7 +756,7 @@ function Main() {
                   rounded
                   className="w-full mt-5"
                 >
-                  <Lucide icon="SendHorizonal" className="w-4 h-4 stroke-[1.3] mr-2" />
+                  <Lucide icon="SendHorizontal" className="w-4 h-4 stroke-[1.3] mr-2" />
                   Subscribe Now
                 </Button>
               </div>
@@ -933,7 +933,7 @@ function Main() {
                     className="flex items-center justify-center border-transparent rounded-full cursor-pointer w-9 h-9 box bg-gradient-to-b from-theme-1/90 to-theme-2/90"
                   >
                     <Lucide
-                      icon="SendHorizonal"
+                      icon="SendHorizontal"
                       className="stroke-[1.3] w-4 h-4 -ml-0.5 text-white/70"
                     />
                   </a>

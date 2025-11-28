@@ -292,7 +292,7 @@ function Main() {
                                 <Menu.Items className="w-40">
                                   <Menu.Item>
                                     <Lucide
-                                      icon="SquareCheck"
+                                      icon="CheckSquare"
                                       className="w-4 h-4 mr-2"
                                     />{" "}
                                     Edit
