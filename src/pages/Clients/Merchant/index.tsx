@@ -567,7 +567,7 @@ const handleSubmitRestrict = async (data:any) => {
                     onClick={handleReset}
                   >
                     <Lucide
-                      icon="RotateCcw"
+                      icon="RefreshCw"
                       className="stroke-[1.3] w-4 h-4 mr-2"
                     />
                     Reset
@@ -608,7 +608,7 @@ const handleSubmitRestrict = async (data:any) => {
                     ? [
                         {
                           label: 'Edit',
-                          icon: 'Pencil',
+                          icon: 'PencilLine',
                           onClick: () => handleEditModal(row),
                         },
                         {
@@ -618,7 +618,7 @@ const handleSubmitRestrict = async (data:any) => {
                         },
                         {
                           label: 'Unrestrict', 
-                          icon: 'Unlock', 
+                          icon: 'LockKeyhole', 
                           onClick: () => handleRestrictModal(row),
                         },
                       ]

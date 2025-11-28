@@ -1366,7 +1366,7 @@ const AllPayIn: React.FC<AllPayInProps> = ({
                     actionMenuItems={(row: any) => {
                       const items: {
                         label?: string;
-                        icon: 'BellRing' | 'RotateCcw' | 'Pencil';
+                        icon: 'BellRing' | 'RotateCcw' | 'Pencil' | 'RefreshCw' | 'PencilLine';
                         onClick: (row: any) => void;
                       }[] = [];
                       if (

@@ -651,7 +651,7 @@ const AccountReports: React.FC<AccountReportsProps> = ({ role, name }) => {
                     <Menu.Items className="w-40">
                       <Menu.Item onClick={() => handleDownload('CSV')}>
                         <Lucide
-                          icon="FileText"
+                          icon="FilePenLine"
                           className="stroke-[1.3] w-4 h-4 mr-2"
                         />
                         CSV
@@ -665,7 +665,7 @@ const AccountReports: React.FC<AccountReportsProps> = ({ role, name }) => {
                       </Menu.Item>
                       <Menu.Item onClick={() => handleDownload('PDF')}>
                         <Lucide
-                          icon="FileText"
+                          icon="FilePenLine"
                           className="stroke-[1.3] w-4 h-4 mr-2"
                         />
                         PDF
@@ -707,13 +707,13 @@ const AccountReports: React.FC<AccountReportsProps> = ({ role, name }) => {
                   actionMenuItems={(row: any) => {
                     const items: {
                       label?: string;
-                      icon: 'Pencil';
+                      icon: 'PencilLine';
                       onClick: (row: any) => void;
                     }[] = [];
                     if (role === Role.ADMIN) {
                       items.push({
                         label: 'Edit',
-                        icon: 'Pencil',
+                        icon: 'PencilLine',
                         onClick: () => handleEditClick(row),
                       });
                     }

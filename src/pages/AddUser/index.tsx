@@ -115,7 +115,7 @@ function Main() {
                       className="pl-3.5 pr-4 mr-2 h-8 ml-8"
                     >
                       <Lucide
-                        icon="Trash2"
+                        icon="Trash"
                         className="w-3.5 h-3.5 mr-1.5 stroke-[1.3]"
                       />{" "}
                       Remove
@@ -292,7 +292,7 @@ function Main() {
                     className="flex items-center mt-3.5 -mb-1 font-medium text-primary"
                     href=""
                   >
-                    <Lucide className="w-4 h-4 stroke-[1.3] mr-1" icon="Plus" />
+                    <Lucide className="w-4 h-4 stroke-[1.3] mr-1" icon="PlusCircle" />
                     Add phone
                   </a>
                 </div>

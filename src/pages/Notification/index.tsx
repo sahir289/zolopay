@@ -316,7 +316,7 @@ function Main() {
                                 className="flex"
                               >
                                 <Lucide
-                                  icon="CheckCircle"
+                                  icon="CheckCircle2"
                                   className="text-success"
                                 />
                                 <div className="ml-4 mr-4">
@@ -350,7 +350,7 @@ function Main() {
                   }}
                   className="flex"
                 >
-                  <Lucide icon="CheckCircle" className="text-success" />
+                  <Lucide icon="CheckCircle2" className="text-success" />
                   <div className="ml-4 mr-4">
                     <div className="font-medium">Message Saved!</div>
                     <div className="mt-1 text-slate-500">
@@ -911,7 +911,7 @@ function Main() {
                                 }}
                                 className="flex"
                               >
-                                <Lucide icon="FileText" />
+                                <Lucide icon="FilePenLine" />
                                 <div className="ml-4 mr-5 sm:mr-20">
                                   <div className="font-medium">
                                     {users.fakeUsers()[0]?.name}
@@ -964,7 +964,7 @@ function Main() {
                   }}
                   className="flex"
                 >
-                  <Lucide icon="FileText" />
+                  <Lucide icon="FilePenLine" />
                   <div className="ml-4 mr-5 sm:mr-20">
                     <div className="font-medium">
                       {users.fakeUsers()[0].name}

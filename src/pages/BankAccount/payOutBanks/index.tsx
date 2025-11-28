@@ -1681,7 +1681,7 @@ const BankAccount: React.FC = () => {
                         } : {}}
                       >
                         <Lucide
-                          icon="ArrowRightCircle"
+                          icon="CircleDollarSign"
                           className="w-5 h-5 mr-2"
                         />
                         PayOut
@@ -1850,7 +1850,7 @@ const BankAccount: React.FC = () => {
                         onClick={handleReset}
                       >
                         <Lucide
-                          icon="RotateCcw"
+                          icon="RefreshCw"
                           className="stroke-[1.3] w-4 h-4 mr-2"
                         />
                         Reset
@@ -1868,7 +1868,7 @@ const BankAccount: React.FC = () => {
                         className="w-full py-2 flex items-center justify-center"
                         as="button"
                       >
-                        <Lucide icon="CheckCircle" className="w-4 h-4 mr-2" />
+                        <Lucide icon="CheckCircle2" className="w-4 h-4 mr-2" />
                         Active {selectedMethod} Bank
                       </Tab.Button>
                     </Tab>
@@ -1877,7 +1877,7 @@ const BankAccount: React.FC = () => {
                         className="w-full py-2 flex items-center justify-center"
                         as="button"
                       >
-                        <Lucide icon="XCircle" className="w-4 h-4 mr-2" />
+                        <Lucide icon="XOctagon" className="w-4 h-4 mr-2" />
                         Inactive {selectedMethod} Bank
                       </Tab.Button>
                     </Tab>
@@ -1924,7 +1924,7 @@ const BankAccount: React.FC = () => {
                     actionMenuItems={(row: any) => {
                       const items: Array<{
                         label: string;
-                        icon: 'Eye' | 'Plus' | 'Pencil' | 'Download' | 'Trash2';
+                        icon: 'Eye' | 'Plus' | 'PencilLine' | 'Download' | 'Trash2';
                         onClick?: () => void;
                         onMouseEnter?: () => void;
                         hover?: boolean;
@@ -1953,7 +1953,7 @@ const BankAccount: React.FC = () => {
                         items.push(
                           {
                             label: 'Edit',
-                            icon: 'Pencil',
+                            icon: 'PencilLine',
                             onClick: () => {
                               setBankToEdit(row);
                               setNewUserModal(true);

@@ -1601,7 +1601,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                   actionMenuItems={(row: any) => {
                     const items: {
                       label?: string;
-                      icon: 'BellRing' | 'RotateCcw' | 'CheckSquare' | 'XSquare';
+                      icon: 'BellRing' | 'RotateCcw' | 'CheckSquare' | 'XSquare' | 'RefreshCw' | 'XOctagon';
                       onClick: (row: any) => void;
                     }[] = [];
                     if (

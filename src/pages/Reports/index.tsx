@@ -82,7 +82,7 @@ function Main() {
                           } : {}}
                         >
                           <Lucide
-                            icon="BadgeIndianRupee"
+                            icon="IndianRupee"
                             className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]"
                           />
                           <span className="hidden sm:inline">Merchant Reports</span>
@@ -107,7 +107,7 @@ function Main() {
                           } : {}}
                         >
                           <Lucide
-                            icon="ArrowRightCircle"
+                            icon="MoveRight"
                             className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]"
                           />
                           <span className="hidden sm:inline">Vendor Reports</span>

@@ -964,7 +964,7 @@ function MerchantSettlement({
                     onClick={handleReset}
                   >
                     <Lucide
-                      icon="RotateCcw"
+                      icon="RefreshCw"
                       className="stroke-[1.3] w-4 h-4 mr-2"
                     />
                     Reset
@@ -1238,7 +1238,7 @@ function MerchantSettlement({
                   actionMenuItems={(row: any) => {
                     const items: {
                       label?: string;
-                      icon: 'RotateCcw' | 'CheckSquare' | 'XSquare';
+                      icon: 'RefreshCw' | 'CheckSquare' | 'XSquare' | 'XOctagon';
                       onClick: (row: any) => void;
                       className?: string;
                     }[] = [];
@@ -1251,7 +1251,7 @@ function MerchantSettlement({
                       });
                       items.push({
                         label: 'Reject',
-                        icon: 'XSquare',
+                        icon: 'XOctagon',
                         onClick: () => handleDeleteModal(row),
                       });
                     } else if (
@@ -1260,7 +1260,7 @@ function MerchantSettlement({
                     ) {
                       items.push({
                         label: 'Reset',
-                        icon: 'RotateCcw',
+                        icon: 'RefreshCw',
                         onClick: () => handleResetModal(row),
                       });
                     }

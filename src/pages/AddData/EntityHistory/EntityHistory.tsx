@@ -75,7 +75,7 @@ function DataEntries({ tabState }: dataEntries) {
                           zIndex: 10
                         } : {}}
                       >
-                        <Lucide icon="FileCheck" className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]" />
+                        <Lucide icon="FileCheck2" className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]" />
                         <span className="hidden sm:inline">Add Data</span>
                         <span className="sm:hidden">Add</span>
                       </Tab.Button>
@@ -98,7 +98,7 @@ function DataEntries({ tabState }: dataEntries) {
                             } : {}}
                           >
                             <Lucide
-                              icon="CheckCircle"
+                              icon="CheckCircle2"
                               className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]"
                             />
                             <span className="hidden sm:inline">Check UTR</span>

@@ -807,7 +807,7 @@ const Users: React.FC = () => {
                     }}
                   >
                     <Lucide
-                      icon="RotateCcw"
+                      icon="RefreshCw"
                       className="stroke-[1.3] w-4 h-4 mr-2"
                     />
                     Reset
@@ -838,7 +838,7 @@ const Users: React.FC = () => {
                   actionMenuItems={(row: any) => [
                     {
                       label: 'Edit',
-                      icon: 'Pencil',
+                      icon: 'PencilLine',
                       onClick: () => handleEditModal(row.user_name),
                     },
                   ]}

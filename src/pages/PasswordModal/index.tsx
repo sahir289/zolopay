@@ -52,7 +52,7 @@ const PasswordVerificationModal: React.FC<PasswordVerificationModalProps> = ({
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
               >
-                {showPassword ? <Lucide icon="EyeOff" /> : <Lucide icon="Eye" />}
+                {showPassword ? <Lucide icon="EyeOff" /> : <Lucide icon="EyeOff" />}
               </button>
             </div>
           </Dialog.Description>

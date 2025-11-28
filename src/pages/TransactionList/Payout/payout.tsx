@@ -7,7 +7,6 @@ import { Role } from '@/constants';
 // import { withLazyLoading } from '@/utils/lazyStrategies';
 import Lucide from '@/components/Base/Lucide';
 import { useState  ,useEffect } from 'react';
-import LoadingIcon from '@/components/Base/LoadingIcon';
 import { useAppDispatch } from '@/redux-toolkit/hooks/useAppDispatch';
 import { useAppSelector } from '@/redux-toolkit/hooks/useAppSelector';
 import { selectDarkMode } from '@/redux-toolkit/slices/common/darkMode/darkModeSlice';

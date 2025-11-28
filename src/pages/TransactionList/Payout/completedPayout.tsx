@@ -1005,7 +1005,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                   actionMenuItems={(row: any) => {
                     const items: {
                       label?: string;
-                      icon: 'BellRing' | 'RotateCcw';
+                      icon: 'BellRing' | 'RotateCcw' | 'RefreshCw';
                       onClick: (row: any) => void;
                     }[] = [];
 

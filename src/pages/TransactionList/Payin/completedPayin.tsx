@@ -1384,7 +1384,7 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                     actionMenuItems={(row: PayInData) => {
                       const items: {
                         label?: string;
-                        icon: 'BellRing' | 'RotateCcw' | 'Pencil';
+                        icon: 'BellRing' | 'RotateCcw' | 'Pencil' | 'RefreshCw' | 'PencilLine';
                         onClick: (row: PayInData) => void;
                       }[] = [
                         {
