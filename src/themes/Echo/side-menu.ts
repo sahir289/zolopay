@@ -110,7 +110,6 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
               }]
             : []),
         ];
-        menuItem.activeDropdown = false;
       }
 
       if (menuItem.title === "Payments") {
@@ -126,26 +125,24 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             icon: "ArrowUpCircle" as const,
           },
         ];
-        menuItem.activeDropdown = false;
       }
-      if (menuItem.title === "Reconciliations") {
+      if (menuItem.title === "Settlements") {
         menuItem.subMenu = [
           ...(Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
-            title: "Payment Partner Reconciliations",
+            title: "Payment Partner Settlements",
             pathname: "/auth/settlement/merchants",
             icon: "Coins" as const,
             }]
             : [],
           ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
-            title: "Banking Partner Reconciliations",
+            title: "Banking Partner Settlements",
             pathname: "/auth/settlement/vendors",
             icon: "Wallet" as const,
             }]
             : [],
         ];
-        menuItem.activeDropdown = false;
       }
 
       if (menuItem.title === "Analytics") {
@@ -165,7 +162,6 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             }]
             : [],
         ];
-        menuItem.activeDropdown = false;
       }
       if (menuItem.title === "Payee Accounts") {
         menuItem.subMenu = [
@@ -184,7 +180,6 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             }]
             : [],
         ];
-        menuItem.activeDropdown = false;
       }
 
       if (menuItem.title === "Partners") {
@@ -204,7 +199,6 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             }]
             : [],
         ];
-        menuItem.activeDropdown = false;
       }
 
       if (menuItem.title === "Banking") {
@@ -220,7 +214,6 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             icon: "ArrowUp",
           },
         ];
-        menuItem.activeDropdown = false;
       }
 
       formattedMenu.push(menuItem);

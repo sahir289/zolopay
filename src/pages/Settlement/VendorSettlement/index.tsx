@@ -79,7 +79,7 @@ function Main() {
   };
   useEffect(() => {
     if (role === Role.ADMIN) {
-      setTitle(parentTab === 0 ? 'Payment Partner Reconciliation' : 'Banking Partner Reconciliation');
+      setTitle(parentTab === 0 ? 'Payment Partner Settlement' : 'Banking Partner Settlement');
     }
   }, [parentTab]);
   const [title, setTitle] = useState(getInitialTitle(role));
@@ -158,13 +158,13 @@ function Main() {
         // limit: pagination.limit.toString(),
         forSettlementFlag: 'true',
         beneficiary_role:
-          title === 'Payment Partner Reconciliation' && parentTab === 0
+          title === 'Payment Partner Settlement' && parentTab === 0
         ? Role.MERCHANT
         : Role.VENDOR,
         beneficiary_user_id: user_id,
       };
 
-      if (title !== 'Payment Partner Reconciliation') {
+      if (title !== 'Payment Partner Settlement') {
         queryParams.is_enabled = 'true';
       }
 
@@ -336,7 +336,7 @@ function Main() {
     const userId =
       selectedVendor?.value?.toString() ||
       null;
-    // if (title === 'Payment Partner Reconciliation') {
+    // if (title === 'Payment Partner Settlement') {
     //   data.bank_id = data.bank_name;
     // delete data.bank_name;
     // delete data.acc_holder_name;
@@ -432,7 +432,7 @@ function Main() {
   const handleParentTabChange = (index: number) => {
     setSelectedMethodLabel('');
     dispatch(setParentTab(index));
-    setTitle(index === 0 ? 'Payment Partner Reconciliation' : 'Banking Partner Reconciliation');
+    setTitle(index === 0 ? 'Payment Partner Settlement' : 'Banking Partner Settlement');
   };
 
   return (
@@ -445,13 +445,13 @@ function Main() {
           <Modal
             handleModal={settlementModal}
             forOpen={newSettlementModal}
-            buttonTitle={`Add Reconciliation`}
+            buttonTitle={`Add Settlement`}
           >
             <DynamicForm
               sections={{
                 Add_Settlement: getSettlementsFormFields(
                   options,
-                  title === 'Payment Partner Reconciliation'
+                  title === 'Payment Partner Settlement'
                     ? SettlementOptions.merchantSettlement
                     : SettlementOptions.vendorSettlement,
                   updated,
@@ -484,7 +484,7 @@ function Main() {
                 ),
                 Crypto_Details: getSettlementsFormFields(
                   options,
-                  title === 'Payment Partner Reconciliation'
+                  title === 'Payment Partner Settlement'
                     ? SettlementOptions.merchantSettlement
                     : SettlementOptions.vendorSettlement,
                   updated,

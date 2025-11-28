@@ -1,10 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import Lucide from '@/components/Base/Lucide';
-import BarChart from '@/components/VerticalBarChart';
-import { useEffect, useMemo, useState } from 'react';
-import MultiSelect from '@/components/MultiSelect/MultiSelect';
-import Litepicker from '@/components/Base/Litepicker';
+import { useMemo } from 'react';
 import DashboardStatCard from '@/components/dashboard-stat-card';
 import DashboardFilter from '@/components/dashboard-filter';
 import DashboardListCard from '@/components/dashboard-list-card';
@@ -69,7 +64,7 @@ function MerchantBoard({
       received: calculationData?.merchantTotalCalculations?.total_reverse_received_commission || 0,
     },
     {
-      type: 'Reconciliations',
+      type: 'Settlements',
       sent: calculationData?.merchantTotalCalculations?.total_settlement_commission || 0,
       received: calculationData?.merchantTotalCalculations?.total_settlement_received_commission || 0,
     },
@@ -117,7 +112,7 @@ function MerchantBoard({
       <DashboardStatCard {...stats}/>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <DashboardListCard title='Reconciliations' data={settlementsData}/>
+        <DashboardListCard title='Settlements' data={settlementsData}/>
         <DashboardListCard title='Commissions' data={commissionsData}/>
       </div>
 
