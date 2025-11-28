@@ -32,18 +32,18 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
     },
     "PAYMENTS",
     {
-      icon: "ArrowLeftRight" as keyof typeof icons,
+      icon: "CreditCard" as keyof typeof icons,
       pathname: "/auth/transaction-list",
       title: "Payments",
     }
   ];
 
   const settlements_chargebacks = [
-    "RECONCILIATIONS",
+    "SETTLEMENTS",
     {
       icon: "FileText" as keyof typeof icons,
       pathname: "/auth/settlement",
-      title: "Reconciliations",
+      title: "Settlements",
     },
     {
       icon: "Building2" as keyof typeof icons,
@@ -77,11 +77,11 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
   //   },]
 //show vendor settlement in vendor operations
   const settlements_vendor_operations = [
-    "RECONCILIATIONS",
+    "SETTLEMENTS",
     {
       icon: "FileText" as keyof typeof icons,
       pathname: "/auth/settlement",
-      title: "Reconciliations",
+      title: "Settlements",
     },
     {
       icon: "Building2" as keyof typeof icons,

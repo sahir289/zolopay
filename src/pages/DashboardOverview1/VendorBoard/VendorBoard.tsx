@@ -65,7 +65,7 @@ function VendorBoard({
       received: calculationData?.vendorTotalCalculations?.total_reverse_received_commission || 0,
     },
     {
-      type: 'Reconciliations',
+      type: 'Settlements',
       sent: calculationData?.vendorTotalCalculations?.total_settlement_commission || 0,
       received: calculationData?.vendorTotalCalculations?.total_settlement_received_commission || 0,
     },
@@ -113,7 +113,7 @@ function VendorBoard({
       <DashboardStatCard {...stats}/>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <DashboardListCard title='Reconciliations' data={settlementsData}/>
+        <DashboardListCard title='Settlements' data={settlementsData}/>
         <DashboardListCard title='Commissions' data={commissionsData}/>
       </div>
 
