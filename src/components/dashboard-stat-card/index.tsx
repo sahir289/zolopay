@@ -39,21 +39,21 @@ export default function DashboardStatCard (props: DashboardStatCardProps) {
                     <CarouselContent>
                         <CarouselItem className="basis-auto">
                             <StatCard
-                                title="Incoming Funds"
+                                title="Deposits"
                                 value={asINR(props.deposits)}
                                 description="Includes all successful incoming transactions in the selected period."
                                 icon={<ArrowDownCircle className="w-5 h-5"/>}/>
                         </CarouselItem>
                         <CarouselItem className="basis-auto">
                             <StatCard
-                                title="Outgoing Funds"
+                                title="Withdrawals"
                                 value={asINR(props.withdrawals)}
                                 description="Outgoing settlements and payouts processed within the range."
                                 icon={<ArrowUpCircle className="w-5 h-5"/>}/>
                         </CarouselItem>
                         <CarouselItem className="basis-auto">
                             <StatCard
-                                title="Reconciliations"
+                                title="Settlements"
                                 value={asINR(props.settlements)}
                                 description="Includes all successful incoming transactions"
                                 icon={<Receipt className="w-5 h-5"/>}/>
