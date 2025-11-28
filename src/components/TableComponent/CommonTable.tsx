@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable no-unused-vars */
@@ -155,26 +156,26 @@ const CommonTable: React.FC<CommonTableProps> = ({
   setImgUtr,
   setTotalPayoutAmount,
 }) => {
-  const getStatusStyles = (status: string) => {
-    const statusStyles: Record<
-      string,
-      { color: string; icon: keyof typeof icons }
-    > = {
-      IMG_PENDING: { color: 'text-yellow-500', icon: 'Clock' },
-      PENDING: { color: 'text-yellow-500', icon: 'Clock' },
-      FAILED: { color: 'text-red-500', icon: 'XOctagon' },
-      DROPPED: { color: 'text-red-500', icon: 'XOctagon' },
-      REJECTED: { color: 'text-red-500', icon: 'XOctagon' },
-      REVERSED: { color: 'text-orange-500', icon: 'RotateCcw' },
-      BANK_MISMATCH: { color: 'text-orange-500', icon: 'AlertCircle' },
-      DUPLICATE: { color: 'text-orange-500', icon: 'AlertCircle' },
-      DISPUTE: { color: 'text-orange-500', icon: 'AlertCircle' },
-      ASSIGNED: { color: 'text-blue-500', icon: 'UserCheck' },
-      SUCCESS: { color: 'text-green-500', icon: 'CheckCircle2' },
-      APPROVED: { color: 'text-green-500', icon: 'CheckCircle2' },
-    };
-    return statusStyles[status] || { color: 'text-gray-500', icon: 'Info' };
+ const getStatusStyles = (status: string) => {
+  const statusStyles: Record<
+    string,
+    { color: string; icon: keyof typeof icons; background?: string }
+  > = {
+    IMG_PENDING: { color: 'text-yellow-800', icon: 'Clock', background: 'bg-yellow-100' },
+    PENDING: { color: 'text-white', icon: 'Clock', background: 'bg-yellow-500' },
+    FAILED: { color: 'text-white', icon: 'XOctagon', background: 'bg-red-500' },
+    DROPPED: { color: 'text-white', icon: 'XOctagon', background: 'bg-red-600' },
+    REJECTED: { color: 'text-white', icon: 'XOctagon', background: 'bg-red-700' },
+    REVERSED: { color: 'text-white', icon: 'RotateCcw', background: 'bg-orange-500' },
+    BANK_MISMATCH: { color: 'text-white', icon: 'AlertCircle', background: 'bg-orange-400' },
+    DUPLICATE: { color: 'text-white', icon: 'AlertCircle', background: 'bg-orange-300' },
+    DISPUTE: { color: 'text-white', icon: 'AlertCircle', background: 'bg-amber-500' },
+    ASSIGNED: { color: 'text-white', icon: 'UserCheck', background: 'bg-blue-500' },
+    SUCCESS: { color: 'text-white', icon: 'CheckCircle2', background: 'bg-green-500' },
+    APPROVED: { color: 'text-white', icon: 'CheckCircle', background: 'bg-green-600' },
   };
+  return statusStyles[status] || { color: 'text-gray-700', icon: 'HelpCircle', background: 'bg-gray-200' };
+};
   const roleData = localStorage.getItem('userData');
   let user_name = '';
   if (roleData) {
@@ -182,12 +183,12 @@ const CommonTable: React.FC<CommonTableProps> = ({
     user_name = parsedData.name || '';
   }
 
-  const [hoveredAction, setHoveredAction] = useState<{
+  const [,setHoveredAction] = useState<{
     rowIndex: number | null;
     actionIndex: number | null;
     type?: 'menu' | 'button';
   }>({ rowIndex: null, actionIndex: null });
-
+const [openActionMenu, setOpenActionMenu] = useState<number | null>(null);
   const [showAllDataModal, setShowAllDataModal] = useState<boolean>(false);
   const [showAllData, setShowAllData] = useState<{ [key: string]: any }>({});
   const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
@@ -201,7 +202,54 @@ const CommonTable: React.FC<CommonTableProps> = ({
     colKey: string | null;
     value: string;
   }>({ rowIndex: null, colKey: null, value: '' });
+const [sortConfig, setSortConfig] = useState<{
+  key: string;
+  direction: 'asc' | 'desc';
+} | null>(null);
+const handleSort = (key: string) => {
+  let direction: 'asc' | 'desc' = 'asc';
+  
+  if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
+    direction = 'desc';
+  }
+  
+  setSortConfig({ key, direction });
+};
 
+const getSortedData = () => {
+  if (!sortConfig) return tableData;
+  
+  const sorted = [...tableData].sort((a, b) => {
+    let aValue = a[sortConfig.key];
+    let bValue = b[sortConfig.key];
+    
+    // Handle nested object values
+    if (sortConfig.key.includes('.')) {
+      const keys = sortConfig.key.split('.');
+      aValue = keys.reduce((obj, key) => obj?.[key], a);
+      bValue = keys.reduce((obj, key) => obj?.[key], b);
+    }
+    
+    // Handle null/undefined values
+    if (aValue == null) return 1;
+    if (bValue == null) return -1;
+    
+    // Handle different data types
+    if (typeof aValue === 'number' && typeof bValue === 'number') {
+      return sortConfig.direction === 'asc' ? aValue - bValue : bValue - aValue;
+    }
+    
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return sortConfig.direction === 'asc' 
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    }
+    
+    return 0;
+  });
+  
+  return sorted;
+};
   const debouncedSetHoveredAction = useCallback(
     debounce(
       (newState: {
@@ -215,7 +263,17 @@ const CommonTable: React.FC<CommonTableProps> = ({
     ),
     [],
   );
+useEffect(() => {
+  const handleClickOutside = () => {
+    if (openActionMenu !== null) {
+      setOpenActionMenu(null);
+    }
+  };
 
+
+  document.addEventListener('click', handleClickOutside);
+  return () => document.removeEventListener('click', handleClickOutside);
+}, [openActionMenu]);
   useEffect(() => {
     if (notifications.length > 0) {
       const latestNotification = notifications[notifications.length - 1];
@@ -241,7 +299,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
   const tableData = data.rows || [];
   const totalPages = Math.ceil((data.totalCount || 0) / pageSize);
 
-  handleShowAllData = (row: Record<string, any>) => {
+  const handleShowAllDataInternal = (row: Record<string, any>) => {
     const displayedKeys = columns.map((col) => col.key);
     const formatKey = (key: string): string => {
       if (key === 'config') {
@@ -638,46 +696,63 @@ const CommonTable: React.FC<CommonTableProps> = ({
           </Modal> */}
         </div>
         <Table className="border-b border-slate-200/60 w-full min-w-full table-mobile-friendly">
-          <Table.Thead>
-            <Table.Tr>
-              {columns?.map((col, index) => (
-                <Table.Td
-                  key={index}
-                  className={`py-3 px-2 sm:px-3 font-medium border-t bg-slate-50 text-slate-500 dark:bg-darkmode-400 whitespace-nowrap ${
-                    col.type === 'checkbox'
-                      ? 'w-8 sm:w-10'
-                      : col.type === 'more_details'
-                      ? 'w-8 sm:w-10'
-                      : ''
-                  }`}
-                >
-                  <div className="flex">
-                    {col.label ? (
-                      col.label
-                    ) : (
-                      <FormCheck.Input
-                        type="checkbox"
-                        checked={!!selectedRows.length}
-                        onChange={handleSelectAll}
-                      />
-                    )}
+     <Table.Thead>
+  <Table.Tr>
+    {columns?.map((col, index) => (
+      <Table.Td
+        key={index}
+        className={`py-3 px-2 sm:px-3 font-medium border-t bg-slate-50 text-slate-500 dark:bg-darkmode-400 whitespace-nowrap ${
+          col.type === 'checkbox'
+            ? 'w-8 sm:w-10'
+            : col.type === 'more_details'
+            ? 'w-8 sm:w-10'
+            : ''
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            {col.label ? (
+              col.label
+            ) : (
+              <FormCheck.Input
+                type="checkbox"
+                checked={!!selectedRows.length}
+                onChange={handleSelectAll}
+              />
+            )}
+          </div>
 
-                    {/* remove down arrow in header as these are non functional */}
-
-                    {/* {col.type !== 'actions' &&
-                      col.type !== 'checkbox' &&
-                      col.type !== 'button' &&
-                      col.type !== 'more_details' && (
-                        <Lucide icon="ChevronDown" className="w-4 h-4 ml-2" />
-                      )} */}
-                  </div>
-                </Table.Td>
-              ))}
-            </Table.Tr>
-          </Table.Thead>
+          {/* Add sorting icon for sortable columns */}
+          {col.type !== 'actions' &&
+            col.type !== 'checkbox' &&
+            col.type !== 'button' &&
+            col.type !== 'more_details' &&
+            col.type !== 'image' &&
+            col.type !== 'toggle' &&
+            col.label && (
+              <button
+                onClick={() => handleSort(col.key)}
+                className="ml-2 focus:outline-none hover:text-slate-700 dark:hover:text-slate-300"
+              >
+                {sortConfig?.key === col.key ? (
+                  sortConfig.direction === 'asc' ? (
+                    <Lucide icon="ChevronUp" className="w-4 h-4" />
+                  ) : (
+                    <Lucide icon="ChevronDown" className="w-4 h-4" />
+                  )
+                ) : (
+                  <Lucide icon="ChevronsUpDown" className="w-4 h-4 text-gray-400" />
+                )}
+              </button>
+            )}
+        </div>
+      </Table.Td>
+    ))}
+  </Table.Tr>
+</Table.Thead>
           <Table.Tbody>
-            {tableData?.length > 0 ? (
-              tableData?.map((row, rowIndex) => (
+       {getSortedData()?.length > 0 ? (
+  getSortedData()?.map((row, rowIndex) => (
                 <React.Fragment key={row.id || rowIndex}>
                   <Table.Tr
                     className={`[&_td]:last:border-b-0 ${
@@ -715,24 +790,27 @@ const CommonTable: React.FC<CommonTableProps> = ({
                             : 'min-w-[80px] sm:min-w-[100px] md:min-w-[120px]'
                         }`}
                       >
-                        {col.type === 'more_details' ? (
-                          <div
-                            className="flex items-center justify-center"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <CustomTooltip
-                              content="More Details"
-                              trigger={['hover']}
-                            >
-                              <Lucide
-                                icon="PlusCircle"
-                                className="w-6 h-6 cursor-pointer text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-200"
-                                onClick={() =>
-                                  handleShowAllData && handleShowAllData(row)
-                                }
-                              />
-                            </CustomTooltip>
-                          </div>
+                       {col.type === 'more_details' ? (
+  <div
+    className="flex items-center justify-center"
+    onClick={(e) => e.stopPropagation()}
+  >
+    <CustomTooltip
+      content="View Details"
+      trigger={['hover']}
+    >
+      <button
+        onClick={() => handleShowAllDataInternal(row)}
+        className="flex items-center justify-center rounded-full w-8 h-8 transition-all duration-200 bg-slate-800 hover:bg-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800"
+      >
+        <Lucide
+          icon="ArrowUpRight"
+          className="w-4 h-4 text-white"
+          style={{ stroke: 'currentColor', strokeWidth: 2.1 }}
+        />
+      </button>
+    </CustomTooltip>
+  </div>
                         ) : col.type === 'number' ? (
                           editingNumber.rowIndex === rowIndex &&
                           editingNumber.colKey === col.key ? (
@@ -1223,48 +1301,47 @@ const CommonTable: React.FC<CommonTableProps> = ({
                             </Tippy>
                           </div>
                         ) : col.type === 'status' ? (
-                          <div
-                            className={`flex items-center ${
-                              getStatusStyles(row[col.key]).color
-                            }`}
-                          >
-                            {['FAILED', 'PENDING', 'REJECTED'].includes(
-                              row[col.key],
-                            ) ? (
-                              <CustomTooltip
-                                content={
-                                  row[col.key] === 'FAILED'
-                                    ? !row.user_submitted_utr
-                                      ? 'Failed due Expired URL'
-                                      : 'Failed Due to Dispute'
-                                    : row[col.key] === 'PENDING'
-                                    ? 'Pending from the Portal'
-                                    : row[col.key] === 'REJECTED'
-                                    ? row.rejected_reason ||
-                                      row?.payout_details?.rejected_reason ||
-                                      row?.config?.rejected_reason ||
-                                      'No reason provided'
-                                    : row[col.key]
-                                }
-                              >
-                                <div className="flex items-center">
-                                  <Lucide
-                                    icon={getStatusStyles(row[col.key]).icon}
-                                    className="w-5 h-5 ml-px stroke-[2.5] mr-2"
-                                  />
-                                  {row[col.key]}
-                                </div>
-                              </CustomTooltip>
-                            ) : (
-                              <div className="flex items-center">
-                                <Lucide
-                                  icon={getStatusStyles(row[col.key]).icon}
-                                  className="w-5 h-5 ml-px stroke-[2.5] mr-2"
-                                />
-                                {row[col.key]}
-                              </div>
-                            )}
-                          </div>
+                        <div
+ className={`flex items-center rounded w-full px-3 py-2  ${getStatusStyles(row[col.key]).color} ${getStatusStyles(row[col.key]).background || ''}`}
+
+>
+  {['FAILED', 'PENDING', 'REJECTED'].includes(
+    row[col.key],
+  ) ? (
+    <CustomTooltip
+      content={
+        row[col.key] === 'FAILED'
+          ? !row.user_submitted_utr
+            ? 'Failed due Expired URL'
+            : 'Failed Due to Dispute'
+          : row[col.key] === 'PENDING'
+          ? 'Pending from the Portal'
+          : row[col.key] === 'REJECTED'
+          ? row.rejected_reason ||
+            row?.payout_details?.rejected_reason ||
+            row?.config?.rejected_reason ||
+            'No reason provided'
+          : row[col.key]
+      }
+    >
+      <div className="flex items-center">
+        <Lucide
+          icon={getStatusStyles(row[col.key]).icon}
+          className="w-5 h-5 ml-px stroke-[2.5] mr-2"
+        />
+        {row[col.key]}
+      </div>
+    </CustomTooltip>
+  ) : (
+    <div className="flex items-center">
+      <Lucide
+        icon={getStatusStyles(row[col.key]).icon}
+        className="w-5 h-5 ml-px stroke-[2.5] mr-2"
+      />
+      {row[col.key]}
+    </div>
+  )}
+</div>
                         ) : col.type === 'amount_hover' ? (
                           row.config?.previousAmount ? (
                             <div className="flex items-center">
@@ -1305,6 +1382,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
                               </span>
                             </div>
                           )
+                          
                         ) : col.type === 'utr_hover' ? (
                           row.config?.previousUTR ? (
                             <div className="flex items-center">
@@ -1401,459 +1479,116 @@ const CommonTable: React.FC<CommonTableProps> = ({
                           )
                         ) : col.type === 'actions' ? (
                           <div
-                            className="flex items-center justify-start"
+                            className="flex items-center justify-start gap-2"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            {(() => {
-                              const actions = actionMenuItems
-                                ? actionMenuItems(row)
-                                : [];
+                             {(() => {
+      const actions = actionMenuItems ? actionMenuItems(row) : [];
+      const otherActions = actions;
 
-                              // Add ChevronRight arrow as first action to open details modal
-                              const actionsWithArrow = [
-                                {
-                                  label: 'View Details',
-                                  icon: 'ChevronRight' as keyof typeof icons,
-                                  onClick: (row: any) =>
-                                    handleShowAllData && handleShowAllData(row),
-                                },
-                                ...actions,
-                              ];
+                              
+                  
 
-                              return (actionsWithArrow?.length ?? 0) >
-                                ([
-                                  'BankDetails',
-                                  'Beneficiaries',
-                                  'Vendors',
-                                ].includes(source ?? '')
-                                  ? 6 // Changed from 5 to 6
-                                  : 4) ? ( // Changed from 3 to 4
-                                <CustomTooltip
-                                  content={
-                                    <div className="w-40 shadow-md rounded-md z-[9999] p-2">
-                                      <div className="flex flex-col">
-                                        {actionsWithArrow.map(
-                                          (action, index) => (
-                                            <div
-                                              key={index}
-                                              className="relative"
-                                              onMouseLeave={() =>
-                                                debouncedSetHoveredAction({
-                                                  rowIndex: null,
-                                                  actionIndex: null,
-                                                  type: 'menu',
-                                                })
-                                              }
-                                            >
-                                              <CustomTooltip
-                                                content={
-                                                  action.label ? (
-                                                    <div className="text-white p-2 shadow-md rounded-md z-[9999] dark:bg-darkmode-600 dark:text-gray-200">
-                                                      {action.label}
-                                                      {action.hover &&
-                                                        row.merchant_details && (
-                                                          <div className="mt-2">
-                                                            <div className="font-bold">
-                                                              {row
-                                                                .merchant_details
-                                                                .length > 0
-                                                                ? 'Merchant List'
-                                                                : 'No Merchants'}
-                                                            </div>
-                                                            {row.merchant_details.map(
-                                                              (
-                                                                merchant: any,
-                                                              ) => (
-                                                                <p
-                                                                  key={
-                                                                    merchant.id
-                                                                  }
-                                                                >
-                                                                  {
-                                                                    merchant.code
-                                                                  }
-                                                                </p>
-                                                              ),
-                                                            )}
-                                                          </div>
-                                                        )}
-                                                      {action.hover &&
-                                                        row.vendors && (
-                                                          <div className="mt-2">
-                                                            <div className="font-bold">
-                                                              {row.vendors
-                                                                .length > 0
-                                                                ? 'Vendor List'
-                                                                : 'No Vendors'}
-                                                            </div>
-                                                            {row.vendors.map(
-                                                              (
-                                                                vendor: any,
-                                                                vendorIndex: number,
-                                                              ) => (
-                                                                <p
-                                                                  key={
-                                                                    vendorIndex
-                                                                  }
-                                                                >
-                                                                  {vendor}
-                                                                </p>
-                                                              ),
-                                                            )}
-                                                          </div>
-                                                        )}
-                                                    </div>
-                                                  ) : (
-                                                    <div />
-                                                  )
-                                                }
-                                              >
-                                                <button
-                                                  onClick={() =>
-                                                    !action.hover &&
-                                                    action.onClick &&
-                                                    action.onClick(row)
-                                                  }
-                                                  onMouseEnter={() => {
-                                                    if (action.hover) {
-                                                      debouncedSetHoveredAction(
-                                                        {
-                                                          rowIndex,
-                                                          actionIndex: index,
-                                                          type: 'menu',
-                                                        },
-                                                      );
-                                                    }
-                                                    if (action.onMouseEnter)
-                                                      action.onMouseEnter(row);
-                                                  }}
-                                                  className={`flex items-center rounded-md ${
-                                                    action.icon ===
-                                                    'ChevronRight'
-                                                      ? 'text-purple-500'
-                                                      : action.icon ===
-                                                        'Download'
-                                                      ? 'text-blue-500'
-                                                      : action.icon === 'Plus'
-                                                      ? 'text-green-500'
-                                                      : action.label === 'Edit'
-                                                      ? 'text-yellow-500'
-                                                      : action.icon === 'Trash2'
-                                                      ? 'text-red-500'
-                                                      : action.label ===
-                                                        'Delete'
-                                                      ? 'text-red-500'
-                                                      : action.label ===
-                                                        'Approve'
-                                                      ? 'text-green-500'
-                                                      : action.label === 'Link'
-                                                      ? 'text-green-500'
-                                                      : action.label ===
-                                                        'Unlink'
-                                                      ? 'text-red-500'
-                                                      : action.label ===
-                                                        'Reject'
-                                                      ? 'text-red-500'
-                                                      : action.icon === 'Bell'
-                                                      ? 'text-blue-500'
-                                                      : action.icon === 'Repeat'
-                                                      ? 'text-blue-500'
-                                                      : action.label === 'Reset'
-                                                      ? 'text-yellow-500'
-                                                      : action.icon === 'Eye'
-                                                      ? 'text-pink-300'
-                                                      : 'text-gray-500 bg-gray-100 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-darkmode-500'
-                                                  } 
-                        ${
-                          (row.disabled === true &&
-                            action.icon !== 'Download' &&
-                            action.icon !== 'Trash2' &&
-                            action.icon !== 'ChevronRight') ||
-                          (row.is_obsolete === true &&
-                            action.icon !== 'Download' &&
-                            action.icon !== 'ChevronRight')
-                            ? 'opacity-50 cursor-not-allowed'
-                            : ''
-                        }`}
-                                                  disabled={
-                                                    (row.disabled === true ||
-                                                      row.is_obsolete) &&
-                                                    action.icon !==
-                                                      'Download' &&
-                                                    action.icon !== 'Trash2' &&
-                                                    action.icon !==
-                                                      'ChevronRight'
-                                                  }
-                                                >
-                                                  <Lucide
-                                                    style={{
-                                                      stroke: 'currentColor',
-                                                      strokeWidth: 2.1,
-                                                    }}
-                                                    icon={action.icon}
-                                                    className={`w-5 h-5 rounded-sm ${
-                                                      action.icon ===
-                                                      'ChevronRight'
-                                                        ? 'text-purple-500'
-                                                        : action.icon ===
-                                                          'Download'
-                                                        ? 'text-blue-500'
-                                                        : action.icon === 'Plus'
-                                                        ? 'text-green-500'
-                                                        : action.label ===
-                                                          'Edit'
-                                                        ? 'text-yellow-500'
-                                                        : action.icon ===
-                                                          'Trash2'
-                                                        ? 'text-red-500'
-                                                        : action.label ===
-                                                          'Approve'
-                                                        ? 'text-green-500'
-                                                        : action.label ===
-                                                          'Link'
-                                                        ? 'text-green-500'
-                                                        : action.label ===
-                                                          'Unlink'
-                                                        ? 'text-red-500'
-                                                        : action.label ===
-                                                          'Reject'
-                                                        ? 'text-red-500'
-                                                        : action.icon === 'Bell'
-                                                        ? 'text-blue-500'
-                                                        : action.icon ===
-                                                          'Repeat'
-                                                        ? 'text-blue-500'
-                                                        : action.label ===
-                                                          'Reset'
-                                                        ? 'text-yellow-500'
-                                                        : action.icon === 'Eye'
-                                                        ? 'text-orange-700'
-                                                        : 'text-gray-700 bg-gray-100'
-                                                    }`}
-                                                  />
-                                                </button>
-                                              </CustomTooltip>
-                                              {hoveredAction.rowIndex ===
-                                                rowIndex &&
-                                              hoveredAction.actionIndex ===
-                                                index &&
-                                              hoveredAction.type === 'menu' &&
-                                              source === 'BankDetails' ? (
-                                                <CustomTooltip
-                                                  content={
-                                                    <div className="w-40 text-gray-700 p-2 shadow-md rounded-md z-[10000]">
-                                                      <div className="font-bold">
-                                                        {row.merchant_details
-                                                          .length > 0
-                                                          ? 'Merchant List'
-                                                          : 'No Merchants'}
-                                                      </div>
-                                                      {row.merchant_details.map(
-                                                        (merchant: any) => (
-                                                          <p key={merchant.id}>
-                                                            {merchant.code}
-                                                          </p>
-                                                        ),
-                                                      )}
-                                                    </div>
-                                                  }
-                                                >
-                                                  <span className="absolute inset-0" />
-                                                </CustomTooltip>
-                                              ) : null}
-                                            </div>
-                                          ),
-                                        )}
-                                      </div>
-                                    </div>
-                                  }
-                                >
-                                  <button
-                                    className={`w-5 h-5 text-slate-500 focus:outline-none ${
-                                      row.disabled === true &&
-                                      !actionsWithArrow.some(
-                                        (action) =>
-                                          action.icon === 'Download' ||
-                                          action.icon === 'Trash2' ||
-                                          action.icon === 'ChevronRight',
-                                      )
-                                        ? 'opacity-50 cursor-not-allowed'
-                                        : ''
-                                    }`}
-                                    disabled={
-                                      row.disabled === true &&
-                                      !actionsWithArrow.some(
-                                        (action) =>
-                                          action.icon === 'Download' ||
-                                          action.icon === 'Trash2' ||
-                                          action.icon === 'ChevronRight',
-                                      )
-                                    }
-                                  >
-                                 <Lucide
-    icon="MoreVertical"
-    className="w-5 h-5 text-white"
-  />
-                                  </button>
-                                </CustomTooltip>
-                              ) : (
-                                <div className="flex space-x-3">
-                                  {actionsWithArrow.map((action, index) => (
-                                    <div
-                                      key={index}
-                                      className="relative"
-                                      onMouseLeave={() =>
-                                        debouncedSetHoveredAction({
-                                          rowIndex: null,
-                                          actionIndex: null,
-                                          type: 'menu',
-                                        })
-                                      }
-                                    >
-                                      <CustomTooltip
-                                        content={
-                                          action.label ? (
-                                            <div className="text-white p-2 shadow-md rounded-md z-[9999] dark:bg-darkmode-600 dark:text-gray-200">
-                                              {action.label}
-                                              {action.hover &&
-                                                row.merchant_details && (
-                                                  <div className="mt-2">
-                                                    <div className="font-bold">
-                                                      {row.merchant_details
-                                                        .length > 0
-                                                        ? 'Merchant List'
-                                                        : 'No Merchants'}
-                                                    </div>
-                                                    {row.merchant_details.map(
-                                                      (merchant: any) => (
-                                                        <p key={merchant.id}>
-                                                          {merchant.code}
-                                                        </p>
-                                                      ),
-                                                    )}
-                                                  </div>
-                                                )}
-                                              {action.hover && row.vendors && (
-                                                <div className="mt-2">
-                                                  <div className="font-bold">
-                                                    {row.vendors.length > 0
-                                                      ? 'Vendor List'
-                                                      : 'No Vendors'}
-                                                  </div>
-                                                  {row.vendors.map(
-                                                    (
-                                                      vendor: any,
-                                                      vendorIndex: number,
-                                                    ) => (
-                                                      <p key={vendorIndex}>
-                                                        {vendor}
-                                                      </p>
-                                                    ),
-                                                  )}
-                                                </div>
-                                              )}
-                                            </div>
-                                          ) : (
-                                            <div />
-                                          )
-                                        }
+                              return (
+                                <>
+      
+                                  {/* 3-dot menu for other actions */}
+                                  {otherActions.length > 0 && (
+                                    <div className="relative">
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setOpenActionMenu(openActionMenu === rowIndex ? null : rowIndex);
+                                        }}
+                                        className="flex items-center justify-center rounded-full w-8 h-8 transition-all duration-200 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
                                       >
-                                       <button
-  onClick={() => !action.hover && action.onClick && action.onClick(row)}
-  onMouseEnter={() => {
-    if (action.hover) {
-      debouncedSetHoveredAction({
-        rowIndex,
-        actionIndex: index,
-        type: 'menu',
-      });
-    }
-    if (action.onMouseEnter) action.onMouseEnter(row);
-  }}
-  className={`
-    flex items-center justify-center rounded-full 
-    w-8 h-8 transition-all duration-200
-    ${
-      action.icon === 'ChevronRight'
-        ? 'bg-slate-800 hover:bg-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800'
-        : action.icon === 'Download'
-        ? 'bg-blue-500 hover:bg-blue-600'
-        : action.icon === 'Plus'
-        ? 'bg-green-500 hover:bg-green-600'
-        : action.label === 'Edit'
-        ? 'bg-yellow-500 hover:bg-yellow-600'
-        : action.icon === 'Trash2'
-        ? 'bg-red-500 hover:bg-red-600'
-        : action.label === 'Delete'
-        ? 'bg-red-500 hover:bg-red-600'
-        : action.label === 'Approve'
-        ? 'bg-green-500 hover:bg-green-600'
-        : action.label === 'Link'
-        ? 'bg-green-500 hover:bg-green-600'
-        : action.label === 'Unlink'
-        ? 'bg-red-500 hover:bg-red-600'
-        : action.label === 'Reject'
-        ? 'bg-red-500 hover:bg-red-600'
-        : action.icon === 'Bell'
-        ? 'bg-blue-500 hover:bg-blue-600'
-        : action.icon === 'Repeat'
-        ? 'bg-blue-500 hover:bg-blue-600'
-        : action.label === 'Reset'
-        ? 'bg-yellow-500 hover:bg-yellow-600'
-        : action.icon === 'Eye'
-        ? 'bg-pink-300 hover:bg-pink-400'
-        : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600'
-    } 
-    ${
-      (row.disabled === true &&
-        action.icon !== 'Download' &&
-        action.icon !== 'Trash2' &&
-        action.icon !== 'ChevronRight') ||
-      (row.is_obsolete === true &&
-        action.icon !== 'Download' &&
-        action.icon !== 'ChevronRight')
-        ? 'opacity-50 cursor-not-allowed'
-        : ''
-    }
-  `}
-  disabled={
-    (row.disabled === true || row.is_obsolete) &&
-    action.icon !== 'Download' &&
-    action.icon !== 'Trash2' &&
-    action.icon !== 'ChevronRight'
-  }
->
-  <Lucide
-    style={{
-      stroke: 'currentColor',
-      strokeWidth: 2.1,
-    }}
-    icon={action.icon}
-    className={`w-4 h-4 ${
-      action.icon === 'ChevronRight'
-        ? 'text-white'
-        : action.icon === 'Download' ||
-          action.icon === 'Plus' ||
-          action.label === 'Edit' ||
-          action.icon === 'Trash2' ||
-          action.label === 'Approve' ||
-          action.label === 'Link' ||
-          action.label === 'Unlink' ||
-          action.label === 'Reject' ||
-          action.icon === 'Bell' ||
-          action.icon === 'Repeat' ||
-          action.label === 'Reset'
-        ? 'text-white'
-        : action.icon === 'Eye'
-        ? 'text-orange-700'
-        : 'text-gray-700 dark:text-gray-200'
-    }`}
-  />
-</button>
-                                      </CustomTooltip>
+                                        <Lucide
+                                          icon="MoreVertical"
+                                          className="w-4 h-4 text-gray-700 dark:text-gray-200"
+                                        />
+                                      </button>
+
+                                      {/* Dropdown menu */}
+                                      {openActionMenu === rowIndex && (
+                                        <div 
+                                          className="absolute right-0 mt-2 w-48 bg-white dark:bg-darkmode-600 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 py-1"
+                                          onClick={(e) => e.stopPropagation()}
+                                        >
+                                          {otherActions.map((action, index) => (
+                                            <button
+                                              key={index}
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                if (!action.hover && action.onClick) {
+                                                  action.onClick(row);
+                                                  setOpenActionMenu(null);
+                                                }
+                                              }}
+                                              onMouseEnter={() => {
+                                                if (action.hover) {
+                                                  debouncedSetHoveredAction({
+                                                    rowIndex,
+                                                    actionIndex: index,
+                                                    type: 'menu',
+                                                  });
+                                                }
+                                                if (action.onMouseEnter) action.onMouseEnter(row);
+                                              }}
+                                              disabled={
+                                                (row.disabled === true || row.is_obsolete) &&
+                                                action.icon !== 'Download' &&
+                                                action.icon !== 'Trash2'
+                                              }
+                                              className={`w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-darkmode-500 transition-colors ${
+                                                (row.disabled === true || row.is_obsolete) &&
+                                                action.icon !== 'Download' &&
+                                                action.icon !== 'Trash2'
+                                                  ? 'opacity-50 cursor-not-allowed'
+                                                  : ''
+                                              }`}
+                                            >
+                                              <Lucide
+                                                icon={action.icon}
+                                                className={`w-4 h-4 ${
+                                                  action.icon === 'Download'
+                                                    ? 'text-blue-500'
+                                                    : action.icon === 'Plus'
+                                                    ? 'text-green-500'
+                                                    : action.label === 'Edit'
+                                                    ? 'text-yellow-500'
+                                                    : action.icon === 'Trash2'
+                                                    ? 'text-red-500'
+                                                    : action.label === 'Delete'
+                                                    ? 'text-red-500'
+                                                    : action.label === 'Approve'
+                                                    ? 'text-green-500'
+                                                    : action.label === 'Link'
+                                                    ? 'text-green-500'
+                                                    : action.label === 'Unlink'
+                                                    ? 'text-red-500'
+                                                    : action.label === 'Reject'
+                                                    ? 'text-red-500'
+                                                    : action.icon === 'Bell'
+                                                    ? 'text-blue-500'
+                                                    : action.icon === 'Repeat'
+                                                    ? 'text-blue-500'
+                                                    : action.label === 'Reset'
+                                                    ? 'text-yellow-500'
+                                                    : action.icon === 'Eye'
+                                                    ? 'text-orange-700'
+                                                    : 'text-gray-700 dark:text-gray-200'
+                                                }`}
+                                              />
+                                              <span className="text-gray-700 dark:text-gray-200">
+                                                {action.label}
+                                              </span>
+                                            </button>
+                                          ))}
+                                        </div>
+                                      )}
                                     </div>
-                                  ))}
-                                </div>
+                                  )}
+                                </>
                               );
                             })()}
                           </div>
