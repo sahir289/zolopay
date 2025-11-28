@@ -1305,6 +1305,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
                               </span>
                             </div>
                           )
+                          
                         ) : col.type === 'utr_hover' ? (
                           row.config?.previousUTR ? (
                             <div className="flex items-center">
