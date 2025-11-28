@@ -1,19 +1,23 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// import Lucide from '@/components/Base/Lucide';
+// import BarChart from '@/components/VerticalBarChart';
 import { useMemo } from 'react';
+// import MultiSelect from '@/components/MultiSelect/MultiSelect';
+// import Litepicker from '@/components/Base/Litepicker';
 import DashboardStatCard from '@/components/dashboard-stat-card';
 import DashboardFilter from '@/components/dashboard-filter';
 import DashboardListCard from '@/components/dashboard-list-card';
-import DashboardChart from '@/components/dashboard-chart';
+// import DashboardChart from '@/components/dashboard-chart';
 
 function VendorBoard({
   calculationData,
-  vendorPayinChartData,
-  vendorPayoutChartData,
-  ChargebackChartData,
-  ReverseChartData,
-  totalVendorCommissionData,
-  vendorSettlementChartData,
+  // vendorPayinChartData,
+  // vendorPayoutChartData,
+  // ChargebackChartData,
+  // ReverseChartData,
+  // totalVendorCommissionData,
+  // vendorSettlementChartData,
   vendorSelectedFilterDates,
   setVendorSelectedFilterDates,
   vendorSelectedFilter,
@@ -117,7 +121,7 @@ function VendorBoard({
         <DashboardListCard title='Commissions' data={commissionsData}/>
       </div>
 
-      <DashboardChart
+      {/* <DashboardChart
         title='Banking Partner Metrics'
         deposits={vendorPayinChartData}
         withdrawals={vendorPayoutChartData}
@@ -125,7 +129,7 @@ function VendorBoard({
         reversals={ReverseChartData}
         settlements={vendorSettlementChartData}
         chargebacks={ChargebackChartData}
-      />
+      /> */}
     </div>
   );
 }

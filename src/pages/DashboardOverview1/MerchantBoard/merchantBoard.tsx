@@ -3,16 +3,16 @@ import { useMemo } from 'react';
 import DashboardStatCard from '@/components/dashboard-stat-card';
 import DashboardFilter from '@/components/dashboard-filter';
 import DashboardListCard from '@/components/dashboard-list-card';
-import DashboardChart from '@/components/dashboard-chart';
+// import DashboardChart from '@/components/dashboard-chart';
 
 function MerchantBoard({
   calculationData,
-  payinChartData,
-  payoutChartData,
-  ChargebackChartData,
-  ReverseChartData,
-  totalMerchantCommissionData,
-  settlementChartData,
+  // payinChartData,
+  // payoutChartData,
+  // ChargebackChartData,
+  // ReverseChartData,
+  // totalMerchantCommissionData,
+  // settlementChartData,
   merchantSelectedFilterDates,
   setMerchantSelectedFilterDates,
   merchantSelectedFilter,
@@ -116,7 +116,7 @@ function MerchantBoard({
         <DashboardListCard title='Commissions' data={commissionsData}/>
       </div>
 
-      <DashboardChart
+      {/* <DashboardChart
         title='Payment Partner Metrics'
         deposits={payinChartData}
         withdrawals={payoutChartData}
@@ -124,7 +124,7 @@ function MerchantBoard({
         reversals={ReverseChartData}
         settlements={settlementChartData}
         chargebacks={ChargebackChartData}
-      />
+      /> */}
     </div>
   );
 }

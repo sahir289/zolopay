@@ -1041,7 +1041,7 @@ const AddDataHistory = () => {
                     onClick={handleReset}
                   >
                     <Lucide
-                      icon="RotateCcw"
+                      icon="RefreshCw"
                       className="stroke-[1.3] w-4 h-4 mr-2"
                     />
                     Reset
@@ -1237,7 +1237,7 @@ const AddDataHistory = () => {
                             as="button"
                             onClick={handleViewAllData}
                           >
-                            <Lucide icon="Database" className="w-4 h-4 mr-2" />
+                            <Lucide icon="HardDrive" className="w-4 h-4 mr-2" />
                             All Data
                           </Tab.Button>
                         </Tab>
@@ -1247,7 +1247,7 @@ const AddDataHistory = () => {
                             as="button"
                             onClick={handleViewUpdatedData}
                           >
-                            <Lucide icon="Clock" className="w-4 h-4 mr-2" />
+                            <Lucide icon="Timer" className="w-4 h-4 mr-2" />
                             Updated Data
                           </Tab.Button>
                         </Tab>
@@ -1287,14 +1287,14 @@ const AddDataHistory = () => {
                   actionMenuItems={(row: BankResponseRow) => {
                     const items: {
                       label: string;
-                      icon: 'RotateCcw';
+                      icon: 'RefreshCw';
                       onClick: () => void;
                       previousAmount?: number | string;
                     }[] = [];
                     if (row?.status === Status.BOT_SUCCESS) {
                       items.push({
                         label: 'Reset',
-                        icon: 'RotateCcw',
+                        icon: 'RefreshCw',
                         onClick: () => resetModal({ ...row }),
                         previousAmount: row.amount,
                       });
@@ -1311,7 +1311,7 @@ const AddDataHistory = () => {
         <Modal
           handleModal={handleEditCancel}
           forOpen={editModal}
-          title="Edit Transaction"
+          title="Edit Payment"
         >
           {!editEditingField ? (
             <div className="p-4">
@@ -1532,7 +1532,7 @@ const AddDataHistory = () => {
         <Modal
           handleModal={() => setImportModalOpen(false)}
           forOpen={importModalOpen}
-          title="Import PayIns"
+          title="Import Deposits"
         >
           <div className="py-4 my-4">
             <div className="w-[90%] mx-4">
@@ -1585,7 +1585,7 @@ const AddDataHistory = () => {
                 <div className="mt-4 flex items-center justify-between bg-gray-100 dark:bg-gray-700 rounded-md p-3">
                   <div className="flex items-center">
                     <Lucide
-                      icon="File"
+                      icon="FilePenLine"
                       className="w-5 h-5 text-gray-500 dark:text-gray-400 mr-2"
                     />
                     <span className="text-sm text-gray-800 dark:text-gray-200 truncate max-w-[200px]">
@@ -1602,7 +1602,7 @@ const AddDataHistory = () => {
                     }}
                     className="flex items-center text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-600"
                   >
-                    <Lucide icon="Trash2" className="w-4 h-4 mr-1" />
+                    <Lucide icon="Trash" className="w-4 h-4 mr-1" />
                     Remove
                   </button>
                 </div>
@@ -1688,7 +1688,7 @@ const AddDataHistory = () => {
         <Modal
           handleModal={() => setExportModalOpen(false)}
           forOpen={exportModalOpen}
-          title="Export Bank Response Data"
+          title="Export Banking Response Data"
         >
           <div className="py-2 my-2 mb-4">
             <Litepicker

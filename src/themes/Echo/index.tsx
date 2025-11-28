@@ -15,7 +15,7 @@ import { useAppDispatch } from '@/redux-toolkit/hooks/useAppDispatch';
 import { useAppSelector } from '@/redux-toolkit/hooks/useAppSelector';
 import { FormattedMenu, linkTo, nestedMenu, enter, leave } from './side-menu';
 import Lucide from '@/components/Base/Lucide';
-import users from '@/assets/images/users/users.svg';
+import users from '@/assets/images/users/user.jpg';
 import clsx from 'clsx';
 import SimpleBar from 'simplebar';
 import { useAuth } from '@/components/context/AuthContext';
@@ -40,9 +40,9 @@ import {
 } from '@/constants';
 import Modal from '../../components/Modal/modals';
 import DynamicForm from '@/components/CommonForm';
-import { getAllMerchants } from '@/redux-toolkit/slices/merchants/merchantAPI';
+// import { getAllMerchants } from '@/redux-toolkit/slices/merchants/merchantAPI';
 import { triggerCrossTabLogout } from '@/utils/crossTabAuthSync';
-import { getPaginationData } from '@/redux-toolkit/slices/common/params/paramsSelector';
+// import { getPaginationData } from '@/redux-toolkit/slices/common/params/paramsSelector';
 // import { setIsSocketHit } from '@/redux-toolkit/slices/notification/notificationSlice';
 // import { getNotificationsCount } from '@/redux-toolkit/slices/notification/notificationAPI';
 // import {
@@ -158,9 +158,9 @@ function Main() {
   };
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [passwordError, setPasswordError] = useState('');
-  const [apiKey, setApiKey] = useState('your-api-key');
+  // const [apiKey, setApiKey] = useState('your-api-key');
   const [isBlurred, setIsBlurred] = useState(true);
-  const pagination = useAppSelector(getPaginationData);
+  // const pagination = useAppSelector(getPaginationData);
   const [verification, setVerification] = useState(false);
   const [, setVerified] = useState(false);
   const [showPassword] = useState(false);
@@ -188,16 +188,16 @@ function Main() {
           }
         }
       }
-      if (userData?.designation === Role.MERCHANT) {
-        const queryString = new URLSearchParams({
-          page: (pagination?.page || 1).toString(),
-          limit: (pagination?.limit || 10).toString(),
-        }).toString();
-        const response = await getAllMerchants(queryString);
-        setApiKey(response?.merchants[0].config?.keys?.private || '');
-      }
+      // if (userData?.designation === Role.MERCHANT) {
+      //   const queryString = new URLSearchParams({
+      //     page: (pagination?.page || 1).toString(),
+      //     limit: (pagination?.limit || 10).toString(),
+      //   }).toString();
+      //   const response = await getAllMerchants(queryString);
+      //   setApiKey(response?.merchants[0].config?.keys?.private || '');
+      // }
     } else {
-      setApiKey('your-api-key');
+      // setApiKey('your-api-key');
     }
     setIsBlurred(!isBlurred);
   };
@@ -731,6 +731,7 @@ function Main() {
               >
                 <Lucide
                   icon={isFullscreen ? 'Minimize2' : 'Maximize2'}
+                  icon={isFullscreen ? 'Minimize2' : 'Maximize2'}
                   className="w-5 h-5 text-gray-600"
                 />
               </button>
@@ -747,27 +748,30 @@ function Main() {
                 >
                   <img
                     alt="Profile"
-                    src={users || 'https://via.placeholder.com/36'}
+                    src={users}
                     className="w-8 h-8 rounded-full object-cover"
                   />
                   <span className="hidden sm:block text-gray-700 font-medium">
                     {userData.name || 'Guest'}
                   </span>
+                  <Lucide
+                    icon={isOpen ? "ChevronUp" : "ChevronDown"}
+                    className="w-4 h-4 text-gray-500"
+                  />
                 </button>
                 {isOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-50">
+                  <div className="absolute right-0 mt-2 w-56 bg-white shadow-lg rounded-lg z-50 border border-gray-200">
                     <div className="p-4 border-b">
                       <p className="text-sm font-medium text-gray-700">
                         {userData.name || 'Guest'}
                       </p>
-                      <p className="text-xs text-gray-500">
-                        {userData.designation}
-                      </p>
+                      <p className="text-xs text-gray-500">{userData.designation}</p>
                     </div>
                     <div className="py-2">
                     {userData.designation === Role.ADMIN && (
-                          <div className="flex items-center space-x-3">
-                            <span>Unique ID:</span>
+                          <div className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 transition">
+                            <Lucide icon="Key" className="w-4 h-4 text-gray-500" />
+                            <span className="text-sm text-gray-700">Unique ID:</span>
                             <span
                               className={`block text-xs text-gray-500 dark:text-gray-400 ${
                                 isBlurred ? 'blur-sm' : ''
@@ -792,11 +796,12 @@ function Main() {
                             </button>
                           </div>
                         )}
-                        {[Role.MERCHANT, Role.SUB_MERCHANT].includes(
+                        {/* {[Role.MERCHANT, Role.SUB_MERCHANT].includes(
                           userData.designation || '',
                         ) && (
-                          <div className="flex items-center space-x-3 mt-2">
-                            <span>API Key:</span>
+                          <div className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 transition">
+                            <Lucide icon="Key" className="w-4 h-4 text-gray-500" />
+                            <span className="text-sm text-gray-700">API Key:</span>
                             <span
                               className={`block text-xs text-gray-500 dark:text-gray-400 ${
                                 isBlurred ? 'blur-sm' : ''
@@ -820,11 +825,11 @@ function Main() {
                               )}
                             </button>
                           </div>
-                        )}
+                        )} */}
                   </div>
                   <hr />
                       <button
-                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="flex items-center space-x-3 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                         onClick={() => {
                           setShowChangePasswordModal(true);
                           setIsOpen(false);
@@ -837,7 +842,7 @@ function Main() {
                         Change Password
                       </button>
                       <button
-                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="flex items-center space-x-3 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                         onClick={() => {
                           HandleLogOut();
                           setIsOpen(false);

@@ -216,6 +216,27 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
         ];
       }
 
+      if (menuItem.title === "Records") {
+        menuItem.subMenu = [
+          {
+            title: "Add Data",
+            pathname: "/auth/data-entries/add-data",
+            icon: "ArrowDownCircle" as const,
+          },
+          {
+            title: "Check Utr",
+            pathname: "/auth/data-entries/check-utr",
+            icon: "ArrowUpCircle" as const,
+          },
+          {
+            title: "Reset Data",
+            pathname: "/auth/data-entries/Reset-data",
+            icon: "ArrowUpCircle" as const,
+          },
+        ];
+      } 
+
+
       formattedMenu.push(menuItem);
     } else {
       formattedMenu.push(item);
