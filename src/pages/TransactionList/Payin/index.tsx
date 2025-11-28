@@ -322,7 +322,7 @@ function Main() {
                         zIndex: 10
                       } : {}}
                     >
-                      <Lucide icon="BadgeIndianRupee" className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <Lucide icon="IndianRupee" className="w-4 h-4 sm:w-5 sm:h-5" />
                       Payins
                     </Tab.Button>
                   )}
@@ -341,7 +341,7 @@ function Main() {
                         zIndex: 10
                       } : {}}
                     >
-                      <Lucide icon="ArrowRightCircle" className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <Lucide icon="CircleDollarSign" className="w-4 h-4 sm:w-5 sm:h-5" />
                       Payouts
                     </Tab.Button>
                   )}

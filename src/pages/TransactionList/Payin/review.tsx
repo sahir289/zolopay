@@ -855,7 +855,7 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
                         onClick={handleReset}
                       >
                         <Lucide
-                          icon="RotateCcw"
+                          icon="RefreshCw"
                           className="stroke-[1.3] w-4 h-4 mr-2"
                         />
                         Reset
@@ -1213,12 +1213,12 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
                     actionMenuItems={(row: PayInData) => {
                       const items: {
                         label?: string;
-                        icon: 'Bell' | 'RotateCcw';
+                        icon: 'BellRing' | 'RotateCcw';
                         onClick: (row: PayInData) => void;
                       }[] = [
                         {
                           label: 'Notify',
-                          icon: 'Bell',
+                          icon: 'BellRing',
                           onClick: () => handleNotifyData(row.id || ''),
                         },
                       ];
@@ -1228,7 +1228,7 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
                       ) {
                         items.push({
                           label: 'Reset',
-                          icon: 'RotateCcw',
+                          icon: 'RefreshCw',
                           onClick: () => transactionModal(row),
                         });
                       }
