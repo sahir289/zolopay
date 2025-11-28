@@ -143,7 +143,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
     showBank: boolean;
     status: 'Active' | 'Inactive';
     action: string;
-    bankUsedFor: 'PayOuts' | 'Settlements' | 'PayIns';
+    bankUsedFor: 'Withdrawals' | 'Reconciliations' | 'Deposits';
     vendors: string;
     createdAt: string;
     lastScheduledAt: string;
@@ -557,7 +557,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                 id: 'merchantCode',
                 label: 'Code',
                 type: 'text',
-                placeholder: 'Merchant Code',
+                placeholder: 'Payment Partner Code',
               },
               {
                 id: 'site',
@@ -1410,9 +1410,9 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                                         : 'Inactive',
                                     bankUsedFor:
                                       (account?.bankUsedFor as
-                                        | 'PayIns'
-                                        | 'PayOuts'
-                                        | 'Settlements') || 'PayIns',
+                                        | 'Deposits'
+                                        | 'Withdrawals'
+                                        | 'Reconciliations') || 'Deposits',
                                     vendors: account?.vendors || '',
                                     createdAt: account?.createdAt || '',
                                     lastScheduledAt:

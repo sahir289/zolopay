@@ -3052,7 +3052,7 @@ export const addVendorForBank = (vendorOptions: Option[]) => ({
   Add_Vendors: [
     {
       name: 'verdor_user_id',
-      label: 'Vendor Code',
+      label: 'Banking Partner Code',
       type: 'select',
       width: '12',
       options: vendorOptions,
@@ -4128,7 +4128,7 @@ export const MerchantformFields = (disabled: boolean) => ({
       name: 'code',
       label: '',
       type: 'text',
-      placeholder: 'Enter Merchant Code',
+      placeholder: 'Enter Payment Partner Code',
       validation: yup.string().required('Code is required'),
       width: '12',
       disable: disabled,

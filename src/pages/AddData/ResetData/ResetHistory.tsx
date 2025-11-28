@@ -454,7 +454,7 @@ const handleReset = useCallback(async () => {
                     <Modal
                       handleModal={() => setExportModalOpen((prev) => !prev)}
                       forOpen={exportModalOpen}
-                      title="Export PayIns"
+                      title="Export Deposits"
                     >
                       <div className="py-2 my-2 mb-4">
                         <Litepicker

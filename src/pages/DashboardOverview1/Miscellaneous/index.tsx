@@ -209,7 +209,7 @@ function MiscellaneousBoard({ merchantCodes }: MerchantBoardProps) {
               setSelectedFilterVendor(val);
               // if (val.length > 0) setSelectedFilter([]);
             }}
-            placeholder="Select Vendor Codes ..."
+            placeholder="Select Banking Partner Codes ..."
             disabled={selectedFilter.length > 0}
           />
           <MultiSelect

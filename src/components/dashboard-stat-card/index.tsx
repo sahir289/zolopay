@@ -39,21 +39,21 @@ export default function DashboardStatCard (props: DashboardStatCardProps) {
                     <CarouselContent>
                         <CarouselItem className="basis-auto">
                             <StatCard
-                                title="Deposits"
+                                title="Incoming Funds"
                                 value={asINR(props.deposits)}
                                 description="Includes all successful incoming transactions in the selected period."
                                 icon={<ArrowDownCircle className="w-5 h-5"/>}/>
                         </CarouselItem>
                         <CarouselItem className="basis-auto">
                             <StatCard
-                                title="Withdrawals"
+                                title="Outgoing Funds"
                                 value={asINR(props.withdrawals)}
                                 description="Outgoing settlements and payouts processed within the range."
                                 icon={<ArrowUpCircle className="w-5 h-5"/>}/>
                         </CarouselItem>
                         <CarouselItem className="basis-auto">
                             <StatCard
-                                title="Settlements"
+                                title="Reconciliations"
                                 value={asINR(props.settlements)}
                                 description="Includes all successful incoming transactions"
                                 icon={<Receipt className="w-5 h-5"/>}/>
@@ -63,10 +63,10 @@ export default function DashboardStatCard (props: DashboardStatCardProps) {
             </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            <SubCard title="Reverse Withdrawals" value={asINR(props.reverseWithdrawals)} icon={<RotateCcw className="w-5 h-5"/>}/>
-            <SubCard title="Commission" value={asINR(props.commission)} icon={<Percent className="w-5 h-5"/>}/>
-            <SubCard title="ChargeBacks" value={asINR(props.chargebacks)} icon={<AlertTriangle className="w-5 h-5"/>}/>
-            <SubCard title="Adjustments" value={asINR(props.adjustments)} icon={<IndianRupee className="w-5 h-5"/>}/>
+            <SubCard title="Reversed Funds" value={asINR(props.reverseWithdrawals)} icon={<RotateCcw className="w-5 h-5"/>}/>
+            <SubCard title="Service Fees" value={asINR(props.commission)} icon={<Percent className="w-5 h-5"/>}/>
+            <SubCard title="Disputes" value={asINR(props.chargebacks)} icon={<AlertTriangle className="w-5 h-5"/>}/>
+            <SubCard title="Balance Adjustments" value={asINR(props.adjustments)} icon={<IndianRupee className="w-5 h-5"/>}/>
         </div>
         </>
     )
