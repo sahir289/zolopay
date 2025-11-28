@@ -731,7 +731,6 @@ function Main() {
               >
                 <Lucide
                   icon={isFullscreen ? 'Minimize2' : 'Maximize2'}
-                  icon={isFullscreen ? 'Minimize2' : 'Maximize2'}
                   className="w-5 h-5 text-gray-600"
                 />
               </button>
