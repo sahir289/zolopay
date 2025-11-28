@@ -16,7 +16,9 @@ import Login from '@/pages/Login/index';
 import Register from '@/pages/Register/index';
 import LandingPage from '@/pages/LandingPage/index';
 import ChargeBack from '@/pages/ChargeBack/index';
-import AddData from '@/pages/AddData/index';
+import AddData from '@/pages/AddData/AddData/index';
+import CheckUtr from '@/pages/AddData/CheckUtr/index';
+import ResetData from '@/pages/AddData/ResetData/index';
 import Designation from '@/pages/Designation/index';
 import PayOutBanks from '@/pages/BankAccount/payOutBanks';
 import PayInBanks from '@/pages/BankAccount/payInBanks';
@@ -364,7 +366,7 @@ function Router(): React.ReactElement | null {
           ],
         },
         {
-          path: 'add-data',
+          path: 'data-entries',
           element: (
             <ProtectedRoute
               allowedRoles={[
@@ -380,10 +382,47 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/add-data',
+              path: 'add-data',
               element: (
                 <VendorBankResponseProtectedRoute>
+                <ProtectedRoute
+                allowedRoles={[
+                Role.ADMIN,
+                Role.TRANSACTIONS,
+                Role.OPERATIONS,
+                ]}
+                />
                   <AddData />
+                </VendorBankResponseProtectedRoute>
+              ),
+            },
+            {
+              path: 'check-utr',
+              element: (
+                <VendorBankResponseProtectedRoute>
+                <ProtectedRoute
+                allowedRoles={[
+                Role.ADMIN,
+                Role.TRANSACTIONS,
+                Role.OPERATIONS,
+                ]}
+                />
+                  <CheckUtr />
+                </VendorBankResponseProtectedRoute>
+              ),
+            },
+            {
+              path: 'reset-data',
+              element: (
+                <VendorBankResponseProtectedRoute>
+                <ProtectedRoute
+                allowedRoles={[
+                Role.ADMIN,
+                Role.TRANSACTIONS,
+                Role.OPERATIONS,
+                ]}
+                />
+                  <ResetData />
                 </VendorBankResponseProtectedRoute>
               ),
             },

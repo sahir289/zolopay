@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
-import React, { useCallback, useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux-toolkit/hooks/useAppDispatch';
 import { useAppSelector } from '@/redux-toolkit/hooks/useAppSelector';
 import { getPaginationData } from '@/redux-toolkit/slices/common/params/paramsSelector';
@@ -7,29 +8,19 @@ import {
   setPagination,
   resetPagination,
 } from '@/redux-toolkit/slices/common/params/paramsSlice';
-import {
-  getAllCheckUtrHistoryData,
-  getRefreshDataEntries,
-} from '@/redux-toolkit/slices/dataEntries/dataEntrySelectors';
-import {
-  getCheckUtrHistories,
-  setRefreshDataEntries,
-} from '@/redux-toolkit/slices/dataEntries/dataEntrySlice';
-import { getAllCheckUtrHistories,
-  // getAllCheckUtrHistoriesBySearchApi
- } from '@/redux-toolkit/slices/dataEntries/dataEntryAPI';
-import { Columns, Status } from '@/constants';
 import LoadingIcon from '@/components/Base/LoadingIcon';
-import CommonTable from '@/components/TableComponent/CommonTable';
+import { Columns, Status } from '@/constants';
 import Lucide from '@/components/Base/Lucide';
 import { Menu } from '@/components/Base/Headless';
 import { FormInput } from '@/components/Base/Form';
-// import users from '@/fakers/users';
-// import transactionStatus from '@/fakers/transaction-status';
 import Button from '@/components/Base/Button';
-// import { downloadCSV } from '@/components/ExportComponent';
+import CustomTable from '@/components/TableComponent/CommonTable';
+import { getAllResetHistory} from '@/redux-toolkit/slices/dataEntries/dataEntryAPI';
+import { getResetHistory, setRefreshDataEntries } from '@/redux-toolkit/slices/dataEntries/dataEntrySlice';
+import { getAllResestHistory, getRefreshDataEntries } from '@/redux-toolkit/slices/dataEntries/dataEntrySelectors';
 // import Modal from '@/components/Modal/modals';
 // import Litepicker from '@/components/Base/Litepicker';
+// import { downloadCSV } from '@/components/ExportComponent';
 // import { getCount } from '@/redux-toolkit/slices/common/apis/commonAPI';
 import debounce from 'lodash/debounce';
 import dayjs from 'dayjs';
@@ -40,26 +31,23 @@ import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotificati
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-interface CheckUTR {
-  selectedIndex: number;
-  tabState: number;
-}
+function ResetHistory() {
 
-const CheckUtrHistory: React.FC<CheckUTR> = ({selectedIndex, tabState}) => {
   const dispatch = useAppDispatch();
   const pagination = useAppSelector(getPaginationData);
-  const refreshDataEntries = useAppSelector(getRefreshDataEntries);
-  const checkUtrHistory = useAppSelector(getAllCheckUtrHistoryData);
+  const allresetHistory = useAppSelector(getAllResestHistory);
   const [isLoading, setIsLoading] = useState(false);
-  // const [exportModalOpen, setExportModalOpen] = useState(false);
+  const refreshDataEntries = useAppSelector(getRefreshDataEntries);
   // const date = dayjs().tz('Asia/Kolkata').format('YYYY-MM-DD');
   // const [selectedFilterDates, setSelectedFilterDates] = useState<string>(
   //     `${date} - ${date}`,
   //   );
-    const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
-    const [searchQuery, setSearchQuery] = useState<string>(''); // Added search state
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState<string>(''); // Added search state
+  // const [exportModalOpen, setExportModalOpen] = useState(false);
   // type ExportFormat = 'PDF' | 'CSV' | 'XLSX';
-  // Reset pagination on mount
+
+  // Reset pagination when component mounts
   useEffect(() => {
     dispatch(resetPagination());
   }, [dispatch]);
@@ -88,7 +76,7 @@ const CheckUtrHistory: React.FC<CheckUTR> = ({selectedIndex, tabState}) => {
     [dispatch],
   );
 
-  const fetchCheckUtrData = useCallback(async (searchQuery?: string) => {
+  const fetchResetHistory = useCallback(async (searchQuery?: string) => {
     setIsLoading(true);
     try {
       const queryString = new URLSearchParams({
@@ -97,49 +85,47 @@ const CheckUtrHistory: React.FC<CheckUTR> = ({selectedIndex, tabState}) => {
         ...(searchQuery && { search: searchQuery }),
       }).toString();
       let response;
-      // let totalCount;
-      // if (!searchQuery) {
-      response = await getAllCheckUtrHistories(queryString);
-        // totalCount = await getCount('CheckUtrHistory');
-        if (response) {
-        dispatch(
-          getCheckUtrHistories({
-            bankResponse: response.data.rows,
-            checkUtrHistory: response.data.checkUtr,
-            totalCount: response.data.totalCount,
-            loading: false,
-            error: null,
-          }),
-        );
+     
+        response = await getAllResetHistory(queryString);
+        // totalCount = await getCount('ResetDataHistory');
+         if (response) {
+        const payload = {
+          bankResponse: [],
+          resetHistory: response.resetHistory || [],
+          totalCount: response?.totalCount,
+          loading: false,
+          error: null,
+        };
+          
+        dispatch(getResetHistory(payload));
       }
-      //  }
-        // else if (searchQuery) {
-        // response = await getAllCheckUtrHistories(queryString);        totalCount = await getCount('CheckUtrHistory');
-        // if (response) {
-        //   dispatch(
-        //   getCheckUtrHistories({
-        //     bankResponse: [] ,
-        //     checkUtrHistory: response.data.checkUtr ,
-        //     totalCount: response.data.totalCount,
-        //     loading: false,
-        //     error: null,
-        //   }),
-        // );
-        //       }
-        //     }
+      // else if (searchQuery) { 
+      //   response = await getAllResetHistory(queryString);
+      //   if (response) {
+      //     const payload = {
+      //       bankResponse: [],
+      //       resetHistory: response.resetHistory || [],
+      //       totalCount: response?.totalCount,
+      //       loading: false,
+      //       error: null,
+      //     };
+      //     dispatch(getResetHistory(payload));
+      //   }
+      // }
       else {
         dispatch(
           addAllNotification({
             status: Status.ERROR,
-            message: 'No History Found!'
+            message: 'No Records Found!'
           })
         );
       }
-    } catch  {
+
+    } catch {
       dispatch(
         addAllNotification({
           status: Status.ERROR,
-          message: 'Error fetching history'
+          message: 'No Records Found!'
         })
       );
     } finally {
@@ -147,58 +133,56 @@ const CheckUtrHistory: React.FC<CheckUTR> = ({selectedIndex, tabState}) => {
     }
   }, [pagination?.page, pagination?.limit, dispatch]);
 
+ useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedSearchQuery(searchQuery.trim());
+      }, 1000);
+  
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [searchQuery]);
+   useEffect(() => {
+      if (debouncedSearchQuery) {
+        fetchResetHistory(debouncedSearchQuery);
+      } 
+      // else {
+      //   fetchResetHistory();
+      // }
+    }, [debouncedSearchQuery, fetchResetHistory]);
+  
+    const debouncedFetchBankAccounts = useCallback(
+        debounce((query: string) => {
+          fetchResetHistory(query);
+        }, 500),
+        [fetchResetHistory, debouncedSearchQuery],
+      );
     useEffect(() => {
-          const handler = setTimeout(() => {
-            setDebouncedSearchQuery(searchQuery.trim());
-          }, 1000);
-      
-          return () => {
-            clearTimeout(handler);
-          };
-        }, [searchQuery]);
-       useEffect(() => {
-          if (debouncedSearchQuery) {
-            fetchCheckUtrData(debouncedSearchQuery);
-          } 
-          // else {
-          //   fetchCheckUtrData();
-          // }
-        }, [debouncedSearchQuery, fetchCheckUtrData]);
-      
-        const debouncedFetchBankAccounts = useCallback(
-            debounce((query: string) => {
-              fetchCheckUtrData(query);
-            }, 500),
-            [fetchCheckUtrData, debouncedSearchQuery],
-          );
-        useEffect(() => {
-            if (refreshDataEntries) {
-              fetchCheckUtrData(debouncedSearchQuery).then(() => {
-          dispatch(setRefreshDataEntries(false));
-              });
-            }
-          }, [
-            fetchCheckUtrData,
-            debouncedFetchBankAccounts,
-            searchQuery,
-            refreshDataEntries,
-            pagination?.page,
-            pagination?.limit,
-          ]);
-  // Fetch data when pagination changes
-  useEffect(() => {
-    if( selectedIndex){
-      fetchCheckUtrData();
-    }
-  }, [pagination?.page, pagination?.limit, fetchCheckUtrData]);
-
-  // Fetch data when refresh flag changes
-  useEffect(() => {
-    if (refreshDataEntries && selectedIndex === tabState) {
-      fetchCheckUtrData();
+        if (refreshDataEntries) {
+          fetchResetHistory(debouncedSearchQuery).then(() => {
       dispatch(setRefreshDataEntries(false));
-    }
-  }, [refreshDataEntries, fetchCheckUtrData, dispatch]);
+          });
+        }
+      }, [
+        fetchResetHistory,
+        debouncedFetchBankAccounts,
+        searchQuery,
+        refreshDataEntries,
+        pagination?.page,
+        pagination?.limit,
+      ]);
+
+  useEffect(() => {
+    // if(selectedIndex){
+    fetchResetHistory();
+    // }
+  }, [pagination?.page, pagination?.limit, fetchResetHistory]);
+  useEffect(() => {
+    // if (refreshDataEntries && selectedIndex === tabState) {
+      fetchResetHistory();
+      dispatch(setRefreshDataEntries(false));
+    // }
+  }, [refreshDataEntries, fetchResetHistory, dispatch]);
   // const handleDownload = async (type: ExportFormat) => {
   //   try {
   //     // Validate date selection
@@ -229,50 +213,65 @@ const CheckUtrHistory: React.FC<CheckUTR> = ({selectedIndex, tabState}) => {
   //       sortOrder: 'ASC'
   //     };
 
+  //     // Get data from API
   //     const queryString = new URLSearchParams(
   //       params as Record<string, string>,
   //     ).toString();
-  //     const response = await getAllCheckUtrHistories(queryString);
-
-  //     const dataToExport = response?.data?.checkUtr || [];
+  //     const response = await getAllResetHistory(queryString);
+  //     const dataToExport = response?.resetHistory || [];
 
   //     if (!dataToExport.length) {
   //       dispatch(
   //         addAllNotification({
   //           status: Status.ERROR,
-  //           message: 'No data found for the selected criteria',
+  //           message: 'No data found for the selected criteria'
   //         })
   //       );
   //       return;
   //     }
-  //     interface ExportedData {
-  //       Sno : string;
-  //       MerchantOrderID: string;
-  //       UTR: string;
-  //       CreatedBy: string;
-  //       CreatedAt: string;
+  //     interface ResetHistoryItem {
+  //       sno : string;
+  //       merchant_order_id: string;
+  //       new_details: object | object[]; // updated type
+  //       previous_details: object | object[]; // updated type
+  //       created_by?: string;
+  //       created_at: string;
+  //   }
+
+  //     interface FilteredResetHistoryItem {
+  //       sno : string;
+  //       merchant_order_id: string;
+  //       new_details: { status: string; user_submitted_utr: string }[];
+  //       previous_details: {
+  //       amount: string;
+  //       utr: string;
+  //       previous_status: string;
+  //       created_by?: string;
+  //       created_at: string;
+  //      }[];
   //     }
 
-  //     const filteredData: ExportedData[] = dataToExport.map(
-  //       (item: {
-  //         sno : string;
-  //         merchant_order_id: string;
-  //         utr?: string;
-  //         updated_at: string;
-  //         updated_by?: string;
-  //       }) => ({
+  //     const formatDetails = (details: any) => {
+  //       if (!details) return '';
+  //       return Object.entries(details)
+  //         .map(([key, value]) => `${key}: ${value}`)
+  //         .join(', ');
+  //     };
+
+  //     const filteredData: FilteredResetHistoryItem[] = dataToExport.map(
+  //       (item: ResetHistoryItem) => ({
   //         Sno: item.sno,
-  //         MerchantOrderID: item.merchant_order_id,
-  //         UTR: item.utr,
-          
-  //         CreatedAt: dayjs(item.updated_at,
+  //         MerchantOderID: item.merchant_order_id,
+  //         NewDetails: formatDetails(item.new_details),
+  //         PreviousDetails: formatDetails(item.previous_details),
+  //         ResetBy: item.created_by || 'N/A',
+  //         ResetAt: dayjs(item.created_at,
   //         ).tz('Asia/Kolkata').format('DD-MM-YYYY hh:mm:ss A'),
-  //         CreatedBy: item.updated_by,
+
   //       }),
-
   //     );
-  //     const filename = `check-utr-report_${startDate}_to_${endDate}`;
 
+  //     const filename = `reset-history-report_${startDate}_to_${endDate}`;
   //     downloadCSV(filteredData, type, filename);
   //     dispatch(
   //       addAllNotification({
@@ -280,40 +279,85 @@ const CheckUtrHistory: React.FC<CheckUTR> = ({selectedIndex, tabState}) => {
   //         message: `Report exported successfully as ${type}`,
   //       })
   //     );
-  //   } catch (error) {
-  //     if (error instanceof Error) {
-  //       dispatch(
-  //         addAllNotification({
-  //           status: Status.ERROR,
-  //           message: error.message || 'Failed to export report',
-  //         })
-  //       );
-  //     } else {
-  //       dispatch(
-  //         addAllNotification({
-  //           status: Status.ERROR,
-  //           message: 'Failed to export report',
-  //         })
-  //       );
-  //     }
+  //   } catch {
+  //     dispatch(
+  //       addAllNotification({
+  //         status: Status.ERROR,
+  //         message: 'Failed to export report',
+  //       })
+  //     );
   //   } finally {
   //     setExportModalOpen(false);
   //   }
   // };
 
+  // const handleRefresh = useCallback(async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     dispatch(resetPagination());
+  //     const queryString = new URLSearchParams({
+  //       page: '1',
+  //       limit: (pagination?.limit || 10).toString(),
+  //     }).toString();
+
+  //     const resetHistoryData = await getAllResetHistory(queryString);
+
+  //     if (resetHistoryData) {
+  //       dispatch(getResetHistory(resetHistoryData));
+  //       setNotificationStatus(Status.SUCCESS);
+  //       setNotificationMessage('Data refreshed successfully');
+  //       basicNonStickyNotificationToggle();
+  //     }
+  //   } catch (error) {
+  //     console.error('Refresh failed:', error);
+  //     setNotificationStatus(Status.ERROR);
+  //     setNotificationMessage('Failed to refresh data');
+  //     basicNonStickyNotificationToggle();
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }, [dispatch, pagination?.limit]);
+
+  // const handleReset = useCallback(async () => {
+  //   try {
+  //     setSelectedFilterDates('');
+  //     dispatch(resetPagination());
+
+  //     const queryString = new URLSearchParams({
+  //       page: '1',
+  //       limit: '10',
+  //     }).toString();
+
+  //     setIsLoading(true);
+  //     const resetHistoryData = await getAllResetHistory(queryString);
+  //     if (resetHistoryData) {
+  //       dispatch(getResetHistory(resetHistoryData));
+  //       setNotificationStatus(Status.SUCCESS);
+  //       setNotificationMessage('All filters reset successfully');
+  //       basicNonStickyNotificationToggle();
+  //     }
+  //   } catch (error) {
+  //     console.error('Reset failed:', error);
+  //     setNotificationStatus(Status.ERROR);
+  //     setNotificationMessage('Failed to reset data');
+  //     basicNonStickyNotificationToggle();
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }, [dispatch]);
 const handleRefresh = useCallback(async() => {
-      setIsLoading(true);
-       //---- prevent page size shrink on clicking on refresh
+    setIsLoading(true);
+     //---- prevent page size shrink on clicking on refresh
     // dispatch(resetPagination()); 
-    await fetchCheckUtrData(searchQuery.trim());
-  dispatch(
-    addAllNotification({
-      status: Status.SUCCESS,
-      message: 'CheckUtrData refreshed successfully',
-    })
-  );
-  setIsLoading(false);
-  }, [dispatch, fetchCheckUtrData, searchQuery]);
+    await fetchResetHistory(searchQuery.trim());
+    dispatch(
+        addAllNotification({
+          status: Status.SUCCESS,
+          message: 'ResetHistory refreshed successfully',
+        })
+      );
+      setIsLoading(false);
+  }, [dispatch, fetchResetHistory, searchQuery]);
   
   //reset
 const handleReset = useCallback(async () => {
@@ -329,11 +373,12 @@ const handleReset = useCallback(async () => {
   );
   setIsLoading(false);
 }, [dispatch]);
+  
   return (
     <div className="grid grid-cols-12 gap-y-10 gap-x-6">
       <div className="col-span-12">
         <div className="mt-3.5">
-          <div className="flex flex-col">
+          <div className="flex flex-col ">
             <div className="flex flex-col p-2 sm:p-4 md:p-5 sm:items-center sm:flex-row gap-y-2">
               <div>
                 <div className="relative w-full sm:w-auto sm:flex-shrink-0">
@@ -341,9 +386,10 @@ const handleReset = useCallback(async () => {
                     icon="Search"
                     className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
                   />
-                  <FormInput
+                
+                   <FormInput
                     type="text"
-                    placeholder="Search transactions..."
+                    placeholder="Merchant Order ID ..."
                     className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -357,6 +403,7 @@ const handleReset = useCallback(async () => {
                     )}
                 </div>
               </div>
+
               <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 sm:ml-auto">
                 <Menu>
                   <Menu.Button
@@ -434,7 +481,7 @@ const handleReset = useCallback(async () => {
                           className="w-[90%] mx-4 pl-9 rounded-lg dark:bg-darkmode-900/30 dark:text-gray-200 dark:border-gray-700"
                         />
                       </div>
-                      {/* <div className="flex flex-row gap-4 my-4 pt-6">
+                      <div className="flex flex-row gap-4 my-4 pt-6">
                         <Button
                           className="dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
                           onClick={() => handleDownload('PDF')}
@@ -453,10 +500,10 @@ const handleReset = useCallback(async () => {
                         >
                           Export as XLSX
                         </Button>
-                      </div> */}
-                    {/* </Modal>
+                      </div>
+                    </Modal>
                   )}
-                </Menu> */} 
+                </Menu> */}
                 {/* <Popover className="inline-block">
                   {({ close }: { close: () => void }) => (
                     <>
@@ -521,17 +568,18 @@ const handleReset = useCallback(async () => {
                 </Popover> */}
               </div>
             </div>
+
             <div className="overflow-auto xl:overflow-visible">
               {isLoading ? (
                 <div className="flex justify-center items-center w-full h-screen">
                   <LoadingIcon icon="ball-triangle" className="w-[5%] h-auto" />
                 </div>
               ) : (
-                <CommonTable
-                  columns={Columns.CHECK_UTR_HISTORY}
+                <CustomTable
+                  columns={Columns.RESETHISTORY}
                   data={{
-                    rows: checkUtrHistory?.checkUtrHistory || [],
-                    totalCount: checkUtrHistory.totalCount,
+                    rows: allresetHistory.resetHistory || [],
+                    totalCount: allresetHistory?.totalCount,
                   }}
                   currentPage={Number(pagination?.page) || 1}
                   pageSize={Number(pagination?.limit) || 10}
@@ -545,6 +593,6 @@ const handleReset = useCallback(async () => {
       </div>
     </div>
   );
-};
+}
 
-export default CheckUtrHistory;
+export default ResetHistory;

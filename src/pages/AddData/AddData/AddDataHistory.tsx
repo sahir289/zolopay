@@ -85,12 +85,12 @@ interface FilterState {
   [key: string]: string | string[] | undefined;
 }
 
-interface AddDataHistoryProps {
-  selectedIndex: number;
-  tabState: number;
-}
+// interface AddDataHistoryProps {
+//   selectedIndex: number;
+//   tabState: number;
+// }
 
-const AddDataHistory: React.FC<AddDataHistoryProps> = ({ selectedIndex }) => {
+const AddDataHistory = () => {
   const dispatch = useAppDispatch();
   const pagination = useAppSelector(getPaginationData);
   const [isPageLoading, setIsPageLoading] = useState(false);
@@ -487,9 +487,9 @@ const AddDataHistory: React.FC<AddDataHistoryProps> = ({ selectedIndex }) => {
         params as Record<string, string>,
       ).toString();
       let response;
-      if (selectedIndex === 0) {
+      // if (selectedIndex === 0) {
         response = await getBankResponsesReports(queryString);
-      }
+      // }
       const dataToExport = response?.data?.rows || response?.rows || [];
       if (!dataToExport.length) {
         dispatch(

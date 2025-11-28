@@ -9,9 +9,9 @@ import { getTabs } from '@/redux-toolkit/slices/common/tabs/tabSelectors';
 import { useAppSelector } from '@/redux-toolkit/hooks/useAppSelector';
 import { selectDarkMode } from '@/redux-toolkit/slices/common/darkMode/darkModeSlice';
 import { setActiveTab } from '@/redux-toolkit/slices/common/tabs/tabSlice';
-import CheckUtrHistory from './CheckUtrHistory';
-import ResetHistory from './ResetHistory';
-import AddDataHistory from './AddDataHistory';
+import CheckUtrHistory from '../CheckUtr/CheckUtrHistory';
+import ResetHistory from '../ResetData/ResetHistory';
+import AddDataHistory from '../AddData/AddDataHistory';
 import { Role } from '@/constants';
 interface dataEntries {
   tabState: number;

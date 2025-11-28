@@ -206,6 +206,33 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
         ];
         menuItem.activeDropdown = false;
       }
+      console.log("Role in side menu:", menuItem.title);
+      if (menuItem.title === "Data Entries") {
+        menuItem.subMenu = [
+          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
+            title: "Add Data",
+            pathname: "/auth/data-entries/add-data",
+            icon: "BarChart" as const,
+            }]
+            : [],
+          ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
+            title: "Check UTR",
+            pathname: "/auth/data-entries/check-utr",
+            icon: "BarChart2" as const,
+            }]
+            : [],
+          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
+            title: "Reset Data",
+            pathname: "/auth/data-entries/reset-data",
+            icon: "BarChart" as const,
+            }]
+            : [],
+        ];
+        menuItem.activeDropdown = false;
+      }
 
       if (menuItem.title === "Bank Details") {
         menuItem.subMenu = [

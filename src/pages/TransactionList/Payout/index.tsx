@@ -38,16 +38,6 @@ import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotificati
 // Normal imports instead of lazy loading
 import PayOut from '@/pages/TransactionList/Payout/payout';
 
-// Commented out lazy loading approach:
-// const PayInComponent = withLazyLoading(
-//   () => import('@/pages/TransactionList/Payin/payin'),
-//   { chunkName: 'payin', retries: 3 }
-// );
-// const PayOut = withLazyLoading(
-//   () => import('@/pages/TransactionList/Payout/payout'),
-//   { chunkName: 'payout', retries: 3 }
-// );
-
 function Main() {
   const dispatch = useAppDispatch();
   useAppSelector(selectDarkMode); // Subscribe to dark mode to trigger re-render
