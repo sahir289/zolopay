@@ -54,7 +54,7 @@ function Main() {
                       className="w-full text-slate-500 whitespace-nowrap rounded-[0.6rem] py-3 flex items-center gap-2 justify-center"
                       as="button"
                     >
-                      <Lucide icon="Send" className="w-4 h-4 stroke-[1.4]" />
+                      <Lucide icon="SendHorizonal" className="w-4 h-4 stroke-[1.4]" />
                       Upcoming
                       <div className="min-w-[1.15rem] rounded-full bg-white flex items-center justify-center text-xs">
                         <div className="w-full h-full px-1.5 py-0.5 leading-none rounded-full bg-theme-1/[0.75] text-white">
@@ -120,7 +120,7 @@ function Main() {
                             </Menu.Button>
                             <Menu.Items className="w-40">
                               <Menu.Item>
-                                <Lucide icon="Copy" className="w-4 h-4 mr-2" />{" "}
+                                <Lucide icon="ClipboardCopy" className="w-4 h-4 mr-2" />{" "}
                                 Copy Link
                               </Menu.Item>
                               <Menu.Item>

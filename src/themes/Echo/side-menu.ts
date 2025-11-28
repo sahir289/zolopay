@@ -79,12 +79,12 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           {
             title: "Merchant Dashboard",
             pathname: "/auth/dashboard/merchant",
-            icon: "BarChart",
+            icon: "TrendingUp",
           },
           {
             title: "Vendor Dashboard",
             pathname: "/auth/dashboard/vendor",
-            icon: "BarChart2",
+            icon: "LineChart",
           },
         ];
         menuItem.activeDropdown = false;
@@ -95,12 +95,12 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           {
             title: "Payin Transactions",
             pathname: "/auth/transaction-list/payins",
-            icon: "List",
+            icon: "ArrowDownCircle",
           },
           {
             title: "Payout Transactions",
             pathname: "/auth/transaction-list/payouts",
-            icon: "Clock",
+            icon: "ArrowUpCircle",
           },
         ];
         menuItem.activeDropdown = false;
@@ -110,12 +110,12 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           {
             title: "Merchant Settlements",
             pathname: "/auth/settlement/merchants",
-            icon: "DollarSign",
+            icon: "Coins",
           },
           {
             title: "Vendor Settlements",
             pathname: "/auth/settlement/vendors",
-            icon: "CreditCard",
+            icon: "Wallet",
           },
         ];
         menuItem.activeDropdown = false;
@@ -126,12 +126,12 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           {
             title: "Merchant Reports",
             pathname: "/auth/reports/merchants",
-            icon: "BarChart",
+            icon: "FileBarChart",
           },
           {
             title: "Vendor Reports",
             pathname: "/auth/reports/vendors",
-            icon: "BarChart2",
+            icon: "FileSpreadsheet",
           },
         ];
         menuItem.activeDropdown = false;
@@ -142,12 +142,12 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           {
             title: "Merchant",
             pathname: "/auth/beneficiaryaccounts/merchants",
-            icon: "BarChart",
+            icon: "User",
           },
           {
             title: "Vendor",
             pathname: "/auth/beneficiaryaccounts/vendors",
-            icon: "BarChart2",
+            icon: "Users",
           },
         ];
         menuItem.activeDropdown = false;
@@ -158,12 +158,12 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           {
             title: "Merchant",
             pathname: "/auth/clients/merchants",
-            icon: "BarChart",
+            icon: "Store",
           },
           {
             title: "Vendor",
             pathname: "/auth/clients/vendors",
-            icon: "BarChart2",
+            icon: "Building",
           },
         ];
         menuItem.activeDropdown = false;
@@ -174,12 +174,12 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           {
             title: "Payin Accounts",
             pathname: "/auth/bankaccounts/payins",
-            icon: "BarChart",
+            icon: "ArrowDown",
           },
           {
             title: "Payout Accounts",
             pathname: "/auth/bankaccounts/payouts",
-            icon: "BarChart2",
+            icon: "ArrowUp",
           },
         ];
         menuItem.activeDropdown = false;

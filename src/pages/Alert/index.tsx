@@ -172,7 +172,7 @@ function Main(): JSX.Element {
                                 className="flex items-center"
                               >
                                 <Lucide
-                                  icon="AlertCircle"
+                                  icon="AlertTriangle"
                                   className="w-6 h-6 mr-2"
                                 />{" "}
                                 Awesome alert with icon
@@ -182,7 +182,7 @@ function Main(): JSX.Element {
                                 className="flex items-center"
                               >
                                 <Lucide
-                                  icon="AlertOctagon"
+                                  icon="AlertTriangle"
                                   className="w-6 h-6 mr-2"
                                 />{" "}
                                 Awesome alert with icon
@@ -202,7 +202,7 @@ function Main(): JSX.Element {
                                 className="flex items-center"
                               >
                                 <Lucide
-                                  icon="AlertCircle"
+                                  icon="AlertTriangle"
                                   className="w-6 h-6 mr-2"
                                 />{" "}
                                 Awesome alert with icon
@@ -222,7 +222,7 @@ function Main(): JSX.Element {
                                 className="flex items-center"
                               >
                                 <Lucide
-                                  icon="AlertOctagon"
+                                  icon="AlertTriangle"
                                   className="w-6 h-6 mr-2"
                                 />{" "}
                                 Awesome alert with icon
@@ -248,7 +248,7 @@ function Main(): JSX.Element {
                   className="flex items-center"
                 >
                   <Lucide
-                    icon="AlertCircle"
+                    icon="AlertTriangle"
                     className="w-6 h-6 mr-2"
                   />{" "}
                   Awesome alert with icon
@@ -258,7 +258,7 @@ function Main(): JSX.Element {
                   className="flex items-center"
                 >
                   <Lucide
-                    icon="AlertOctagon"
+                    icon="AlertTriangle"
                     className="w-6 h-6 mr-2"
                   />{" "}
                   Awesome alert with icon
@@ -278,7 +278,7 @@ function Main(): JSX.Element {
                   className="flex items-center"
                 >
                   <Lucide
-                    icon="AlertCircle"
+                    icon="AlertTriangle"
                     className="w-6 h-6 mr-2"
                   />{" "}
                   Awesome alert with icon
@@ -298,7 +298,7 @@ function Main(): JSX.Element {
                   className="flex items-center"
                 >
                   <Lucide
-                    icon="AlertOctagon"
+                    icon="AlertTriangle"
                     className="w-6 h-6 mr-2"
                   />{" "}
                   Awesome alert with icon
@@ -663,7 +663,7 @@ function Main(): JSX.Element {
                                 {/* {({ dismiss }: { dismiss: () => void }) => (
                                   <>
                                     <Lucide
-                                      icon="AlertCircle"
+                                      icon="AlertTriangle"
                                       className="w-6 h-6 mr-2"
                                     />{" "}
                                     Awesome alert with icon
@@ -685,7 +685,7 @@ function Main(): JSX.Element {
                                 {/* {({ dismiss }: { dismiss: () => void }) => (
                                   <>
                                     <Lucide
-                                      icon="AlertOctagon"
+                                      icon="AlertTriangle"
                                       className="w-6 h-6 mr-2"
                                     />{" "}
                                     Awesome alert with icon
@@ -729,7 +729,7 @@ function Main(): JSX.Element {
                                 {/* {({ dismiss }: { dismiss: () => void }) => (
                                   <>
                                     <Lucide
-                                      icon="AlertCircle"
+                                      icon="AlertTriangle"
                                       className="w-6 h-6 mr-2"
                                     />{" "}
                                     Awesome alert with icon
@@ -773,7 +773,7 @@ function Main(): JSX.Element {
                                 {/* {({ dismiss }: { dismiss: () => void }) => (
                                   <>
                                     <Lucide
-                                      icon="AlertOctagon"
+                                      icon="AlertTriangle"
                                       className="w-6 h-6 mr-2"
                                     />{" "}
                                     Awesome alert with icon
@@ -823,7 +823,7 @@ function Main(): JSX.Element {
                   {({ dismiss }) => (
                     <>
                       <Lucide
-                        icon="AlertCircle"
+                        icon="AlertTriangle"
                         className="w-6 h-6 mr-2"
                       />{" "}
                       Awesome alert with icon
@@ -845,7 +845,7 @@ function Main(): JSX.Element {
                   {({ dismiss }) => (
                     <>
                       <Lucide
-                        icon="AlertOctagon"
+                        icon="AlertTriangle"
                         className="w-6 h-6 mr-2"
                       />{" "}
                       Awesome alert with icon
@@ -889,7 +889,7 @@ function Main(): JSX.Element {
                   {({ dismiss }) => (
                     <>
                       <Lucide
-                        icon="AlertCircle"
+                        icon="AlertTriangle"
                         className="w-6 h-6 mr-2"
                       />{" "}
                       Awesome alert with icon
@@ -933,7 +933,7 @@ function Main(): JSX.Element {
                   {({ dismiss }) => (
                     <>
                       <Lucide
-                        icon="AlertOctagon"
+                        icon="AlertTriangle"
                         className="w-6 h-6 mr-2"
                       />{" "}
                       Awesome alert with icon
@@ -1032,7 +1032,7 @@ function Main(): JSX.Element {
                                 {/* {({ dismiss }: { dismiss: () => void }) => (
                                   <>
                                     <Lucide
-                                      icon="AlertCircle"
+                                      icon="AlertTriangle"
                                       className="w-6 h-6 mr-2"
                                     />{" "}
                                     Awesome alert with icon
@@ -1054,7 +1054,7 @@ function Main(): JSX.Element {
                                 {/* {({ dismiss }: { dismiss: () => void }) => (
                                   <>
                                     <Lucide
-                                      icon="AlertOctagon"
+                                      icon="AlertTriangle"
                                       className="w-6 h-6 mr-2"
                                     />{" "}
                                     Awesome alert with icon
@@ -1098,7 +1098,7 @@ function Main(): JSX.Element {
                                 {/* {({ dismiss }: { dismiss: () => void }) => (
                                   <>
                                     <Lucide
-                                      icon="AlertCircle"
+                                      icon="AlertTriangle"
                                       className="w-6 h-6 mr-2"
                                     />{" "}
                                     Awesome alert with icon
@@ -1120,7 +1120,7 @@ function Main(): JSX.Element {
                                 {/* {({ dismiss }: { dismiss: () => void }) => (
                                   <>
                                     <Lucide
-                                      icon="AlertCircle"
+                                      icon="AlertTriangle"
                                       className="w-6 h-6 mr-2"
                                     />{" "}
                                     Awesome alert with icon
@@ -1142,7 +1142,7 @@ function Main(): JSX.Element {
                                 {/* {({ dismiss }: { dismiss: () => void }) => (
                                   <>
                                     <Lucide
-                                      icon="AlertOctagon"
+                                      icon="AlertTriangle"
                                       className="w-6 h-6 mr-2"
                                     />{" "}
                                     Awesome alert with icon
@@ -1192,7 +1192,7 @@ function Main(): JSX.Element {
                   {({ dismiss }) => (
                     <>
                       <Lucide
-                        icon="AlertCircle"
+                        icon="AlertTriangle"
                         className="w-6 h-6 mr-2"
                       />{" "}
                       Awesome alert with icon
@@ -1214,7 +1214,7 @@ function Main(): JSX.Element {
                   {({ dismiss }) => (
                     <>
                       <Lucide
-                        icon="AlertOctagon"
+                        icon="AlertTriangle"
                         className="w-6 h-6 mr-2"
                       />{" "}
                       Awesome alert with icon
@@ -1258,7 +1258,7 @@ function Main(): JSX.Element {
                   {({ dismiss }) => (
                     <>
                       <Lucide
-                        icon="AlertCircle"
+                        icon="AlertTriangle"
                         className="w-6 h-6 mr-2"
                       />{" "}
                       Awesome alert with icon
@@ -1280,7 +1280,7 @@ function Main(): JSX.Element {
                   {({ dismiss }) => (
                     <>
                       <Lucide
-                        icon="AlertCircle"
+                        icon="AlertTriangle"
                         className="w-6 h-6 mr-2"
                       />{" "}
                       Awesome alert with icon
@@ -1302,7 +1302,7 @@ function Main(): JSX.Element {
                   {({ dismiss }) => (
                     <>
                       <Lucide
-                        icon="AlertOctagon"
+                        icon="AlertTriangle"
                         className="w-6 h-6 mr-2"
                       />{" "}
                       Awesome alert with icon
@@ -1399,7 +1399,7 @@ function Main(): JSX.Element {
                                 className="flex items-center"
                               >
                                 <Lucide
-                                  icon="AlertCircle"
+                                  icon="AlertTriangle"
                                   className="w-6 h-6 mr-2"
                                 />{" "}
                                 Awesome alert with icon
@@ -1409,7 +1409,7 @@ function Main(): JSX.Element {
                                 className="flex items-center"
                               >
                                 <Lucide
-                                  icon="AlertOctagon"
+                                  icon="AlertTriangle"
                                   className="w-6 h-6 mr-2"
                                 />{" "}
                                 Awesome alert with icon
@@ -1429,7 +1429,7 @@ function Main(): JSX.Element {
                                 className="flex items-center"
                               >
                                 <Lucide
-                                  icon="AlertCircle"
+                                  icon="AlertTriangle"
                                   className="w-6 h-6 mr-2"
                                 />{" "}
                                 Awesome alert with icon
@@ -1449,7 +1449,7 @@ function Main(): JSX.Element {
                                 className="flex items-center"
                               >
                                 <Lucide
-                                  icon="AlertOctagon"
+                                  icon="AlertTriangle"
                                   className="w-6 h-6 mr-2"
                                 />{" "}
                                 Awesome alert with icon
@@ -1475,7 +1475,7 @@ function Main(): JSX.Element {
                   className="flex items-center"
                 >
                   <Lucide
-                    icon="AlertCircle"
+                    icon="AlertTriangle"
                     className="w-6 h-6 mr-2"
                   />{" "}
                   Awesome alert with icon
@@ -1485,7 +1485,7 @@ function Main(): JSX.Element {
                   className="flex items-center"
                 >
                   <Lucide
-                    icon="AlertOctagon"
+                    icon="AlertTriangle"
                     className="w-6 h-6 mr-2"
                   />{" "}
                   Awesome alert with icon
@@ -1505,7 +1505,7 @@ function Main(): JSX.Element {
                   className="flex items-center"
                 >
                   <Lucide
-                    icon="AlertCircle"
+                    icon="AlertTriangle"
                     className="w-6 h-6 mr-2"
                   />{" "}
                   Awesome alert with icon
@@ -1525,7 +1525,7 @@ function Main(): JSX.Element {
                   className="flex items-center"
                 >
                   <Lucide
-                    icon="AlertOctagon"
+                    icon="AlertTriangle"
                     className="w-6 h-6 mr-2"
                   />{" "}
                   Awesome alert with icon

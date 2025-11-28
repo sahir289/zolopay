@@ -39,7 +39,7 @@ const Modal: React.FC<ModalProps> = ({
             handleModal();
           }}
         >
-          <Lucide icon="PenLine" className="stroke-[1.3] w-4 h-4 mr-2" />
+          <Lucide icon="PencilLine" className="stroke-[1.3] w-4 h-4 mr-2" />
           {buttonTitle}
         </Button>
       )}

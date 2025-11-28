@@ -56,7 +56,7 @@ function Main(props: MainProps) {
                     className="absolute z-10 w-full h-full opacity-0 peer"
                   />
                   <div className="absolute inset-0 flex items-center justify-center w-6 h-6 m-auto text-white transition-all border rounded-full opacity-0 bg-theme-1/80 border-theme-1 peer-checked:opacity-100">
-                    <Lucide icon="Check" className="stroke-[1.5] w-3 h-3" />
+                    <Lucide icon="CheckCircle2" className="stroke-[1.5] w-3 h-3" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center w-6 h-6 m-auto transition-all border rounded-full text-primary border-theme-1/20 bg-theme-1/5 peer-checked:opacity-0 peer-hover:bg-theme-1/10"></div>
                 </div>

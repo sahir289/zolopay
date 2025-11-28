@@ -197,7 +197,7 @@ function Main() {
                   className="relative h-14 rounded-lg flex items-center py-3 [&.active]:text-primary [&.active]:font-medium [&.active]:shadow-sm hover:text-primary border border-slate-200/80 [&.active]:bg-primary/[0.04] [&.active]:border-primary/10 place-content-center"
                 >
                   <Lucide
-                    icon="Trash2"
+                    icon="Trash"
                     className="stroke-[0.8] w-5 h-5 fill-theme-1/10"
                   />
                 </Tippy>
@@ -238,11 +238,11 @@ function Main() {
                   </Menu.Button>
                   <Menu.Items className="w-40">
                     <Menu.Item>
-                      <Lucide icon="FileBarChart" className="w-4 h-4 mr-2" />{" "}
+                      <Lucide icon="BarChart3" className="w-4 h-4 mr-2" />{" "}
                       PDF
                     </Menu.Item>
                     <Menu.Item>
-                      <Lucide icon="FileBarChart" className="w-4 h-4 mr-2" />
+                      <Lucide icon="BarChart3" className="w-4 h-4 mr-2" />
                       CSV
                     </Menu.Item>
                   </Menu.Items>
@@ -323,7 +323,7 @@ function Main() {
                 <div className="h-4 mt-1 mb-5 text-xs uppercase text-slate-500/60 relative before:content-[''] before:h-px before:bg-slate-200/70 before:w-full before:absolute before:inset-y-0 before:my-auto dark:text-slate-400 dark:before:bg-darkmode-300">
                   <span className="flex items-center absolute px-2.5 ml-4 bg-white dark:bg-darkmode-600">
                     <Lucide
-                      icon="Clock"
+                      icon="Timer"
                       className="w-[15px] h-[15px] stroke-[1.7] stroke-slate-400/70 mr-1.5"
                     />
                     Recently Updated Files
@@ -403,7 +403,7 @@ function Main() {
                           </Menu.Button>
                           <Menu.Items className="w-40">
                             <Menu.Item>
-                              <Lucide icon="Users" className="w-4 h-4 mr-2" />{" "}
+                              <Lucide icon="UsersRound" className="w-4 h-4 mr-2" />{" "}
                               Share File
                             </Menu.Item>
                             <Menu.Item>
@@ -501,7 +501,7 @@ function Main() {
                           </Menu.Button>
                           <Menu.Items className="w-40">
                             <Menu.Item>
-                              <Lucide icon="Users" className="w-4 h-4 mr-2" />{" "}
+                              <Lucide icon="UsersRound" className="w-4 h-4 mr-2" />{" "}
                               Share File
                             </Menu.Item>
                             <Menu.Item>
@@ -519,7 +519,7 @@ function Main() {
                 <div className="h-4 mt-1 mb-5 text-xs uppercase text-slate-500/60 relative before:content-[''] before:h-px before:bg-slate-200/70 before:w-full before:absolute before:inset-y-0 before:my-auto dark:text-slate-400 dark:before:bg-darkmode-300">
                   <span className="flex items-center absolute px-2.5 ml-4 bg-white dark:bg-darkmode-600">
                     <Lucide
-                      icon="Trash2"
+                      icon="Trash"
                       className="w-[15px] h-[15px] stroke-[1.7] stroke-slate-400/70 mr-1.5"
                     />
                     Deleted Files
@@ -599,7 +599,7 @@ function Main() {
                           </Menu.Button>
                           <Menu.Items className="w-40">
                             <Menu.Item>
-                              <Lucide icon="Users" className="w-4 h-4 mr-2" />{" "}
+                              <Lucide icon="UsersRound" className="w-4 h-4 mr-2" />{" "}
                               Share File
                             </Menu.Item>
                             <Menu.Item>

@@ -455,7 +455,7 @@ const AssignCountryModal: React.FC<AssignCountryModalProps> = ({
                           }
                           disabled={isLoading}
                         >
-                          <Lucide icon="RotateCcw" className="w-5 h-5" />
+                          <Lucide icon="RefreshCw" className="w-5 h-5" />
                         </button>
                       </li>
                     ))}
