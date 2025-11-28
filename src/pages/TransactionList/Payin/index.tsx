@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-undef */
 import { Tab } from '@/components/Base/Headless';
+import Lucide from '@/components/Base/Lucide';
 import Modal from '@/components/Modal/modals';
 import { useState, useEffect } from 'react';
 import {

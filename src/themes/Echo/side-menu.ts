@@ -95,16 +95,20 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
       // Example: Add submenus under "Dashboard"
       if (menuItem.title === "Dashboard") {
         menuItem.subMenu = [
-          {
-            title: "Merchant Dashboard",
-            pathname: "/auth/dashboard/merchant",
-            icon: "TrendingUp",
-          },
-          {
-            title: "Vendor Dashboard",
-            pathname: "/auth/dashboard/vendor",
-            icon: "BarChart2",
-          },
+          ...(Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
+                title: "Merchant Dashboard",
+                pathname: "/auth/dashboard/merchant",
+                icon: "TrendingUp" as "BarChart",
+              }]
+            : []),
+          ...(Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
+                title: "Vendor Dashboard",
+                pathname: "/auth/dashboard/vendor",
+                icon: "LineChart" as "BarChart2",
+              }]
+            : []),
         ];
         menuItem.activeDropdown = false;
       }
@@ -114,7 +118,7 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           {
             title: "Payin Transactions",
             pathname: "/auth/transaction-list/payins",
-            icon: "ArrowDownCircle",
+            icon: "ArrowDownCircle" as const,
           },
           {
             title: "Payout Transactions",
@@ -126,20 +130,20 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
       }
       if (menuItem.title === "Settlements") {
         menuItem.subMenu = [
-          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+          ...(Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
-            title: "Merchant Settlements",
-            pathname: "/auth/settlement/merchants",
-            icon: "Coins" as const,
-            }]
-            : [],
-          ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+                title: "Merchant Settlements",
+                pathname: "/auth/settlement/merchants",
+                icon: "Coins" as const,
+              }]
+            : []),
+          ...(Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
-            title: "Vendor Settlements",
-            pathname: "/auth/settlement/vendors",
-            icon: "Wallet" as const,
-            }]
-            : [],
+                title: "Vendor Settlements",
+                pathname: "/auth/settlement/vendors",
+                icon: "Wallet" as const,
+              }]
+            : []),
         ];
         menuItem.activeDropdown = false;
       }
@@ -197,33 +201,6 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             title: "Vendor",
             pathname: "/auth/clients/vendors",
             icon: "Building" as const,
-            }]
-            : [],
-        ];
-        menuItem.activeDropdown = false;
-      }
-      console.log("Role in side menu:", menuItem.title);
-      if (menuItem.title === "Data Entries") {
-        menuItem.subMenu = [
-          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Add Data",
-            pathname: "/auth/data-entries/add-data",
-            icon: "BarChart" as const,
-            }]
-            : [],
-          ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Check UTR",
-            pathname: "/auth/data-entries/check-utr",
-            icon: "BarChart2" as const,
-            }]
-            : [],
-          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Reset Data",
-            pathname: "/auth/data-entries/reset-data",
-            icon: "BarChart" as const,
             }]
             : [],
         ];
