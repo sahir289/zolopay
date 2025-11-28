@@ -107,7 +107,7 @@ const Clients: React.FC = () => {
                         }
                       >
                         <Lucide
-                          icon="CreditCard"
+                          icon="Wallet"
                           className="w-5 h-5 ml-px stroke-[2.5]"
                         />
                         &nbsp; Merchant

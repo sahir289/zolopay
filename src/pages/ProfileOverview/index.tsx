@@ -345,7 +345,7 @@ function Main() {
                                               <Menu.Items className="w-40">
                                                 <Menu.Item>
                                                   <Lucide
-                                                    icon="Copy"
+                                                    icon="ClipboardCopy"
                                                     className="w-4 h-4 mr-2"
                                                   />{" "}
                                                   Copy Link
@@ -453,7 +453,7 @@ function Main() {
                         >
                           View All Messages
                           <Lucide
-                            icon="ArrowRight"
+                            icon="MoveRight"
                             className="stroke-[1.3] w-4 h-4 ml-2"
                           />
                         </Button>
@@ -490,13 +490,13 @@ function Main() {
                                   />
                                   <div className="absolute inset-0 flex items-center justify-center m-auto text-white transition-all border rounded-full opacity-0 w-7 h-7 bg-theme-1/80 border-theme-1 peer-checked:opacity-100">
                                     <Lucide
-                                      icon="Check"
+                                      icon="CheckCircle2"
                                       className="stroke-[1.5] w-3 h-3"
                                     />
                                   </div>
                                   <div className="absolute inset-0 flex items-center justify-center m-auto transition-all border rounded-full w-7 h-7 peer-hover:rotate-180 text-primary border-theme-1/20 bg-theme-1/5 peer-checked:opacity-0 peer-hover:bg-theme-1/10">
                                     <Lucide
-                                      icon="Plus"
+                                      icon="PlusCircle"
                                       className="stroke-[1.5] w-3 h-3"
                                     />
                                   </div>
@@ -511,7 +511,7 @@ function Main() {
                         >
                           View All Events
                           <Lucide
-                            icon="ArrowRight"
+                            icon="MoveRight"
                             className="stroke-[1.3] w-4 h-4 ml-2"
                           />
                         </Button>
@@ -646,7 +646,7 @@ function Main() {
                         >
                           View All Projects
                           <Lucide
-                            icon="ArrowRight"
+                            icon="MoveRight"
                             className="stroke-[1.3] w-4 h-4 ml-2"
                           />
                         </Button>
@@ -685,7 +685,7 @@ function Main() {
                           <div className="mt-3.5">
                             <div className="flex items-center">
                               <Lucide
-                                icon="Clipboard"
+                                icon="ClipboardList"
                                 className="w-4 h-4 mr-2 stroke-[1.3] text-slate-500"
                               />
                               Department: {users.fakeUsers()[0]?.department}
@@ -699,7 +699,7 @@ function Main() {
                             </div>
                             <div className="flex items-center mt-3">
                               <Lucide
-                                icon="Clock"
+                                icon="Timer"
                                 className="w-4 h-4 mr-2 stroke-[1.3] text-slate-500"
                               />
                               Manager:
@@ -725,7 +725,7 @@ function Main() {
                           <div className="mt-3.5">
                             <div className="flex items-center">
                               <Lucide
-                                icon="Clipboard"
+                                icon="ClipboardList"
                                 className="w-4 h-4 mr-2 stroke-[1.3] text-slate-500"
                               />
                               Email:{" "}
@@ -758,7 +758,7 @@ function Main() {
                           <div className="mt-3.5">
                             <div className="flex items-center mt-3">
                               <Lucide
-                                icon="Clock"
+                                icon="Timer"
                                 className="w-4 h-4 mr-2 stroke-[1.3] text-slate-500"
                               />
                               Teams:
@@ -812,7 +812,7 @@ function Main() {
                       </Menu.Button>
                       <Menu.Items className="w-40">
                         <Menu.Item>
-                          <Lucide icon="Copy" className="w-4 h-4 mr-2" /> Copy
+                          <Lucide icon="ClipboardCopy" className="w-4 h-4 mr-2" /> Copy
                           Link
                         </Menu.Item>
                         <Menu.Item>
@@ -962,7 +962,7 @@ function Main() {
                         </Menu.Button>
                         <Menu.Items className="w-40">
                           <Menu.Item>
-                            <Lucide icon="Copy" className="w-4 h-4 mr-2" /> Copy
+                            <Lucide icon="ClipboardCopy" className="w-4 h-4 mr-2" /> Copy
                             Link
                           </Menu.Item>
                           <Menu.Item>
@@ -1069,7 +1069,7 @@ function Main() {
                       </Menu.Button>
                       <Menu.Items className="w-40">
                         <Menu.Item>
-                          <Lucide icon="Copy" className="w-4 h-4 mr-2" /> Copy
+                          <Lucide icon="ClipboardCopy" className="w-4 h-4 mr-2" /> Copy
                           Link
                         </Menu.Item>
                         <Menu.Item>
@@ -1135,7 +1135,7 @@ function Main() {
                       ) : (
                         <Button variant="primary" className="px-4 ml-auto">
                           <Lucide
-                            icon="Check"
+                            icon="CheckCircle2"
                             className="stroke-[1.3] w-4 h-4 -ml-0.5 mr-2"
                           />
                           Connected

@@ -195,7 +195,7 @@ function Main() {
                     },
                   ])}
                 >
-                  <Lucide icon="Trash2" className="stroke-[1.3] w-4 h-4 mr-3" />{" "}
+                  <Lucide icon="Trash" className="stroke-[1.3] w-4 h-4 mr-3" />{" "}
                   Account Deactivation
                 </Link>
               </div>
@@ -434,7 +434,7 @@ function Main() {
                       >
                         <Lucide
                           className="w-4 h-4 stroke-[1.3] mr-1"
-                          icon="Plus"
+                          icon="PlusCircle"
                         />
                         Add phone
                       </a>
@@ -1089,7 +1089,7 @@ function Main() {
                       <>
                         <div>
                           <Lucide
-                            icon="AlertCircle"
+                            icon="AlertTriangle"
                             className="stroke-[1.3] w-4 h-4 mr-3 md:mr-2"
                           />
                         </div>
@@ -1641,7 +1641,7 @@ function Main() {
                           className="px-4 bg-primary/5 border-primary/50 text-primary"
                         >
                           <Lucide
-                            icon="Check"
+                            icon="CheckCircle2"
                             className="stroke-[1.3] w-4 h-4 -ml-0.5 mr-2"
                           />
                           Connected
@@ -1714,7 +1714,7 @@ function Main() {
                           className="px-4 bg-primary/5 border-primary/50 text-primary"
                         >
                           <Lucide
-                            icon="Check"
+                            icon="CheckCircle2"
                             className="stroke-[1.3] w-4 h-4 -ml-0.5 mr-2"
                           />
                           Connected

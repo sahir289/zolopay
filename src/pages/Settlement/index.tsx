@@ -582,7 +582,7 @@
 //                         } : {}}
 //                       >
 //                         <Lucide
-//                           icon="CreditCard"
+//                           icon="Wallet"
 //                           className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]"
 //                         />
 //                         <span className="hidden sm:inline">Merchant Settlement</span>

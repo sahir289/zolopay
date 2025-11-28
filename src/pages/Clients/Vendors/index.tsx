@@ -895,7 +895,7 @@ function Main() {
                     onClick={handleReset}
                   >
                     <Lucide
-                      icon="RotateCcw"
+                      icon="RefreshCw"
                       className="stroke-[1.3] w-4 h-4 mr-2"
                     />
                     Reset
@@ -944,7 +944,7 @@ function Main() {
                     const actions = [
                       {
                         label: 'Edit',
-                        icon: 'Pencil' as const,
+                        icon: 'PencilLine' as const,
                         onClick: () => handleEditModal(row),
                       },
                       ...(isSingleVendor &&
@@ -953,7 +953,7 @@ function Main() {
                         ? [
                             {
                               label: 'Link',
-                              icon: 'Link2' as const,
+                              icon: 'Link' as const,
                               onClick: () => handleLinkModal(row),
                             },
                           ]
@@ -962,19 +962,19 @@ function Main() {
                         ? [
                             {
                               label: 'Transfer',
-                              icon: 'Repeat' as const,
+                              icon: 'Repeat2' as const,
                               onClick: () => handleTransferModal(row),
                             },
                             {
                               label: 'Unlink',
-                              icon: 'Unlink2' as const,
+                              icon: 'Unlink' as const,
                               onClick: () => handleUnlinkModal(row),
                             },
                           ]
                         : []),
                       {
                         label: 'Delete',
-                        icon: 'Trash2' as const,
+                        icon: 'Trash' as const,
                         onClick: async () => handledeleteData(row.user_id),
                       },
                     ];
@@ -985,12 +985,12 @@ function Main() {
                     const actions = [
                       {
                         label: 'Edit',
-                        icon: 'Pencil' as const,
+                        icon: 'PencilLine' as const,
                         onClick: () => handleEditModalFromExpanded(row),
                       },
                       {
                         label: 'Delete',
-                        icon: 'Trash2' as const,
+                        icon: 'Trash' as const,
                         onClick: async () => handledeleteData(row.user_id),
                       },
                     ];

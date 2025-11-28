@@ -272,7 +272,7 @@ const AssignMerchantModal: React.FC<AssignMerchantModalProps> = ({
                   onClick={() => restoreMerchant(merchant.id)}
                   className="text-green-500 hover:text-green-700"
                 >
-                  <Lucide icon="RotateCcw" className="w-5 h-5" />
+                  <Lucide icon="RefreshCw" className="w-5 h-5" />
                 </button>
               </div>
             ))}

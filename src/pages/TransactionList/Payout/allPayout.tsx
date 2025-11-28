@@ -1290,7 +1290,7 @@ const AllPayOut: React.FC<AllPayOutProps> = ({
                         onClick={handleReset}
                       >
                         <Lucide
-                          icon="RotateCcw"
+                          icon="RefreshCw"
                           className="stroke-[1.3] w-4 h-4 mr-2"
                         />
                         Reset
@@ -1657,7 +1657,7 @@ const AllPayOut: React.FC<AllPayOutProps> = ({
                     actionMenuItems={(row: PayOutData) => {
                       const items: {
                         label?: string;
-                        icon: 'Bell' | 'RotateCcw' | 'CheckSquare' | 'XSquare';
+                        icon: 'BellRing' | 'RotateCcw' | 'CheckSquare' | 'XSquare' | 'RefreshCw' | 'XOctagon';
                         onClick: (row: PayOutData) => void;
                       }[] = [];
                       if (
@@ -1682,7 +1682,7 @@ const AllPayOut: React.FC<AllPayOutProps> = ({
                           });
                           items.push({
                             label: 'Reject',
-                            icon: 'XSquare',
+                            icon: 'XOctagon',
                             onClick: () => {
                               transactionModal(row);
                               setSelectedRows([]);
@@ -1694,7 +1694,7 @@ const AllPayOut: React.FC<AllPayOutProps> = ({
                       } else if (row?.status === Status.APPROVED) {
                         items.push({
                           label: 'Notify',
-                          icon: 'Bell',
+                          icon: 'BellRing',
                           onClick: () => handleNotifyData(row.id!),
                         });
                         // Restrict Reset action for vendor logins
@@ -1708,7 +1708,7 @@ const AllPayOut: React.FC<AllPayOutProps> = ({
                         ) {
                           items.push({
                             label: 'Reset',
-                            icon: 'RotateCcw',
+                            icon: 'RefreshCw',
                             onClick: () => {
                               approveResetModal(row);
                             },
@@ -1717,7 +1717,7 @@ const AllPayOut: React.FC<AllPayOutProps> = ({
                       } else {
                         items.push({
                           label: 'Notify',
-                          icon: 'Bell',
+                          icon: 'BellRing',
                           onClick: () => handleNotifyData(row.id!),
                         });
                       }

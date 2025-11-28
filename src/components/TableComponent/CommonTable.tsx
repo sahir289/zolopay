@@ -160,18 +160,18 @@ const CommonTable: React.FC<CommonTableProps> = ({
       string,
       { color: string; icon: keyof typeof icons }
     > = {
-      IMG_PENDING: { color: 'text-yellow-500', icon: 'Globe' },
-      PENDING: { color: 'text-yellow-500', icon: 'Globe' },
-      FAILED: { color: 'text-red-500', icon: 'XCircle' },
-      DROPPED: { color: 'text-red-500', icon: 'XCircle' },
-      REJECTED: { color: 'text-red-500', icon: 'XCircle' },
-      REVERSED: { color: 'text-orange-500', icon: 'XCircle' },
-      BANK_MISMATCH: { color: 'text-orange-500', icon: 'FileWarning' },
-      DUPLICATE: { color: 'text-orange-500', icon: 'FileWarning' },
-      DISPUTE: { color: 'text-orange-500', icon: 'FileWarning' },
-      ASSIGNED: { color: 'text-blue-500', icon: 'ListChecks' },
-      SUCCESS: { color: 'text-green-500', icon: 'CheckCircle' },
-      APPROVED: { color: 'text-green-500', icon: 'CheckCircle' },
+      IMG_PENDING: { color: 'text-yellow-500', icon: 'Clock' },
+      PENDING: { color: 'text-yellow-500', icon: 'Clock' },
+      FAILED: { color: 'text-red-500', icon: 'XOctagon' },
+      DROPPED: { color: 'text-red-500', icon: 'XOctagon' },
+      REJECTED: { color: 'text-red-500', icon: 'XOctagon' },
+      REVERSED: { color: 'text-orange-500', icon: 'RotateCcw' },
+      BANK_MISMATCH: { color: 'text-orange-500', icon: 'AlertCircle' },
+      DUPLICATE: { color: 'text-orange-500', icon: 'AlertCircle' },
+      DISPUTE: { color: 'text-orange-500', icon: 'AlertCircle' },
+      ASSIGNED: { color: 'text-blue-500', icon: 'UserCheck' },
+      SUCCESS: { color: 'text-green-500', icon: 'CheckCircle2' },
+      APPROVED: { color: 'text-green-500', icon: 'CheckCircle2' },
     };
     return statusStyles[status] || { color: 'text-gray-500', icon: 'Info' };
   };
@@ -856,7 +856,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
                             </span>
                             {col.copy && (
                               <Lucide
-                                icon="Copy"
+                                icon="ClipboardCopy"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   if (!row.disabled && row[col.key]) {
@@ -916,7 +916,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
                                   : '₹ 0'}
                               </span>
                               <Lucide
-                                icon="Copy"
+                                icon="ClipboardCopy"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   !row.disabled &&
@@ -1324,7 +1324,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
                                     {row[col.key]}
                                     {row[col.key] && (
                                       <Lucide
-                                        icon="Copy"
+                                        icon="ClipboardCopy"
                                         onClick={(e) => {
                                           e.stopPropagation();
                                           !row.disabled &&
@@ -1342,7 +1342,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
                               {row[col.key]}
                               {row[col.key] && (
                                 <Lucide
-                                  icon="Copy"
+                                  icon="ClipboardCopy"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     !row.disabled && handleCopy(row[col.key]);
@@ -1371,7 +1371,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
                                     {row[col.key]}
                                     {row[col.key] && (
                                       <Lucide
-                                        icon="Copy"
+                                        icon="ClipboardCopy"
                                         onClick={(e) => {
                                           e.stopPropagation();
                                           !row.disabled &&
@@ -1389,7 +1389,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
                               {row[col.key]}
                               {row[col.key] && (
                                 <Lucide
-                                  icon="Copy"
+                                  icon="ClipboardCopy"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     !row.disabled && handleCopy(row[col.key]);
@@ -2018,7 +2018,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
                               {row[col.key]?.[col.objectKey ?? '']}
                               {row[col.key]?.[col.objectKey ?? ''] && (
                                 <Lucide
-                                  icon="Copy"
+                                  icon="ClipboardCopy"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     if (
@@ -2040,7 +2040,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
                               {row[col.key]?.[col.objectKey ?? '']}
                               {row[col.key]?.[col.objectKey ?? ''] && (
                                 <Lucide
-                                  icon="Copy"
+                                  icon="ClipboardCopy"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     if (
@@ -2080,7 +2080,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
                               {row[col.key]}
                             </span>
                             <Lucide
-                              icon="Copy"
+                              icon="ClipboardCopy"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleCopy(row[col.key]);

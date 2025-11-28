@@ -26,13 +26,13 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
   const baseMenu = [
     "DASHBOARDS",
     {
-      icon: "LayoutDashboard" as keyof typeof icons,
+      icon: "LayoutGrid" as keyof typeof icons,
       pathname: "/auth/dashboard",
       title: "Dashboard",
     },
     "TRANSACTIONS",
     {
-      icon: "ArrowRightLeft" as keyof typeof icons,
+      icon: "ArrowLeftRight" as keyof typeof icons,
       pathname: "/auth/transaction-list",
       title: "Transactions",
     }
@@ -41,17 +41,17 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
   const settlements_chargebacks = [
     "SETTLEMENTS & CHARGEBACKS",
     {
-      icon: "NotebookText" as keyof typeof icons,
+      icon: "FileText" as keyof typeof icons,
       pathname: "/auth/settlement",
       title: "Settlements",
     },
     {
-      icon: "Landmark" as keyof typeof icons,
+      icon: "Building2" as keyof typeof icons,
       pathname: "/auth/beneficiaryaccounts",
       title: "BeneficiaryAccounts",
     },
     {
-      icon: "ArrowLeftCircle" as keyof typeof icons,
+      icon: "RefreshCcw" as keyof typeof icons,
       pathname: "/auth/chargeback",
       title: "ChargeBacks",
     }
@@ -69,12 +69,12 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
   const settlements_vendor_operations = [
     "SETTLEMENTS",
     {
-      icon: "NotebookText" as keyof typeof icons,
+      icon: "FileText" as keyof typeof icons,
       pathname: "/auth/settlement",
       title: "Settlements",
     },
     {
-      icon: "Landmark" as keyof typeof icons,
+      icon: "Building2" as keyof typeof icons,
       pathname: "/auth/beneficiaryaccounts",
       title: "BeneficiaryAccounts",
     },
@@ -83,13 +83,13 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
   const adminItems = [
     "DATA ENTRIES",
     {
-      icon: "FileText" as keyof typeof icons,
+      icon: "Database" as keyof typeof icons,
       pathname: "/auth/add-data",
       title: "Data Entries",
     },
     "BANK DETAILS",
     {
-      icon: "Landmark" as keyof typeof icons,
+      icon: "Building2" as keyof typeof icons,
       pathname: "/auth/bankaccounts",
       title: "Bank Details",
     }
@@ -115,7 +115,7 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
   const userItems = [
     "USERS",
     {
-      icon: "Users" as keyof typeof icons,
+      icon: "UsersRound" as keyof typeof icons,
       pathname: "/auth/users",
       title: "Users",
     }
@@ -124,7 +124,7 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
   const reports = [
     "REPORTS",
     {
-      icon: "SquareUser" as keyof typeof icons,
+      icon: "FileBarChart2" as keyof typeof icons,
       pathname: "/auth/reports",
       title: "Reports",
     },
@@ -133,7 +133,7 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
   const commonItems = [
     "CLIENTS",
     {
-      icon: "CreditCard" as keyof typeof icons,
+      icon: "Briefcase" as keyof typeof icons,
       pathname: "/auth/clients",
       title: "Clients",
     },

@@ -197,7 +197,7 @@ function Main() {
                   className="relative h-14 rounded-lg flex items-center py-3 [&.active]:text-primary [&.active]:font-medium [&.active]:shadow-sm hover:text-primary border border-slate-200/80 [&.active]:bg-primary/[0.04] [&.active]:border-primary/10 place-content-center"
                 >
                   <Lucide
-                    icon="Trash2"
+                    icon="Trash"
                     className="stroke-[0.8] w-5 h-5 fill-theme-1/10"
                   />
                 </Tippy>
@@ -239,11 +239,11 @@ function Main() {
                     </Menu.Button>
                     <Menu.Items className="w-40">
                       <Menu.Item>
-                        <Lucide icon="FileBarChart" className="w-4 h-4 mr-2" />{" "}
+                        <Lucide icon="BarChart3" className="w-4 h-4 mr-2" />{" "}
                         PDF
                       </Menu.Item>
                       <Menu.Item>
-                        <Lucide icon="FileBarChart" className="w-4 h-4 mr-2" />
+                        <Lucide icon="BarChart3" className="w-4 h-4 mr-2" />
                         CSV
                       </Menu.Item>
                     </Menu.Items>
@@ -330,7 +330,7 @@ function Main() {
                         className="absolute z-10 w-full h-full opacity-0 peer"
                       />
                       <div className="absolute inset-0 flex shadow-sm items-center justify-center w-[16px] h-[16px] m-auto text-white transition-all border rounded opacity-0 bg-primary/60 border-primary/50 peer-checked:opacity-100">
-                        <Lucide icon="Check" className="stroke-[1.5] w-3 h-3" />
+                        <Lucide icon="CheckCircle2" className="stroke-[1.5] w-3 h-3" />
                       </div>
                       <div className="absolute inset-0 flex shadow-sm items-center justify-center w-[16px] h-[16px] m-auto transition-all border-[1.5px] rounded text-primary border-primary/30 peer-checked:opacity-0 peer-hover:bg-primary/10"></div>
                     </div>
@@ -362,7 +362,7 @@ function Main() {
                   </div>
                   <div className="ml-3">
                     <Lucide
-                      icon="ArrowRight"
+                      icon="MoveRight"
                       className="stroke-[1] w-[17px] h-[17px] text-slate-500/80 dark:text-slate-400"
                     />
                   </div>
@@ -399,7 +399,7 @@ function Main() {
                               />
                               <div className="absolute inset-0 flex shadow-sm items-center justify-center w-[16px] h-[16px] m-auto text-white transition-all border rounded opacity-0 bg-primary/60 border-primary/50 peer-checked:opacity-100">
                                 <Lucide
-                                  icon="Check"
+                                  icon="CheckCircle2"
                                   className="stroke-[1.5] w-3 h-3"
                                 />
                               </div>

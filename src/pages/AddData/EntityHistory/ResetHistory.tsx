@@ -432,7 +432,7 @@ const handleReset = useCallback(async () => {
                     onClick={handleReset}
                   >
                     <Lucide
-                      icon="RotateCcw"
+                      icon="RefreshCw"
                       className="stroke-[1.3] w-4 h-4 mr-2"
                     />
                     Reset

@@ -967,7 +967,7 @@ function Main() {
                                     className="hidden sm:flex"
                                   >
                                     <Lucide
-                                      icon="File"
+                                      icon="FileText"
                                       className="w-4 h-4 mr-2"
                                     />{" "}
                                     Download Docs
@@ -986,7 +986,7 @@ function Main() {
                                     <Menu.Items className="w-40">
                                       <Menu.Item>
                                         <Lucide
-                                          icon="File"
+                                          icon="FileText"
                                           className="w-4 h-4 mr-2"
                                         />
                                         Download Docs
@@ -1131,7 +1131,7 @@ function Main() {
                         variant="outline-secondary"
                         className="hidden sm:flex"
                       >
-                        <Lucide icon="File" className="w-4 h-4 mr-2" />{" "}
+                        <Lucide icon="FileText" className="w-4 h-4 mr-2" />{" "}
                         Download Docs
                       </Button>
                       <Menu className="sm:hidden">
@@ -1147,7 +1147,7 @@ function Main() {
                         </Menu.Button>
                         <Menu.Items className="w-40">
                           <Menu.Item>
-                            <Lucide icon="File" className="w-4 h-4 mr-2" />
+                            <Lucide icon="FileText" className="w-4 h-4 mr-2" />
                             Download Docs
                           </Menu.Item>
                         </Menu.Items>

@@ -29,7 +29,7 @@ function Main() {
                 <div className="flex items-center w-full px-1">
                   <div className="flex items-center justify-center w-6 h-6 rounded-full bg-success">
                     <Lucide
-                      icon="Check"
+                      icon="CheckCircle2"
                       className="stroke-[1.3] text-white w-4 h-4"
                     />
                   </div>
@@ -42,7 +42,7 @@ function Main() {
                     </Menu.Button>
                     <Menu.Items className="w-40">
                       <Menu.Item>
-                        <Lucide icon="Copy" className="w-4 h-4 mr-2" /> Copy
+                        <Lucide icon="ClipboardCopy" className="w-4 h-4 mr-2" /> Copy
                         Link
                       </Menu.Item>
                       <Menu.Item>
@@ -82,7 +82,7 @@ function Main() {
                   variant="primary"
                   className="w-full mt-10"
                 >
-                  <Lucide icon="Send" className="w-4 h-4 stroke-[1.3] mr-2" />
+                  <Lucide icon="SendHorizontal" className="w-4 h-4 stroke-[1.3] mr-2" />
                   Assign to Task
                 </Button>
               </div>
@@ -104,7 +104,7 @@ function Main() {
                   </Menu.Button>
                   <Menu.Items className="w-40">
                     <Menu.Item>
-                      <Lucide icon="Copy" className="w-4 h-4 mr-2" /> Copy Link
+                      <Lucide icon="ClipboardCopy" className="w-4 h-4 mr-2" /> Copy Link
                     </Menu.Item>
                     <Menu.Item>
                       <Lucide icon="Trash" className="w-4 h-4 mr-2" />
@@ -153,7 +153,7 @@ function Main() {
                       rounded
                       className="w-[40px] h-[40px] p-0"
                     >
-                      <Lucide icon="Plus" className="w-5 h-5 stroke-[1.3]" />
+                      <Lucide icon="PlusCircle" className="w-5 h-5 stroke-[1.3]" />
                     </Button>
                   </div>
                 </div>
@@ -174,7 +174,7 @@ function Main() {
                       content={users.fakeUsers()[0]?.email || ""}
                     >
                       <Lucide
-                        icon="Mail"
+                        icon="MailOpen"
                         className="w-4 h-4 text-primary fill-primary/5"
                       />
                     </Tippy>
@@ -212,7 +212,7 @@ function Main() {
                   </Menu.Button>
                   <Menu.Items className="w-40">
                     <Menu.Item>
-                      <Lucide icon="Copy" className="w-4 h-4 mr-2" /> Copy Link
+                      <Lucide icon="ClipboardCopy" className="w-4 h-4 mr-2" /> Copy Link
                     </Menu.Item>
                     <Menu.Item>
                       <Lucide icon="Trash" className="w-4 h-4 mr-2" />
@@ -251,7 +251,7 @@ function Main() {
                     </Menu.Button>
                     <Menu.Items className="w-40">
                       <Menu.Item>
-                        <Lucide icon="Copy" className="w-4 h-4 mr-2" /> Copy
+                        <Lucide icon="ClipboardCopy" className="w-4 h-4 mr-2" /> Copy
                         Link
                       </Menu.Item>
                       <Menu.Item>
@@ -320,7 +320,7 @@ function Main() {
                     content="Hang Up"
                   >
                     <Lucide
-                      icon="Phone"
+                      icon="PhoneCall"
                       className="w-4 h-4 rotate-[135deg] text-danger fill-danger/10"
                     />
                   </Tippy>
@@ -330,7 +330,7 @@ function Main() {
                     content="Answer"
                   >
                     <Lucide
-                      icon="Phone"
+                      icon="PhoneCall"
                       className="w-4 h-4 text-primary fill-primary/10"
                     />
                   </Tippy>
@@ -364,7 +364,7 @@ function Main() {
                   </Menu.Button>
                   <Menu.Items className="w-40">
                     <Menu.Item>
-                      <Lucide icon="Copy" className="w-4 h-4 mr-2" /> Copy Link
+                      <Lucide icon="ClipboardCopy" className="w-4 h-4 mr-2" /> Copy Link
                     </Menu.Item>
                     <Menu.Item>
                       <Lucide icon="Trash" className="w-4 h-4 mr-2" />
@@ -474,7 +474,7 @@ function Main() {
                   </Menu.Button>
                   <Menu.Items className="w-40">
                     <Menu.Item>
-                      <Lucide icon="Copy" className="w-4 h-4 mr-2" /> Copy Link
+                      <Lucide icon="ClipboardCopy" className="w-4 h-4 mr-2" /> Copy Link
                     </Menu.Item>
                     <Menu.Item>
                       <Lucide icon="Trash" className="w-4 h-4 mr-2" />
@@ -564,7 +564,7 @@ function Main() {
                     variant="outline-primary"
                     className="w-full"
                   >
-                    <Lucide icon="Eye" className="w-4 h-4 stroke-[1.3] mr-2" />
+                    <Lucide icon="EyeOff" className="w-4 h-4 stroke-[1.3] mr-2" />
                     View Detail
                   </Button>
                   <Button
@@ -573,7 +573,7 @@ function Main() {
                     variant="primary"
                     className="w-full"
                   >
-                    <Lucide icon="Plus" className="w-4 h-4 stroke-[1.3] mr-2" />
+                    <Lucide icon="PlusCircle" className="w-4 h-4 stroke-[1.3] mr-2" />
                     Add Book
                   </Button>
                 </div>
@@ -679,7 +679,7 @@ function Main() {
                   <div>
                     <div className="flex items-center justify-center w-10 h-10 border-2 rounded-full bg-slate-100 border-slate-200/70 dark:bg-darkmode-400">
                       <Lucide
-                        icon="MapPin"
+                        icon="MapPinned"
                         className="w-4 h-4 text-primary fill-primary/10"
                       />
                     </div>
@@ -716,7 +716,7 @@ function Main() {
             <div className="p-5 box box--stacked">
               <div className="flex items-center">
                 <div className="font-medium flex items-center py-1.5 px-3.5 border rounded-full border-primary bg-primary text-white">
-                  <Lucide icon="Clock" className="w-4 h-4 stroke-[1.5] mr-2" />{" "}
+                  <Lucide icon="Timer" className="w-4 h-4 stroke-[1.5] mr-2" />{" "}
                   1 Day Left
                 </div>
                 <Button
@@ -799,7 +799,7 @@ function Main() {
                   variant="outline-primary"
                   className="w-full"
                 >
-                  <Lucide icon="Eye" className="w-4 h-4 stroke-[1.3] mr-2" />
+                  <Lucide icon="EyeOff" className="w-4 h-4 stroke-[1.3] mr-2" />
                   View
                 </Button>
                 <Button
@@ -808,7 +808,7 @@ function Main() {
                   variant="primary"
                   className="w-full"
                 >
-                  <Lucide icon="Users" className="w-4 h-4 stroke-[1.3] mr-2" />
+                  <Lucide icon="UsersRound" className="w-4 h-4 stroke-[1.3] mr-2" />
                   Join
                 </Button>
               </div>
@@ -855,7 +855,7 @@ function Main() {
                   variant="primary"
                   className="w-full mt-8"
                 >
-                  <Lucide icon="Send" className="w-4 h-4 stroke-[1.3] mr-2" />
+                  <Lucide icon="SendHorizontal" className="w-4 h-4 stroke-[1.3] mr-2" />
                   View Details
                 </Button>
                 <Button
@@ -864,7 +864,7 @@ function Main() {
                   variant="outline-primary"
                   className="w-full mt-2"
                 >
-                  <Lucide icon="Mail" className="w-4 h-4 stroke-[1.3] mr-2" />
+                  <Lucide icon="MailOpen" className="w-4 h-4 stroke-[1.3] mr-2" />
                   Send Message
                 </Button>
               </div>

@@ -967,7 +967,7 @@ const AllPayIn: React.FC<AllPayInProps> = ({
                         onClick={handleReset}
                       >
                         <Lucide
-                          icon="RotateCcw"
+                          icon="RefreshCw"
                           className="stroke-[1.3] w-4 h-4 mr-2"
                         />
                         Reset
@@ -1366,7 +1366,7 @@ const AllPayIn: React.FC<AllPayInProps> = ({
                     actionMenuItems={(row: any) => {
                       const items: {
                         label?: string;
-                        icon: 'Bell' | 'RotateCcw' | 'Pencil';
+                        icon: 'BellRing' | 'RotateCcw' | 'Pencil' | 'RefreshCw' | 'PencilLine';
                         onClick: (row: any) => void;
                       }[] = [];
                       if (
@@ -1375,30 +1375,30 @@ const AllPayIn: React.FC<AllPayInProps> = ({
                       ) {
                         items.push({
                           label: 'Notify',
-                          icon: 'Bell',
+                          icon: 'BellRing',
                           onClick: () => handleNotifyData(row.id),
                         });
                         items.push({
                           label: 'Reset',
-                          icon: 'RotateCcw',
+                          icon: 'RefreshCw',
                           onClick: () => transactionModal(row),
                         });
                       } else if (row?.status === Status.FAILED) {
                         items.push({
                           label: 'Notify',
-                          icon: 'Bell',
+                          icon: 'BellRing',
                           onClick: () => handleNotifyData(row.id),
                         });
                       } else if (row?.status === Status.PENDING) {
                         items.push({
                           label: 'Notify',
-                          icon: 'Bell',
+                          icon: 'BellRing',
                           onClick: () => handleNotifyData(row.id),
                         });
                       } else if (row?.status === Status.SUCCESS) {
                         items.push({
                           label: 'Notify',
-                          icon: 'Bell',
+                          icon: 'BellRing',
                           onClick: () => handleNotifyData(row.id),
                         });
                         if (
@@ -1408,14 +1408,14 @@ const AllPayIn: React.FC<AllPayInProps> = ({
                         ) {
                           items.push({
                             label: 'Edit',
-                            icon: 'Pencil',
+                            icon: 'PencilLine',
                             onClick: () => handleEditClick(row),
                           });
                         }
                       } else {
                         items.push({
                           label: 'Notify',
-                          icon: 'Bell',
+                          icon: 'BellRing',
                           onClick: () => handleNotifyData(row.id),
                         });
                       }

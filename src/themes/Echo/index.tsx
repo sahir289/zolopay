@@ -730,7 +730,7 @@ function Main() {
                 title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
               >
                 <Lucide
-                  icon={isFullscreen ? 'Minimize' : 'Maximize'}
+                  icon={isFullscreen ? 'Minimize2' : 'Maximize2'}
                   className="w-5 h-5 text-gray-600"
                 />
               </button>
@@ -831,7 +831,7 @@ function Main() {
                         }}
                       >
                         <Lucide
-                          icon="Lock"
+                          icon="KeyRound"
                           className="w-4 h-4 inline-block mr-2"
                         />
                         Change Password
@@ -844,7 +844,7 @@ function Main() {
                         }}
                       >
                         <Lucide
-                          icon="Power"
+                          icon="LogOut"
                           className="w-4 h-4 inline-block mr-2"
                         />
                         Logout

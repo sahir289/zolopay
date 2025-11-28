@@ -84,11 +84,11 @@ function Main() {
                     </Menu.Button>
                     <Menu.Items className="w-40">
                       <Menu.Item>
-                        <Lucide icon="FileBarChart" className="w-4 h-4 mr-2" />{" "}
+                        <Lucide icon="BarChart3" className="w-4 h-4 mr-2" />{" "}
                         PDF
                       </Menu.Item>
                       <Menu.Item>
-                        <Lucide icon="FileBarChart" className="w-4 h-4 mr-2" />
+                        <Lucide icon="BarChart3" className="w-4 h-4 mr-2" />
                         CSV
                       </Menu.Item>
                     </Menu.Items>
@@ -299,7 +299,7 @@ function Main() {
                                   </Menu.Item>
                                   <Menu.Item className="text-danger">
                                     <Lucide
-                                      icon="Trash2"
+                                      icon="Trash"
                                       className="w-4 h-4 mr-2"
                                     />
                                     Delete
