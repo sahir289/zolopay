@@ -9,7 +9,7 @@ import { FormInput, FormSelect } from '@/components/Base/Form';
 import Button from '@/components/Base/Button';
 import CustomTable from '@/components/TableComponent/CommonTable';
 import { DataEntryOptions, Role, Status } from '@/constants';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   EditAmountOrUTR,
   Columns,
