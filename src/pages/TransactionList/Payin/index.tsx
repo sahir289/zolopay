@@ -3,7 +3,6 @@
 /* eslint-disable no-undef */
 import { Tab } from '@/components/Base/Headless';
 import Modal from '@/components/Modal/modals';
-import Lucide from '@/components/Base/Lucide';
 import { useState, useEffect } from 'react';
 import {
   createPayIn,
@@ -38,7 +37,6 @@ import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotificati
 
 // Normal imports instead of lazy loading
 import PayInComponent from '@/pages/TransactionList/Payin/payin';
-import PayOut from '@/pages/TransactionList/Payout/payout';
 
 // Commented out lazy loading approach:
 // const PayInComponent = withLazyLoading(
@@ -307,52 +305,9 @@ function Main() {
               selectedIndex={parentTab}
               onChange={handleParentTabChange}
             >
-              <Tab.List className="flex border-b-0 bg-transparent relative">
-                <Tab className="relative flex-1">
-                  {({ selected }) => (
-                    <Tab.Button
-                      className={`w-full py-2 sm:py-3 flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base transition-all duration-200 relative ${
-                        selected
-                          ? 'bg-white dark:bg-darkmode-700 text-slate-900 dark:text-white border-t-4 border-l-4 border-r-4 border-gray-100 dark:border-darkmode-400 rounded-tl-xl rounded-tr-xl shadow-sm'
-                          : 'bg-slate-50 dark:bg-darkmode-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-darkmode-700'
-                      }`}
-                      as="button"
-                      style={selected ? {
-                        position: 'relative',
-                        zIndex: 10
-                      } : {}}
-                    >
-                      <Lucide icon="BadgeIndianRupee" className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Payins
-                    </Tab.Button>
-                  )}
-                </Tab>
-                <Tab className="relative flex-1">
-                  {({ selected }) => (
-                    <Tab.Button
-                      className={`w-full py-2 sm:py-3 flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base transition-all duration-200 relative ${
-                        selected
-                          ? 'bg-white dark:bg-darkmode-700 text-slate-900 dark:text-white border-t-4 border-l-4 border-r-4 border-gray-100 dark:border-darkmode-400 rounded-tl-xl rounded-tr-xl shadow-sm'
-                          : 'bg-slate-50 dark:bg-darkmode-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-darkmode-700'
-                      }`}
-                      as="button"
-                      style={selected ? {
-                        position: 'relative',
-                        zIndex: 10
-                      } : {}}
-                    >
-                      <Lucide icon="ArrowRightCircle" className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Payouts
-                    </Tab.Button>
-                  )}
-                </Tab>
-              </Tab.List>
               <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400">
                 <Tab.Panel className="p-2 sm:p-4 md:p-5">
                   <PayInComponent />
-                </Tab.Panel>
-                <Tab.Panel className="p-2 sm:p-4 md:p-5">
-                  <PayOut />
                 </Tab.Panel>
               </Tab.Panels>
             </Tab.Group>

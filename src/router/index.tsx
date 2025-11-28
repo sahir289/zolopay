@@ -62,17 +62,41 @@ function Router(): React.ReactElement | null {
                 Role.VENDOR_ADMIN,
                 Role.VENDOR_OPERATIONS,
               ]}
-            >
-            </ProtectedRoute>
+            />
           ),
           children: [
             {
               path: 'merchant',
-              element: < MerchantBoard/>,
+              element: (
+                <><ProtectedRoute
+                  allowedRoles={[
+                    Role.ADMIN,
+                    Role.TRANSACTIONS,
+                    Role.OPERATIONS,
+                    Role.MERCHANT,
+                    Role.SUB_MERCHANT,
+                    Role.MERCHANT_OPERATIONS,
+                  ]} /><MerchantBoard /></>
+              ),
             },
             {
               path: 'vendor',
-              element: <VendorBoard />,
+              element: (<>
+                <ProtectedRoute
+                  allowedRoles={[
+                    Role.ADMIN,
+                    Role.TRANSACTIONS,
+                    Role.OPERATIONS,
+                    Role.VENDOR,
+                    Role.SUB_VENDOR,
+                    Role.VENDOR_ADMIN,
+                    Role.VENDOR_OPERATIONS,
+                  ]}
+                >
+                </ProtectedRoute>
+                  <VendorBoard />
+                </>
+              ),
             },
           ],
         },
@@ -97,11 +121,36 @@ function Router(): React.ReactElement | null {
           children: [
             {
               path: 'merchants',
-              element: <MerchantsClients />,
+              element: <>
+                <ProtectedRoute
+                  allowedRoles={[
+                    Role.ADMIN,
+                    Role.TRANSACTIONS,
+                    Role.OPERATIONS,
+                    Role.MERCHANT,
+                    Role.SUB_MERCHANT,
+                    Role.MERCHANT_OPERATIONS,
+                  ]}
+                />
+                <MerchantsClients />
+              </>,
             },
             {
               path: 'vendors',
-              element: <VendorsClients />,
+              element: <>
+                <ProtectedRoute
+                  allowedRoles={[
+                    Role.ADMIN,
+                    Role.TRANSACTIONS,
+                    Role.OPERATIONS,
+                    Role.VENDOR,
+                    Role.SUB_VENDOR,
+                    Role.VENDOR_ADMIN,
+                    Role.VENDOR_OPERATIONS,
+                  ]}
+                />
+              <VendorsClients />
+              </>,
             },
           ],
         },
@@ -144,11 +193,32 @@ function Router(): React.ReactElement | null {
           children: [
             {
               path: 'merchants',
-              element: <AccountReports role={''} name={''} />,
+              element: <> 
+                <ProtectedRoute
+                  allowedRoles={[
+                    Role.ADMIN,
+                    Role.TRANSACTIONS,
+                    Role.MERCHANT,
+                    Role.SUB_MERCHANT,
+                  ]}
+                />
+                <AccountReports role={''} name={''} />
+                </>,
             },
             {
               path: 'vendors',
-              element: <VendorAccountReports role={''} />,
+              element: <> 
+                <ProtectedRoute
+                  allowedRoles={[
+                    Role.ADMIN,
+                    Role.TRANSACTIONS,
+                    Role.VENDOR,
+                    Role.SUB_VENDOR,
+                    Role.VENDOR_ADMIN
+                  ]}
+                />
+              <VendorAccountReports role={''} />
+              </>,
             },
           ],
         },
@@ -201,11 +271,28 @@ function Router(): React.ReactElement | null {
           children: [
             {
               path: 'merchants',
-              element: <MerchantSettlement/>,
+              element: <> <ProtectedRoute
+              allowedRoles={[
+                Role.ADMIN,
+                Role.TRANSACTIONS,
+                Role.MERCHANT,
+                Role.SUB_MERCHANT,
+                Role.MERCHANT_OPERATIONS,
+              ]}
+            /><MerchantSettlement/></> ,
             },
             {
               path: 'vendors',
-              element: <VendorSettlement/>,
+              element:<><ProtectedRoute
+              allowedRoles={[
+                Role.ADMIN,
+                Role.TRANSACTIONS,
+                Role.VENDOR,
+                Role.SUB_VENDOR,
+                Role.VENDOR_ADMIN,
+                Role.VENDOR_OPERATIONS,
+              ]}
+            /><VendorSettlement/></> ,
             },
           ],
         },
@@ -229,11 +316,28 @@ function Router(): React.ReactElement | null {
           children: [
             {
               path: 'merchants',
-              element: <MerchnatBeneficiary />,
+              element:<> <ProtectedRoute
+              allowedRoles={[
+                Role.ADMIN,
+                Role.TRANSACTIONS,
+                Role.MERCHANT,
+                Role.SUB_MERCHANT,
+                Role.MERCHANT_OPERATIONS,
+              ]}
+            /> <MerchnatBeneficiary /></>,
             },
             {
               path: 'vendors',
-              element: <VendorBeneficiary />,
+              element: <><ProtectedRoute
+              allowedRoles={[
+                Role.ADMIN,
+                Role.TRANSACTIONS,
+                Role.VENDOR,
+                Role.SUB_VENDOR,
+                Role.VENDOR_ADMIN,
+                Role.VENDOR_OPERATIONS,
+              ]}
+            /><VendorBeneficiary /></>,
             },
           ],
         },
@@ -307,11 +411,31 @@ function Router(): React.ReactElement | null {
           children: [
             {
               path: 'payins',
-              element: <PayInBanks />,
+              element: <><ProtectedRoute
+              allowedRoles={[
+                Role.ADMIN,
+                Role.TRANSACTIONS,
+                Role.OPERATIONS,
+                Role.VENDOR,
+                Role.SUB_VENDOR,
+                Role.VENDOR_ADMIN,
+                Role.VENDOR_OPERATIONS,
+              ]}
+            /><PayInBanks /></>,
             },
             {
               path: 'payouts',
-              element: <PayOutBanks />,
+              element: <> <ProtectedRoute
+              allowedRoles={[
+                Role.ADMIN,
+                Role.TRANSACTIONS,
+                Role.OPERATIONS,
+                Role.VENDOR,
+                Role.SUB_VENDOR,
+                Role.VENDOR_ADMIN,
+                Role.VENDOR_OPERATIONS,
+              ]}
+            /><PayOutBanks /></>,
             },
           ],
         },
