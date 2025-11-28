@@ -22,11 +22,11 @@
 // dayjs.extend(timezone);
 
 // Normal imports instead of lazy loading
-import MerchantBoard from '@/pages/DashboardOverview1/MerchantBoard/index';
-import VendorBoard from '@/pages/DashboardOverview1/VendorBoard/index';
-import Miscellaneous from '@/pages/DashboardOverview1/Miscellaneous/index';
-import { getVendorCodes } from '@/redux-toolkit/slices/vendor/vendorSlice';
-import DashboardStatCard from '@/components/dashboard-stat-card';
+// import MerchantBoard from '@/pages/DashboardOverview1/MerchantBoard/index';
+// import VendorBoard from '@/pages/DashboardOverview1/VendorBoard/index';
+// import Miscellaneous from '@/pages/DashboardOverview1/Miscellaneous/index';
+// import { getVendorCodes } from '@/redux-toolkit/slices/vendor/vendorSlice';
+// import DashboardStatCard from '@/components/dashboard-stat-card';
 
 // // Commented out lazy loading approach:
 // // const MerchantBoard = withLazyLoading(

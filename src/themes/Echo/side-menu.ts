@@ -99,14 +99,14 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             ? [{
                 title: "Payment Partner Overview",
                 pathname: "/auth/dashboard/merchant",
-                icon: "TrendingUp" as "BarChart",
+                icon: "TrendingUp" as const,
               }]
             : []),
           ...(Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
                 title: "Banking Partner Overview",
                 pathname: "/auth/dashboard/vendor",
-                icon: "LineChart" as "BarChart2",
+                icon: "LineChart" as const,
               }]
             : []),
         ];
@@ -128,7 +128,7 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
       }
       if (menuItem.title === "Settlements") {
         menuItem.subMenu = [
-          ...(Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
             title: "Payment Partner Settlements",
             pathname: "/auth/settlement/merchants",
