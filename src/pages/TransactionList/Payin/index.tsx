@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-undef */
 import { Tab } from '@/components/Base/Headless';
-import Modal from '@/components/Modal/modals';
 import Lucide from '@/components/Base/Lucide';
+import Modal from '@/components/Modal/modals';
 import { useState, useEffect } from 'react';
 import {
   createPayIn,
@@ -38,7 +38,6 @@ import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotificati
 
 // Normal imports instead of lazy loading
 import PayInComponent from '@/pages/TransactionList/Payin/payin';
-import PayOut from '@/pages/TransactionList/Payout/payout';
 
 // Commented out lazy loading approach:
 // const PayInComponent = withLazyLoading(
@@ -350,9 +349,6 @@ function Main() {
               <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400">
                 <Tab.Panel className="p-2 sm:p-4 md:p-5">
                   <PayInComponent />
-                </Tab.Panel>
-                <Tab.Panel className="p-2 sm:p-4 md:p-5">
-                  <PayOut />
                 </Tab.Panel>
               </Tab.Panels>
             </Tab.Group>

@@ -102,10 +102,30 @@ const buildBreadcrumbPath = (menuItems: Array<FormattedMenu | string>) => {
     return false;
   };
 
-  findActiveMenu(menuItems);
-  return path.length > 1
-    ? path
-    : [{ title: 'Dashboard', to: '/auth/dashboard', active: true }];
+  const data = localStorage.getItem("userData");
+  let role: keyof typeof Role | null = null;
+
+  if (data) {
+    try {
+      const parsedData = JSON.parse(data);
+      role = parsedData.role || null;
+    } catch (error) {
+      console.error("Failed to parse userData from localStorage:", error);
+    }
+  }
+
+   if (Role.ADMIN === role || Role.MERCHANT === role) {
+    findActiveMenu(menuItems);
+    return path.length > 1
+      ? path
+      : [{ title: 'Dashboard', to: '/auth/dashboard/merchant', active: true }];
+  }
+  else  {
+    findActiveMenu(menuItems);
+    return path.length > 1
+      ? path
+      : [{ title: 'Dashboard', to: '/auth/dashboard/vendor', active: true }];
+  }
 };
 
 function Main() {

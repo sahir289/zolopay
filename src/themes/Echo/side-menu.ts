@@ -1,6 +1,7 @@
 import { NavigateFunction } from "react-router-dom";
 import { Menu } from "@/redux-toolkit/slices/common/sideMenu/sideMenuSlice";
 import { slideUp, slideDown } from "@/utils/helper";
+import { Role } from "@/constants";
 
 interface Location {
   pathname: string;
@@ -34,6 +35,24 @@ const findActiveMenu = (subMenu: Menu[], location: Location): boolean => {
 };
 
 const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
+  // Fetch the role dynamically from localStorage
+  const data = localStorage.getItem("userData");
+  let role: keyof typeof Role | null = null;
+
+  if (data) {
+    try {
+      const parsedData = JSON.parse(data);
+      role = parsedData.role || null;
+    } catch (error) {
+      console.error("Failed to parse userData from localStorage:", error);
+    }
+  }
+
+  // Log a warning if role is null
+  if (!role) {
+    console.warn("Role is null in side menu. Ensure userData is set correctly.");
+  }
+
   const formattedMenu: Array<FormattedMenu | string> = [];
   menu.forEach((item) => {
     if (typeof item !== "string") {
@@ -76,16 +95,20 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
       // Example: Add submenus under "Dashboard"
       if (menuItem.title === "Dashboard") {
         menuItem.subMenu = [
-          {
-            title: "Merchant Dashboard",
-            pathname: "/auth/dashboard/merchant",
-            icon: "TrendingUp",
-          },
-          {
-            title: "Vendor Dashboard",
-            pathname: "/auth/dashboard/vendor",
-            icon: "LineChart",
-          },
+          ...(Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
+                title: "Merchant Dashboard",
+                pathname: "/auth/dashboard/merchant",
+                icon: "TrendingUp" as "BarChart",
+              }]
+            : []),
+          ...(Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
+                title: "Vendor Dashboard",
+                pathname: "/auth/dashboard/vendor",
+                icon: "LineChart" as "BarChart2",
+              }]
+            : []),
         ];
         menuItem.activeDropdown = false;
       }
@@ -95,76 +118,91 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           {
             title: "Payin Transactions",
             pathname: "/auth/transaction-list/payins",
-            icon: "ArrowDownCircle",
+            icon: "ArrowDownCircle" as const,
           },
           {
             title: "Payout Transactions",
             pathname: "/auth/transaction-list/payouts",
-            icon: "ArrowUpCircle",
+            icon: "ArrowUpCircle" as const,
           },
         ];
         menuItem.activeDropdown = false;
       }
       if (menuItem.title === "Settlements") {
         menuItem.subMenu = [
-          {
+          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
             title: "Merchant Settlements",
             pathname: "/auth/settlement/merchants",
-            icon: "Coins",
-          },
-          {
+            icon: "Coins" as const,
+            }]
+            : [],
+          ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
             title: "Vendor Settlements",
             pathname: "/auth/settlement/vendors",
-            icon: "Wallet",
-          },
+            icon: "Wallet" as const,
+            }]
+            : [],
         ];
         menuItem.activeDropdown = false;
       }
 
       if (menuItem.title === "Reports") {
         menuItem.subMenu = [
-          {
+          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
             title: "Merchant Reports",
             pathname: "/auth/reports/merchants",
-            icon: "FileBarChart",
-          },
-          {
+            icon: "FileBarChart" as const,
+            }]
+            : [],
+          ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
             title: "Vendor Reports",
             pathname: "/auth/reports/vendors",
-            icon: "FileSpreadsheet",
-          },
+            icon: "FileSpreadsheet" as const, 
+            }]
+            : [],
         ];
         menuItem.activeDropdown = false;
       }
-      console.log("menuItem.title", menuItem.title);
       if (menuItem.title === "BeneficiaryAccounts") {
         menuItem.subMenu = [
-          {
+          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
             title: "Merchant",
             pathname: "/auth/beneficiaryaccounts/merchants",
-            icon: "User",
-          },
-          {
+            icon: "User" as const,
+            }]
+            : [],
+          ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
             title: "Vendor",
             pathname: "/auth/beneficiaryaccounts/vendors",
-            icon: "Users",
-          },
+            icon: "Users" as const,
+            }]
+            : [],
         ];
         menuItem.activeDropdown = false;
       }
 
       if (menuItem.title === "Clients") {
         menuItem.subMenu = [
-          {
+          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
             title: "Merchant",
             pathname: "/auth/clients/merchants",
-            icon: "Store",
-          },
-          {
+            icon: "Store" as const,
+            }]
+            : [],
+          ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
+            ? [{
             title: "Vendor",
             pathname: "/auth/clients/vendors",
-            icon: "Building",
-          },
+            icon: "Building" as const,
+            }]
+            : [],
         ];
         menuItem.activeDropdown = false;
       }
@@ -195,7 +233,6 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
 };
 
 const linkTo = (menu: FormattedMenu, navigate: NavigateFunction) => {
-  console.log('menu', menu);
   menu.activeDropdown = !menu.activeDropdown;
   if (menu.subMenu) {
     // menu.activeDropdown = !menu.activeDropdown;
