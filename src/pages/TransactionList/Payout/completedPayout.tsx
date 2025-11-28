@@ -702,7 +702,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                       onClick={handleReset}
                     >
                       <Lucide
-                        icon="RotateCcw"
+                        icon="RefreshCw"
                         className="stroke-[1.3] w-4 h-4 mr-2"
                       />
                       Reset
@@ -1005,7 +1005,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                   actionMenuItems={(row: any) => {
                     const items: {
                       label?: string;
-                      icon: 'Bell' | 'RotateCcw';
+                      icon: 'BellRing' | 'RotateCcw';
                       onClick: (row: any) => void;
                     }[] = [];
 
@@ -1016,7 +1016,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                     ) {
                       items.push({
                         label: 'Reset',
-                        icon: 'RotateCcw',
+                        icon: 'RefreshCw',
                         onClick: () => {
                           transactionModal(row), setPayOutModal(true);
                         },
@@ -1026,7 +1026,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                     // Always add Notify action
                     items.push({
                       label: 'Notify',
-                      icon: 'Bell',
+                      icon: 'BellRing',
                       onClick: () => handleNotifyData(row.id),
                     });
 

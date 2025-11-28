@@ -1272,7 +1272,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                         onClick={handleReset}
                       >
                         <Lucide
-                          icon="RotateCcw"
+                          icon="RefreshCw"
                           className="stroke-[1.3] w-4 h-4 mr-2"
                         />
                         Reset
@@ -1554,7 +1554,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                         className="w-full py-2 flex items-center justify-center"
                         as="button"
                       >
-                        <Lucide icon="Database" className="w-4 h-4 mr-2" />
+                        <Lucide icon="HardDrive" className="w-4 h-4 mr-2" />
                         INITIATED
                       </Tab.Button>
                     </Tab>
@@ -1563,7 +1563,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                         className="w-full py-2 flex items-center justify-center"
                         as="button"
                       >
-                        <Lucide icon="Clock" className="w-4 h-4 mr-2" />
+                        <Lucide icon="Timer" className="w-4 h-4 mr-2" />
                         PENDING
                       </Tab.Button>
                     </Tab>
@@ -1601,7 +1601,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                   actionMenuItems={(row: any) => {
                     const items: {
                       label?: string;
-                      icon: 'Bell' | 'RotateCcw' | 'CheckSquare' | 'XSquare';
+                      icon: 'BellRing' | 'RotateCcw' | 'CheckSquare' | 'XSquare';
                       onClick: (row: any) => void;
                     }[] = [];
                     if (
@@ -1626,7 +1626,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                         });
                         items.push({
                           label: 'Reject',
-                          icon: 'XSquare',
+                          icon: 'XOctagon',
                           onClick: () => {
                             transactionModal(row);
                             setSelectedRows([]);

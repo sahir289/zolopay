@@ -16,7 +16,7 @@ function Main() {
           <div className="text-lg font-medium group-[.mode--light]:text-white flex items-center">
             Orders
             <Lucide
-              icon="ArrowRight"
+              icon="MoveRight"
               className="stroke-[1.3] w-3.5 h-3.5 sm:w-5 sm:h-5 mx-1 sm:mx-2"
             />
             <div className="text-sm sm:text-lg">
@@ -35,7 +35,7 @@ function Main() {
               variant="primary"
               className="group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200 group-[.mode--light]:!border-transparent dark:group-[.mode--light]:!bg-darkmode-900/30 dark:!box"
             >
-              <Lucide icon="ArrowRight" className="stroke-[1.3] w-4 h-4 mr-3" />
+              <Lucide icon="MoveRight" className="stroke-[1.3] w-4 h-4 mr-3" />
               Next Order
             </Button>
             <Button
@@ -58,7 +58,7 @@ function Main() {
                   <div className="p-5 mt-2.5 flex flex-col gap-5">
                     <div className="flex items-center">
                       <Lucide
-                        icon="Clipboard"
+                        icon="ClipboardList"
                         className="w-4 h-4 mr-2.5 stroke-[1.3] text-slate-500"
                       />
                       <div className="flex flex-col flex-wrap w-full sm:items-center sm:flex-row gap-y-1">
@@ -68,7 +68,7 @@ function Main() {
                     </div>
                     <div className="flex items-center">
                       <Lucide
-                        icon="Clock"
+                        icon="Timer"
                         className="w-4 h-4 mr-2.5 stroke-[1.3] text-slate-500"
                       />
                       <div className="flex flex-col flex-wrap w-full sm:items-center sm:flex-row gap-y-1">
@@ -87,7 +87,7 @@ function Main() {
                     </div>
                     <div className="flex items-center">
                       <Lucide
-                        icon="Clipboard"
+                        icon="ClipboardList"
                         className="w-4 h-4 mr-2.5 stroke-[1.3] text-slate-500"
                       />
                       <div className="flex flex-col flex-wrap w-full sm:items-center sm:flex-row gap-y-1">
@@ -125,7 +125,7 @@ function Main() {
                     </div>
                     <div className="flex items-center">
                       <Lucide
-                        icon="Clock"
+                        icon="Timer"
                         className="w-4 h-4 mr-2.5 stroke-[1.3] text-slate-500"
                       />
                       <div className="flex flex-col flex-wrap w-full sm:items-center sm:flex-row gap-y-1">
@@ -166,7 +166,7 @@ function Main() {
                   <div className="p-5 mt-2.5 flex flex-col gap-5">
                     <div className="flex items-center">
                       <Lucide
-                        icon="Clipboard"
+                        icon="ClipboardList"
                         className="w-4 h-4 mr-2.5 stroke-[1.3] text-slate-500"
                       />
                       <div className="flex flex-col flex-wrap w-full sm:items-center sm:flex-row gap-y-1">
@@ -191,7 +191,7 @@ function Main() {
                     </div>
                     <div className="flex items-center">
                       <Lucide
-                        icon="Clock"
+                        icon="Timer"
                         className="w-4 h-4 mr-2.5 stroke-[1.3] text-slate-500"
                       />
                       <div className="flex flex-col flex-wrap w-full sm:items-center sm:flex-row gap-y-1">
@@ -201,7 +201,7 @@ function Main() {
                           className="flex items-center underline decoration-dotted decoration-primary/30 underline-offset-[3px]"
                         >
                           <Lucide
-                            icon="MapPin"
+                            icon="MapPinned"
                             className="w-3.5 h-3.5 mr-1.5"
                           />
                           View Address
@@ -217,7 +217,7 @@ function Main() {
                   <div className="p-5 mt-2.5 flex flex-col gap-5">
                     <div className="flex items-center">
                       <Lucide
-                        icon="Clipboard"
+                        icon="ClipboardList"
                         className="w-4 h-4 mr-2.5 stroke-[1.3] text-slate-500"
                       />
                       <div className="flex flex-col flex-wrap w-full sm:items-center sm:flex-row gap-y-1">
@@ -237,7 +237,7 @@ function Main() {
                     </div>
                     <div className="flex items-center">
                       <Lucide
-                        icon="Clock"
+                        icon="Timer"
                         className="w-4 h-4 mr-2.5 stroke-[1.3] text-slate-500"
                       />
                       <div className="flex flex-col flex-wrap w-full sm:items-center sm:flex-row gap-y-1">
@@ -247,7 +247,7 @@ function Main() {
                           className="flex items-center underline decoration-dotted decoration-primary/30 underline-offset-[3px]"
                         >
                           <Lucide
-                            icon="MapPin"
+                            icon="MapPinned"
                             className="w-3.5 h-3.5 mr-1.5"
                           />
                           View Address

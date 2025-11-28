@@ -561,7 +561,7 @@ const RejectedPayOut: React.FC<AllPayOutProps> = ({
                       onClick={handleReset}
                     >
                       <Lucide
-                        icon="RotateCcw"
+                        icon="RefreshCw"
                         className="stroke-[1.3] w-4 h-4 mr-2"
                       />
                       Reset
@@ -859,7 +859,7 @@ const RejectedPayOut: React.FC<AllPayOutProps> = ({
                   actionMenuItems={(row: any) => [
                     {
                       label: 'Notify',
-                      icon: 'Bell', // Change to an allowed icon type
+                      icon: 'BellRing', // Change to an allowed icon type
                       onClick: () => handleNotifyData(row.id),
                     },
                   ]}

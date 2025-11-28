@@ -998,7 +998,7 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                       onClick={handleReset}
                     >
                       <Lucide
-                        icon="RotateCcw"
+                        icon="RefreshCw"
                         className="stroke-[1.3] w-4 h-4 mr-2"
                       />
                       Reset
@@ -1332,7 +1332,7 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                         as="button"
                         onClick={handleViewAllData}
                       >
-                        <Lucide icon="Database" className="w-4 h-4 mr-2" />
+                        <Lucide icon="HardDrive" className="w-4 h-4 mr-2" />
                         All Data
                       </Tab.Button>
                     </Tab>
@@ -1342,7 +1342,7 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                         as="button"
                         onClick={handleViewUpdatedData}
                       >
-                        <Lucide icon="Clock" className="w-4 h-4 mr-2" />
+                        <Lucide icon="Timer" className="w-4 h-4 mr-2" />
                         Updated Data
                       </Tab.Button>
                     </Tab>
@@ -1384,12 +1384,12 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                     actionMenuItems={(row: PayInData) => {
                       const items: {
                         label?: string;
-                        icon: 'Bell' | 'RotateCcw' | 'Pencil';
+                        icon: 'BellRing' | 'RotateCcw' | 'Pencil';
                         onClick: (row: PayInData) => void;
                       }[] = [
                         {
                           label: 'Notify',
-                          icon: 'Bell',
+                          icon: 'BellRing',
                           onClick: () => handleNotifyData(row.id || ''),
                         },
                       ];
@@ -1401,7 +1401,7 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                       ) {
                         items.push({
                           label: 'Edit',
-                          icon: 'Pencil',
+                          icon: 'PencilLine',
                           onClick: () => handleEditClick(row),
                         });
                       }
@@ -1411,7 +1411,7 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                       ) {
                         items.push({
                           label: 'Reset',
-                          icon: 'RotateCcw',
+                          icon: 'RefreshCw',
                           onClick: () => transactionModal(row),
                         });
                       }
