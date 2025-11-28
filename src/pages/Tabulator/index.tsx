@@ -330,7 +330,7 @@ function Main() {
               variant="primary"
               className="group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200 group-[.mode--light]:!border-transparent dark:group-[.mode--light]:!bg-darkmode-900/30 dark:!box"
             >
-              <Lucide icon="PenLine" className="stroke-[1.3] w-4 h-4 mr-2" />{" "}
+              <Lucide icon="PencilLine" className="stroke-[1.3] w-4 h-4 mr-2" />{" "}
               Add New User
             </Button>
           </div>

@@ -687,7 +687,7 @@ function ChargeBack() {
                     onClick={handleReset}
                   >
                     <Lucide
-                      icon="RotateCcw"
+                      icon="RefreshCw"
                       className="stroke-[1.3] w-4 h-4 mr-2"
                     />
                     Reset
@@ -982,7 +982,7 @@ function ChargeBack() {
                   actionMenuItems={(row: any) => {
                     const items: {
                       label?: string;
-                      icon: 'Pencil';
+                      icon: 'PencilLine';
                       onClick: () => void;
                     }[] = [];
 
@@ -1007,7 +1007,7 @@ function ChargeBack() {
                     if (role === Role.ADMIN && isToday) {
                       items.push({
                         label: 'Edit',
-                        icon: 'Pencil',
+                        icon: 'PencilLine',
                         onClick: () => handleEditChargeBack(row),
                       });
                     }

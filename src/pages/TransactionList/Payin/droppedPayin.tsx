@@ -1089,7 +1089,7 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                     actionMenuItems={(row: PayInData) => {
                       const items: {
                         label?: string;
-                        icon: 'BellRing' | 'RotateCcw';
+                        icon: 'BellRing' | 'RotateCcw' | 'RefreshCw';
                         onClick: (row: PayInData) => void;
                       }[] = [
                         {

@@ -23,7 +23,7 @@ function Main() {
               variant="primary"
               className="group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200 group-[.mode--light]:!border-transparent dark:group-[.mode--light]:!bg-darkmode-900/30 dark:!box"
             >
-              <Lucide icon="PenLine" className="stroke-[1.3] w-4 h-4 mr-2" />{" "}
+              <Lucide icon="PencilLine" className="stroke-[1.3] w-4 h-4 mr-2" />{" "}
               Add New Product
             </Button>
           </div>
@@ -63,11 +63,11 @@ function Main() {
                   </Menu.Button>
                   <Menu.Items className="w-40">
                     <Menu.Item>
-                      <Lucide icon="FileBarChart" className="w-4 h-4 mr-2" />{" "}
+                      <Lucide icon="BarChart3" className="w-4 h-4 mr-2" />{" "}
                       PDF
                     </Menu.Item>
                     <Menu.Item>
-                      <Lucide icon="FileBarChart" className="w-4 h-4 mr-2" />
+                      <Lucide icon="BarChart3" className="w-4 h-4 mr-2" />
                       CSV
                     </Menu.Item>
                   </Menu.Items>
@@ -240,7 +240,7 @@ function Main() {
                             ])}
                           >
                             <Lucide
-                              icon="Database"
+                              icon="HardDrive"
                               className="w-3.5 h-3.5 stroke-[1.7]"
                             />
                             <div className="ml-1.5 whitespace-nowrap">
@@ -267,7 +267,7 @@ function Main() {
                                 </Menu.Item>
                                 <Menu.Item className="text-danger">
                                   <Lucide
-                                    icon="Trash2"
+                                    icon="Trash"
                                     className="w-4 h-4 mr-2"
                                   />
                                   Delete

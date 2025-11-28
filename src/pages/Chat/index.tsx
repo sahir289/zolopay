@@ -197,7 +197,7 @@ function Main() {
                     content="Call"
                   >
                     <Lucide
-                      icon="Phone"
+                      icon="PhoneCall"
                       className="w-4 h-4 text-primary fill-primary/10"
                     />
                   </Tippy>
@@ -207,7 +207,7 @@ function Main() {
                     content="Send a message"
                   >
                     <Lucide
-                      icon="Mail"
+                      icon="MailOpen"
                       className="w-4 h-4 text-primary fill-primary/10"
                     />
                   </Tippy>
@@ -317,7 +317,7 @@ function Main() {
                             </div>
                             <div className="flex items-center gap-1">
                               <Lucide
-                                icon="Eye"
+                                icon="EyeOff"
                                 className="w-3.5 h-3.5 stroke-[1] text-slate-500/80 fill-slate-100 dark:fill-darkmode-400 dark:text-slate-400"
                               />
                               <div className="text-xs text-slate-500/70 dark:text-slate-400">
@@ -365,7 +365,7 @@ function Main() {
                         </Menu.Button>
                         <Menu.Items className="w-40">
                           <Menu.Item>
-                            <Lucide icon="Copy" className="w-4 h-4 mr-2" /> Copy
+                            <Lucide icon="ClipboardCopy" className="w-4 h-4 mr-2" /> Copy
                             Link
                           </Menu.Item>
                           <Menu.Item>
@@ -389,7 +389,7 @@ function Main() {
                     className="flex items-center justify-center border-transparent rounded-full cursor-pointer w-9 h-9 box bg-gradient-to-b from-theme-1/90 to-theme-2/90"
                   >
                     <Lucide
-                      icon="Send"
+                      icon="SendHorizontal"
                       className="stroke-[1.3] w-4 h-4 -ml-0.5 text-white/70"
                     />
                   </a>
