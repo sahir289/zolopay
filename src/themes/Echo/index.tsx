@@ -834,11 +834,8 @@ function Main() {
                           setIsOpen(false);
                         }}
                       >
-                        <Lucide
-                          icon="KeyRound"
-                          className="w-4 h-4 inline-block mr-2"
-                        />
-                        Change Password
+                        <Lucide icon="Lock" className="w-4 h-4 text-gray-500" />
+                        <span>Change Password</span>
                       </button>
                       <button
                         className="flex items-center space-x-3 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
@@ -847,11 +844,8 @@ function Main() {
                           setIsOpen(false);
                         }}
                       >
-                        <Lucide
-                          icon="LogOut"
-                          className="w-4 h-4 inline-block mr-2"
-                        />
-                        Logout
+                        <Lucide icon="LogOut" className="w-4 h-4 text-gray-500" />
+                        <span>Logout</span>
                       </button>
                     </div>
                 )}
