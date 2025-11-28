@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-undef */
 import { Tab } from '@/components/Base/Headless';
-import Lucide from '@/components/Base/Lucide';
+// import Lucide from '@/components/Base/Lucide';
 import Modal from '@/components/Modal/modals';
 import { useState, useEffect } from 'react';
 import {
@@ -300,7 +300,7 @@ function Main() {
               selectedIndex={parentTab}
               onChange={handleParentTabChange}
             >
-              <Tab.List className="flex border-b-0 bg-transparent relative">
+              {/* <Tab.List className="flex border-b-0 bg-transparent relative">
                 <Tab className="relative flex-1">
                   {({ selected }) => (
                     <Tab.Button
@@ -339,7 +339,7 @@ function Main() {
                     </Tab.Button>
                   )}
                 </Tab>
-              </Tab.List>
+              </Tab.List> */}
               <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400">
                 <Tab.Panel className="p-2 sm:p-4 md:p-5">
                   <PayOut />

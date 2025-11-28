@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Tab } from '@/components/Base/Headless';
-import Lucide from '@/components/Base/Lucide';
+// import Lucide from '@/components/Base/Lucide';
 import React, { useEffect, useState } from 'react';
 // import { withLazyLoading } from '@/utils/lazyStrategies';
 import Modal from '../../../components/Modal/modals';
@@ -566,7 +566,7 @@ function Main() {
                 selectedIndex={parentTab}
                 onChange={handleParentTabChange}
               >
-                <Tab.List className="flex border-b-0 bg-transparent relative">
+                {/* <Tab.List className="flex border-b-0 bg-transparent relative">
                   <Tab className="relative flex-1">
                     {({ selected }) => (
                       <Tab.Button
@@ -612,7 +612,7 @@ function Main() {
                       </Tab.Button>
                     )}
                   </Tab>
-                </Tab.List>
+                </Tab.List> */}
                 <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400">
                   <Tab.Panel className="py-5 leading-relaxed">
                     <MerchantSettlement
