@@ -9,8 +9,8 @@ import Users from '@/pages/Users/index';
 import MerchantsClients from '@/pages/Clients/Merchant';
 import VendorsClients from '@/pages/Clients/Vendors';
 import Roles from '@/pages/Roles/index';
-import PayInTransaction from '@/pages/TransactionList/Payin/payin';
-import PayOutTransaction from '@/pages/TransactionList/Payout/payout';
+import PayInTransaction from '@/pages/TransactionList/Payin';
+import PayOutTransaction from '@/pages/TransactionList/Payout';
 import Chat from '@/pages/Chat/index';
 import Login from '@/pages/Login/index';
 import Register from '@/pages/Register/index';
@@ -201,11 +201,11 @@ function Router(): React.ReactElement | null {
           children: [
             {
               path: 'merchants',
-              element: <MerchantSettlement refreshSettlement={true} />,
+              element: <MerchantSettlement/>,
             },
             {
               path: 'vendors',
-              element: <VendorSettlement refreshSettlement={true} />,
+              element: <VendorSettlement/>,
             },
           ],
         },

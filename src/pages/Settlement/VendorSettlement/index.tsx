@@ -1,1369 +1,623 @@
 /* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { Tab } from '@/components/Base/Headless';
 import Lucide from '@/components/Base/Lucide';
-import { Menu, Popover } from '@/components/Base/Headless';
-import { FormInput, FormSelect } from '@/components/Base/Form';
-import Button from '@/components/Base/Button';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  createSettlement,
-  getAllSettlements,
-  getAllSettlementsExport,
-  // getAllSettlementsBySearchApi,
-  updateSettlement,
-} from '@/redux-toolkit/slices/settlement/settlementAPI';
+import React, { useEffect, useState } from 'react';
+// import { withLazyLoading } from '@/utils/lazyStrategies';
+import Modal from '../../../components/Modal/modals';
+import DynamicForm from '@/components/CommonForm';
+import { createSettlement } from '@/redux-toolkit/slices/settlement/settlementAPI';
 import {
   addSettlement,
-  getMerchantSettlementCount,
-  getSettlements,
   setRefreshSettlement,
-  updateReset,
-  updateStatus,
-  updateUTR,
-  onload,
 } from '@/redux-toolkit/slices/settlement/settlementSlice';
+import { setParentTab } from '@/redux-toolkit/slices/common/tabs/tabSlice';
 import { useAppDispatch } from '@/redux-toolkit/hooks/useAppDispatch';
-import {
-  Columns,
-  deleteSettlementFormFields,
-  editSettlementFormFields,
-  SettlementStatusOptions,
-  resetSettlementFormFields,
-  Role,
-  Status,
-  SettlementOptions,
-} from '@/constants';
-import CustomTable from '@/components/TableComponent/CommonTable';
-import { getAllSettlementData } from '@/redux-toolkit/slices/settlement/settlementSelectors';
 import { useAppSelector } from '@/redux-toolkit/hooks/useAppSelector';
-import Modal from '@/components/Modal/modals';
-import DynamicForm from '@/components/CommonForm';
-import { getPaginationData } from '@/redux-toolkit/slices/common/params/paramsSelector';
-import {
-  resetPagination,
-  setPagination,
-} from '@/redux-toolkit/slices/common/params/paramsSlice';
-// import { getCount } from '@/redux-toolkit/slices/common/apis/commonAPI';
-import LoadingIcon from '@/components/Base/LoadingIcon';
-import { downloadCSV } from '@/components/ExportComponent';
-import MultiSelect from '@/components/MultiSelect/MultiSelect';
+import { selectDarkMode } from '@/redux-toolkit/slices/common/darkMode/darkModeSlice';
+import { getParentTabs } from '@/redux-toolkit/slices/common/tabs/tabSelectors';
+import { selectAllVendorCodes } from '@/redux-toolkit/slices/vendor/vendorSelectors';
 import { getAllVendorCodes } from '@/redux-toolkit/slices/vendor/vendorAPI';
-import Litepicker from '@/components/Base/Litepicker';
-import debounce from 'lodash/debounce';
-import dayjs from 'dayjs';
-import Drawer from '@/components/Base/Drawer';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import { getVendorCodes } from '@/redux-toolkit/slices/vendor/vendorSlice';
+import {
+  getSettlementsFormFields,
+  Role,
+  SettlementOptions,
+  Status,
+} from '@/constants';
+import { getRefreshSettlement } from '@/redux-toolkit/slices/settlement/settlementSelectors';
+import { getAllBeneficiary } from '@/redux-toolkit/slices/beneficiaryAccounts/beneficiaryAccountsAPI';
+import { getBeneficiaryAccountSlice } from '@/redux-toolkit/slices/beneficiaryAccounts/beneficiaryAccountsSlice';
+import { selectAllBeneficiaryAccounts } from '@/redux-toolkit/slices/beneficiaryAccounts/beneficiaryAccountsSelectors';
 import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotifications';
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
+// Normal imports instead of lazy loading
+import MerchantSettlement from '@/pages/Settlement/MerchantSettlement/MerchnatSettlement';
+import VendorSettlement from '@/pages/Settlement/VendorSettlement/VendorSettlement';
 
-interface VendorSettlementProps {
-  refreshSettlement: boolean;
-}
+// Commented out lazy loading approach:
+// const MerchantSettlement = withLazyLoading<{ refreshSettlement: boolean }>(() => import('@/pages/Settlement/MerchantSettlement/index'), { chunkName: 'MerchantSettlement' });
+// const VendorSettlement = withLazyLoading<{ refreshSettlement: boolean }>(() => import('@/pages/Settlement/VendorSettlement/index'), { chunkName: 'VendorSettlement' });
 
-interface SettlementConfig {
-  reference_id?: string;
-  rejected_reason?: string;
-  [key: string]: any;
-}
-
-interface SettlementData {
+interface Beneficiary {
   id?: string;
-  user_id?: string;
-  amount?: string;
-  method?: string;
-  updated_by?: string;
-  status?: string;
-  config?: SettlementConfig;
+  bank_name?: string;
+  acc_holder_name?: string;
+  acc_no?: string;
+  ifsc?: string;
 }
-interface VendorCode {
-  label: string;
-  value: string;
-}
-function VendorSettlement({ refreshSettlement }: VendorSettlementProps) {
-  // Helper to flatten formData for DynamicForm defaultValues
-  const getDefaultValues = (formData: any) => {
-    if (!formData) return {};
-    return {
-      ...formData,
-      reference_id:
-        formData.reference_id || formData?.config?.reference_id || '',
-    };
-  };
-  const dispatch = useAppDispatch();
-  const pagination = useAppSelector(getPaginationData);
-  const [isPageLoading, setIsPageLoading] = useState(false);
-  const [formData, setFormData] = useState<SettlementData | null>(null);
-  const [newSettlementModal, setNewSettlementModal] = useState(false);
-  const [newdeleteModal, setNewdeleteModal] = useState(false);
-  const [newResetSettlementModal, setResetNewSettlementModal] = useState(false);
-  const allSettlement = useAppSelector(getAllSettlementData) || [];
-  const [vendorCodes, setVendorCodes] = useState<VendorCode[]>([]);
-  const [exportModalOpen, setExportModalOpen] = useState(false);
-  const [totalSettlementAmount, setTotalSettlementAmount] = useState<number>(0);
-  const [selectedFilter, setSelectedFilter] = useState<VendorCode[]>([]);
-  const date = dayjs().tz('Asia/Kolkata').format('YYYY-MM-DD');
-  const [selectedFilterDates, setSelectedFilterDates] = useState<string>(
-    `${date} - ${date}`,
-  );
-  const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedColumn, setSelectedColumn] = useState<string>('');
-  const [filterValue, setFilterValue] = useState<string>('');
-  const [selectedStatus, setSelectedStatus] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
-  const [internalUTR, setInternalUTR] = useState('');
-  const isFetching = useRef(false);
-  const [exportSelectedFilter, setExportSelectedFilter] = useState<
-    VendorCode[]
-  >([]);
-  const [exportMethodFilter, setExportMethodFilter] = useState<any[]>([]);
-  const [exportSelectedFilterDates, setExportSelectedFilterDates] =
-    useState<string>(`${date} - ${date}`);
-  const [exportSelectedReportStatus, setExportSelectedReportStatus] =
-    useState<string>('');
-  const filterStateRef = useRef({
-    selectedFilter: [] as VendorCode[],
-    selectedFilterDates: `${date} - ${date}`,
-    selectedStatus: '',
-    selectedColumn: '',
-    filterValue: '',
-  });
 
-  useEffect(() => {
-    filterStateRef.current = {
-      selectedFilter,
-      selectedFilterDates,
-      selectedStatus,
-      selectedColumn,
-      filterValue,
-    };
-  }, [
-    selectedFilter,
-    selectedFilterDates,
-    selectedStatus,
-    selectedColumn,
-    filterValue,
-  ]);
+interface Option {
+  value: string;
+  label: string;
+}
+
+function Main() {
   const data = localStorage.getItem('userData');
-  let role: string | undefined;
+  type RoleType = keyof typeof Role;
+  let role: RoleType | null = null;
+  let parsedData: any;
   if (data) {
-    const parsedData = JSON.parse(data);
-    role = parsedData.role as string;
-  } else {
-    // No user data found in localStorage
+    parsedData = JSON.parse(data);
+    role = parsedData.role;
   }
 
-  const handleGetAllVendorCodes = useCallback(async () => {
-    const res = await getAllVendorCodes(true, true, false, true, true);
-    setVendorCodes(
-      res.map((el: any) => ({
-        label: el.label,
-        value: el.value,
-      })),
-    );
-  }, []);
-
+  const dispatch = useAppDispatch();
+  useAppSelector(selectDarkMode); // Subscribe to dark mode to trigger re-render
+  const parentTab = useAppSelector(getParentTabs);
+  const [newSettlementModal, setNewSettlementModal] = useState(false);
+  const refreshSettlement = useAppSelector(getRefreshSettlement);
+  const getInitialTitle = (role: RoleType | null) => {
+    if (role === Role.ADMIN) {
+      return 'Vendor Settlement';
+    }
+    if (role === Role.MERCHANT) {
+      return 'Merchant Settlement';
+    }
+    return 'Vendor Settlement';
+  };
   useEffect(() => {
-    handleGetAllVendorCodes();
-  }, [handleGetAllVendorCodes]);
-
-  type ExportFormat = 'PDF' | 'CSV' | 'XLSX';
-
-  const handlePageChange = useCallback(
-    (page: number) => {
-      dispatch(
-        setPagination({
-          page,
-          limit: pagination?.limit || 20,
-        }),
-      );
-    },
-    [dispatch, pagination?.limit],
+    if (role === Role.ADMIN) {
+      setTitle(parentTab === 0 ? 'Merchant Settlement' : 'Vendor Settlement');
+    }
+  }, [parentTab]);
+  const [title, setTitle] = useState(getInitialTitle(role));
+  const [selectedMethodLabel, setSelectedMethodLabel] = useState<string>('');
+  const [code, setCode] = useState<string>('');
+  const [amount, setAmount] = useState<number>(1);
+  const [updated, setUpdated] = useState(false);
+  const [beneficiaryOptions, setBeneficiaryOptions] = useState<Option[]>([]);
+  const [selectedBeneficiary, setSelectedBeneficiary] = useState<Beneficiary>(
+    {},
   );
-
-  const handlePageSizeChange = useCallback(
-    (newLimit: number) => {
-      dispatch(
-        setPagination({
-          page: 1,
-          limit: newLimit,
-        }),
-      );
-    },
-    [dispatch],
+  const [debitCredit, setDebitCredit] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedBankName, setSelectedBankName] = useState<string>('');
+  const [accountNumberOptions, setAccountNumberOptions] = useState<Option[]>(
+    [],
   );
+  const [defaultValues, setDefaultValues] = useState<any>({
+    code: '',
+    amount: '',
+    method: '',
+    bank_name: '',
+    acc_holder_name: '',
+    acc_no: '',
+    ifsc: '',
+    debit_credit: '',
+    wallet_balance: '',
+    description: '',
+    utr: '',
+  });
 
-  const buildQueryParams = (
-    pagination: { page?: any; limit?: any },
-    selectedFilter: VendorCode[],
-    selectedFilterDates: string,
-    selectedStatus: string,
-    selectedColumn: string,
-    filterValue: string,
-    searchQuery?: string,
-    output: 'queryString' | 'filtersObject' = 'queryString',
-    includeDates: boolean = false,
-    selectedMethod?: any[]
-  ) => {
-    const filters: { [key: string]: any } = {};
+  const handleMethodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const method = e.target.value;
+    setSelectedMethodLabel(method);
 
-    if (pagination?.page && pagination?.limit) {
-      filters.page = pagination.page;
-      filters.limit = pagination.limit;
+    if (method === 'INTERNAL_BANK_TRANSFER' || method === 'INTERNAL_QR_TRANSFER') {
+      setUpdated(true);
+      return;
     }
 
-    if (output === 'queryString') {
-      filters.role_name = 'VENDOR';
+    if (method === 'BANK') {
+      setUpdated(false);
+      const userId = code || parsedData?.user_id || '';
+      fetchBeneficiary(userId);
+      return;
     }
 
-    if (searchQuery) {
-      filters.search = searchQuery;
-    }
-
-    if (selectedFilter.length) {
-      if (output === 'filtersObject') {
-        filters.user_id = selectedFilter.map((f: VendorCode) => f.value);
-      } else {
-        filters.user_id = selectedFilter
-          .map((f: VendorCode) => f.value)
-          .join(',');
-      }
-    }
-
-    if (includeDates && selectedFilterDates) {
-      const [startStr, endStr] = selectedFilterDates.split(' - ');
-      const startDate = dayjs(startStr).format('YYYY-MM-DD');
-      const endDate = dayjs(endStr).format('YYYY-MM-DD');
-      if (output === 'filtersObject') {
-        filters.startDate = startDate;
-        filters.endDate = endDate;
-      } else {
-        filters.start_date = startDate;
-        filters.end_date = endDate;
-      }
-    }
-
-    if (selectedStatus) {
-      filters.status = selectedStatus;
-    }
-
-    if (selectedMethod && selectedMethod.length > 0) {
-      if (output === 'filtersObject') {
-        filters.method = selectedMethod.map((method: any) => method.value);
-      } else {
-        filters.method = selectedMethod
-          .map((method: any) => method.value)
-          .join(',');
-      }
-    }
-
-    if (selectedColumn && filterValue) {
-      filters[selectedColumn] = filterValue;
-    }
-
-    if (output === 'filtersObject') {
-      return filters;
-    }
-
-    const params = new URLSearchParams();
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value !== undefined && value !== '') {
-        params.append(key, String(value));
-      }
-    });
-    return params.toString();
+    setUpdated(false);
   };
 
-  const fetchSettlements = useCallback(
-    async (
-      searchQuery?: string,
-      filterColumn?: string,
-      filterVal?: string | string[],
-      filters?: {
-        selectedFilter: VendorCode[];
-        selectedFilterDates: string;
-        selectedStatus: string;
-        selectedColumn: string;
-        filterValue: string;
-      },
-    ) => {
-      if (isFetching.current) return;
-      isFetching.current = true;
-      setIsPageLoading(true);
-      try {
-        const appliedFilters = filters || filterStateRef.current;
-        const queryString = buildQueryParams(
-          pagination,
-          appliedFilters.selectedFilter,
-          appliedFilters.selectedFilterDates,
-          appliedFilters.selectedStatus,
-          filterColumn || appliedFilters.selectedColumn,
-          filterVal
-            ? Array.isArray(filterVal)
-              ? filterVal.join(',')
-              : filterVal
-            : appliedFilters.filterValue,
-          searchQuery,
-          'queryString',
-          false,
-        ) as string;
+  const settlementModal = () => {
+    setSelectedMethodLabel('');
+    setSelectedBeneficiary({});
+    setBeneficiaryOptions([]);
+    setDefaultValues({
+      code: '',
+      amount: '',
+      method: '',
+      bank_name: '',
+      acc_holder_name: '',
+      acc_no: '',
+      ifsc: '',
+      debit_credit: '',
+      wallet_balance: '',
+      description: '',
+      utr: '',
+    });
+    setNewSettlementModal(!newSettlementModal);
+  };
 
-       
-     
-        let  response = await getAllSettlements(queryString);
-          dispatch(getSettlements(response.data.settlements));
-          dispatch(getMerchantSettlementCount(response.data.totalCount));
-        // } else {
-        //   response = await getAllSettlementsBySearchApi(queryString);
-        //   dispatch(getSettlements(response.settlements));
-        //   dispatch(getMerchantSettlementCount(response.totalCount));
-        // }
-        isFetching.current = false;
-      } catch {
-        isFetching.current = false;
+  const fetchBeneficiary = async (user_id: string) => {
+    try {
+      // const pagination = { page: 1, limit: 10 };
+      const queryParams: Record<string, string> = {
+        // page: pagination.page.toString(),
+        // limit: pagination.limit.toString(),
+        forSettlementFlag: 'true',
+        beneficiary_role:
+          title === 'Merchant Settlement' && parentTab === 0
+        ? Role.MERCHANT
+        : Role.VENDOR,
+        beneficiary_user_id: user_id,
+      };
+
+      if (title !== 'Merchant Settlement') {
+        queryParams.is_enabled = 'true';
+      }
+
+      const queryString = new URLSearchParams(queryParams).toString();
+      const BeneficiaryList = await getAllBeneficiary(queryString);
+      if (BeneficiaryList && Array.isArray(BeneficiaryList)) {
+        dispatch(getBeneficiaryAccountSlice(BeneficiaryList));
+
+        const uniqueBankNames = Array.from(
+          new Set(BeneficiaryList.map((b: Beneficiary) => b.bank_name)),
+        );
+        const bankOptions = uniqueBankNames.map((bank) => ({
+          value: bank || '',
+          label: bank || '',
+        }));
+        setBeneficiaryOptions(bankOptions);
+
+        if (bankOptions.length > 0) {
+          const defaultBank = bankOptions[0]?.value;
+          setSelectedBankName(defaultBank || '');
+          updateAccountNumbers(BeneficiaryList, defaultBank || '');
+          setSelectedBeneficiary(BeneficiaryList[0] || {});
+        } else {
+          setBeneficiaryOptions([]);
+          setAccountNumberOptions([]);
+          setSelectedBeneficiary({});
+          dispatch(
+            addAllNotification({
+              status: Status.ERROR,
+              message:'No beneficiaries found for this user'
+            })
+          );
+        }
+      } else {
+        setBeneficiaryOptions([]);
+        setAccountNumberOptions([]);
+        setSelectedBeneficiary({});
         dispatch(
           addAllNotification({
             status: Status.ERROR,
-            message: 'Error fetching settlements'
+            message:'Invalid beneficiary data received'
           })
         );
-      } finally {
-        setIsPageLoading(false);
       }
-    },
-    [pagination, dispatch],
-  );
-
-  // const fetchCount = useCallback(async () => {
-  //     let filters = {};
-  //     if (
-  //       filterStateRef.current.selectedFilter.length ||
-  //       filterStateRef.current.selectedStatus ||
-  //       (filterStateRef.current.selectedColumn &&
-  //         filterStateRef.current.filterValue)
-  //     ) {
-  //       filters = buildQueryParams(
-  //         {}, // Empty pagination to exclude page and limit
-  //         filterStateRef.current.selectedFilter,
-  //         filterStateRef.current.selectedFilterDates,
-  //         filterStateRef.current.selectedStatus,
-  //         filterStateRef.current.selectedColumn,
-  //         filterStateRef.current.filterValue,
-  //         undefined,
-  //         'filtersObject',
-  //         false, // Exclude dates
-  //       );
-  //     }
-  //   try {
-  //     // const getCountData = await getCount('Settlement', 'VENDOR', filters);
-  //     dispatch(getMerchantSettlementCount(getCountData.count));
-  //   } catch {
-  //     dispatch(
-  //       addAllNotification({
-  //         status: Status.ERROR,
-  //         message: 'Error fetching settlement count'
-  //       })
-  //     );
-  //   }
-  // }, [dispatch]);
-
-  useEffect(() => {
-    if (debouncedSearchQuery) {
-      fetchSettlements(debouncedSearchQuery);
-    } else {
-      fetchSettlements();
-    }
-  }, [debouncedSearchQuery, fetchSettlements]);
-
-  const debouncedFetchBankAccounts = useCallback(
-    debounce((query: string) => {
-      fetchSettlements(query);
-    }, 500),
-    [fetchSettlements],
-  );
-
-  useEffect(() => {
-    if (refreshSettlement && !isFetching.current) {
-      fetchSettlements(
-        debouncedSearchQuery,
-        undefined,
-        undefined,
-        filterStateRef.current,
-      ).then(() => {
-        dispatch(setRefreshSettlement(false));
-      });
-      // fetchCount();
-    }
-  }, [
-    fetchSettlements,
-    // fetchCount,
-    debouncedFetchBankAccounts,
-    searchQuery,
-    refreshSettlement,
-    pagination?.page,
-    pagination?.limit,
-    dispatch,
-  ]);
-
-  useEffect(() => {
-    fetchSettlements(debouncedSearchQuery);
-    // fetchCount();
-  }, [debouncedSearchQuery, pagination, fetchSettlements]);
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearchQuery(searchQuery.trim());
+    } catch {
+      setBeneficiaryOptions([]);
+      setAccountNumberOptions([]);
+      setSelectedBeneficiary({});
       dispatch(
-        setPagination({
-          page: 1, // Reset to first page
-          limit: pagination?.limit || 10,
-        }),
+        addAllNotification({
+          status: Status.ERROR,
+          message:'Failed to fetch beneficiaries'
+        })
       );
-    }, 1000);
-   
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [searchQuery]);
+    }
+  };
+
+  const updateAccountNumbers = (
+    beneficiaries: Beneficiary[],
+    bankName: string,
+  ) => {
+    const filteredAccounts = beneficiaries
+      .filter((b: Beneficiary) => b.bank_name === bankName)
+      .map((b: Beneficiary) => ({
+        value: b.acc_no || '',
+        label: b.acc_no || '',
+      }));
+    setAccountNumberOptions(filteredAccounts);
+  };
+
+  const handleBankNameChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const bankName = e.target.value;
+    setSelectedBankName(bankName);
+    updateAccountNumbers(beneficiaries.beneficiaryAccount, bankName);
+
+    setDefaultValues(() => ({
+      code: code,
+      amount: amount,
+      method: selectedMethodLabel,
+      debit_credit: debitCredit,
+      bank_name: bankName,
+      acc_no: '',
+      acc_holder_name: '',
+      ifsc: '',
+    }));
+    setSelectedBeneficiary({});
+  };
+
+  const handleBeneficiaryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const accNo = e.target.value;
+    if (!accNo || !selectedBankName) return;
+
+    const beneficiary = beneficiaries.beneficiaryAccount.find(
+      (b: Beneficiary) =>
+        b.acc_no === accNo && b.bank_name === selectedBankName,
+    );
+
+    if (beneficiary) {
+      setSelectedBeneficiary(beneficiary);
+      setDefaultValues((prev: any) => ({
+        ...prev,
+        // debit_credit: debitCredit,
+        bank_name: selectedBankName,
+        acc_no: beneficiary.acc_no || '',
+        acc_holder_name: beneficiary.acc_holder_name || '',
+        ifsc: beneficiary.ifsc || '',
+      }));
+      setSelectedBeneficiary(beneficiary || {});
+    } else {
+      setSelectedBeneficiary({});
+    }
+  };
 
   useEffect(() => {
-    if (!newSettlementModal) {
-      setFormData(null);
-    }
-  }, [newSettlementModal]);
-
-  // useEffect(() => {
-  //   const fetchCount = async () => {
-  //     try {
-  //       let filters = {};
-  //       if (
-  //         selectedFilter.length ||
-  //         selectedStatus ||
-  //         (selectedColumn && filterValue)
-  //       ) {
-  //         filters = buildQueryParams(
-  //           {},
-  //           selectedFilter,
-  //           selectedFilterDates,
-  //           selectedStatus,
-  //           selectedColumn,
-  //           filterValue,
-  //           undefined,
-  //           'filtersObject',
-  //           false,
-  //         );
-  //       }
-  //       const getCountData = await getCount('Settlement', 'VENDOR', filters);
-  //       dispatch(getMerchantSettlementCount(getCountData.count));
-  //     } catch {
-  //       dispatch(
-  //         addAllNotification({
-  //           status: Status.ERROR,
-  //           message: 'Error fetching settlement count'
-  //         })
-  //       );
-  //     }
-  //   };
-  //   fetchCount();
-  // }, [
-  //   dispatch,
-  //   selectedFilter,
-  //   selectedStatus,
-  //   selectedColumn,
-  //   filterValue,
-  // ]);
-
-  const handleEditModal = (data: any) => {
-    if (data?.config?.reference_id && data.method !== 'INTERNAL_QR_TRANSFER' && data.method !== 'INTERNAL_BANK_TRANSFER') {
-      setInternalUTR(data.config.reference_id);
-    }
-    setFormData(data);
-    settlementModal();
-  };
-
-  const resetModal = () => {
-    setResetNewSettlementModal((prev) => !prev);
-  };
-
-  const handleResetModal = (data: any) => {
-    setFormData(data);
-    resetModal();
-  };
-
-  const deleteModal = () => {
-    setNewdeleteModal((prev) => !prev);
-  };
-
-  const handleDeleteModal = (data: any) => {
-    setFormData(data);
-    deleteModal();
-  };
-
-  function getUpdatedFields(
-    originalData: any,
-    updatedData: any,
-  ): { [key: string]: any } {
-    const updatedFields: { [key: string]: any } = {};
-    Object.keys(updatedData).forEach((key) => {
-      if (typeof updatedData[key] === 'object' && updatedData[key] !== null) {
-        const nestedUpdates = getUpdatedFields(
-          originalData[key] || {},
-          updatedData[key],
-        );
-        if (Object.keys(nestedUpdates).length > 0) {
-          updatedFields[key] = nestedUpdates;
-        }
-      } else {
-        if (updatedData[key] !== originalData[key]) {
-          updatedFields[key] = updatedData[key];
-        }
+    const fetchVendorCodes = async () => {
+      const vendorCodesList = await getAllVendorCodes(true,true,false,true,true);
+      if (vendorCodesList) {
+        dispatch(getVendorCodes(vendorCodesList));
       }
-    });
-    return updatedFields;
-  }
+    };
 
-  const settlementModal = () => {
-    setNewSettlementModal((prev) => !prev);
+    const fetchData = async () => {
+      if (role === Role.ADMIN) {
+        await Promise.all([fetchVendorCodes()]);
+      } else {
+        await fetchVendorCodes();
+      }
+    };
+
+    fetchData();
+  }, [role, dispatch]);
+
+  const handleCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCode(e.target.value);
+    // fetchBeneficiary(e.target.value);
   };
 
-  const resetSettlement = () => {
-    setResetNewSettlementModal((prev) => !prev);
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(Number(e.target.value));
   };
 
-  const rejectSettlement = () => {
-    setNewdeleteModal((prev) => !prev);
+  const handleDebitCredit = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setDebitCredit(e.target.value);
   };
+
+  // const merchantCodes = useAppSelector(selectAllMerchantCodes);
+  const vendorCodes = useAppSelector(selectAllVendorCodes);
+  const options = (() => {
+    if (role === Role.ADMIN) {
+      return vendorCodes.map((vendor) => ({
+            value: vendor.value,
+            label: vendor.label,
+          }));
+    } else {
+      return vendorCodes.map((vendor) => ({
+        value: vendor.value,
+        label: vendor.label,
+      }));
+    }
+  })();
+
+  const beneficiaries = useAppSelector(selectAllBeneficiaryAccounts);
 
   const handleSubmitData = async (data: any) => {
     setIsLoading(true);
-    let prevData: SettlementData = formData as SettlementData;
-    const newData = getUpdatedFields(prevData, data);
-    const settlementData = { ...newData, ...data };
-    const { reference_id, user_id, amount, method, updated_by, status } =
-      settlementData;
-
-    const result = {
-      user_id,
-      amount,
-      method,
-      updated_by,
-      status,
-      config: { ...(prevData?.config || {}), reference_id },
+    const selectedVendor = vendorCodes.find(
+      (vendor) => vendor.value === data.code,
+    );
+    const userId =
+      selectedVendor?.value?.toString() ||
+      null;
+    // if (title === 'Merchant Settlement') {
+    //   data.bank_id = data.bank_name;
+    // delete data.bank_name;
+    // delete data.acc_holder_name;
+    // delete data.acc_no;
+    // delete data.ifsc;
+    // }
+    const payload: {
+      user_id: string | null;
+      amount?: number;
+      [key: string]: any;
+    } = {
+      ...Object.fromEntries(
+        Object.entries(data).filter(
+          ([, value]) => value !== undefined && value !== null && value !== '',
+        ),
+      ),
+      user_id: userId,
     };
 
-    try {
-      const updatedSettlement = (await updateSettlement(data?.id, result)) ?? {
-        id: '',
-        config: { reference_id: '' },
+    if (
+      data.debit_credit == '' ||
+      data.method === 'INTERNAL_BANK_TRANSFER' ||
+      data.method === 'INTERNAL_QR_TRANSFER'
+    ) {
+      delete data.debit_credit;
+    }
+    const adjustedValue =
+      data.debit_credit === 'RECEIVED'
+        ? Number(amount) > 0
+          ? -Number(amount)
+          : Number(amount)
+        : Math.abs(Number(amount));
+    if (
+      data.method !== 'INTERNAL_BANK_TRANSFER' &&
+      data.method !== 'INTERNAL_QR_TRANSFER'
+    ) {
+      //only send utr in internal case
+      delete payload.utr;
+      payload.amount = adjustedValue;
+      payload.config = {
+        debit_credit: data.debit_credit,
       };
-      dispatch(
-        updateUTR({
-          id: updatedSettlement.id ?? '',
-          reference_id: updatedSettlement.config?.reference_id ?? '',
-        }),
-      );
-      dispatch(setRefreshSettlement(true));
-      setFormData(null);
-      setNewSettlementModal(false);
-      dispatch(
-        addAllNotification({
-          status: Status.SUCCESS,
-          message: 'Settlement updated successfully'
-        })
-      );
+    }
+
+    delete (payload as any)?.code; // Remove the 'code' key as per original logic
+    delete (payload as any)?.debit_credit; // Remove the 'method' key as per original logic
+    try {
+      const addedSettlement = await createSettlement(payload);
+      if (addedSettlement.meta) {
+        dispatch(setRefreshSettlement(true));
+        dispatch(addSettlement(addedSettlement));
+        dispatch(
+          addAllNotification({
+            status: Status.SUCCESS,
+            message:'Settlement added successfully'
+          })
+        );
+        setNewSettlementModal(false);
+        setDefaultValues({
+          code: '',
+          amount: '',
+          method: '',
+          debit_credit: '',
+          bank_name: '',
+          acc_holder_name: '',
+          acc_no: '',
+          ifsc: '',
+          wallet_balance: '',
+          description: '',
+          utr: '',
+        });
+      } else {
+        dispatch(
+          addAllNotification({
+            status: Status.ERROR,
+            message:addedSettlement?.error?.message || 'Failed to add settlement'
+          })
+        );
+      }
     } catch {
       dispatch(
         addAllNotification({
           status: Status.ERROR,
-          message: 'Failed to update settlement'
+          message:'Error creating settlement'
         })
       );
+      setNewSettlementModal(false);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleResetData = async (data: any) => {
-    setIsLoading(true);
-    if (data) {
-      const { config, user_id, amount, method, updated_by } = data;
-      const result = {
-        user_id,
-        amount,
-        method,
-        updated_by,
-        status: 'INITIATED',
-        config: {
-          ...config,
-          reference_id: '',
-          rejected_reason: '',
-        },
-      };
-      try {
-        const updated = await updateSettlement(data?.id, result);
-        dispatch(
-          updateStatus({
-            id: updated?.id ?? '',
-            reference_id: updated?.config?.reference_id ?? '',
-            status: updated?.status ?? 'INITIATED',
-            rejected_reason: updated?.config?.rejected_reason ?? '',
-          }),
-        );
-        dispatch(setRefreshSettlement(true));
-        setResetNewSettlementModal(false);
-        setFormData(null);
-        dispatch(
-          addAllNotification({
-            status: Status.SUCCESS,
-            message: 'Settlement reset successfully'
-          })
-        );
-      } catch {
-        dispatch(
-          addAllNotification({
-            status: Status.ERROR,
-            message: 'Failed to reset settlement'
-          })
-        );
-      }
-    } else {
-      const addedSettlement = await createSettlement(data);
-      dispatch(addSettlement(addedSettlement));
-      dispatch(
-        addAllNotification({
-          status: Status.SUCCESS,
-          message: 'Settlement added successfully'
-        })
-      );
-      dispatch(setRefreshSettlement(true));
-    }
-    setIsLoading(false);
-  };
-
-  const handleDeleteSettlement = async (data: any) => {
-    setIsLoading(true);
-    if (data) {
-      let prevData: SettlementData = formData as SettlementData;
-      const newData = getUpdatedFields(prevData, data);
-      const settlementData = { ...newData, ...data };
-      const { rejected_reason, user_id, amount, method, updated_by, status } =
-        settlementData;
-      const result = {
-        user_id,
-        amount,
-        method,
-        updated_by,
-        status,
-        config: { ...(prevData?.config || {}), rejected_reason },
-      };
-      try {
-        const updatedSettlement = await updateSettlement(data?.id, result);
-        dispatch(
-          updateReset({
-            id: updatedSettlement?.id ?? '',
-            rejected_reason: updatedSettlement?.config?.rejected_reason ?? '',
-            status: updatedSettlement?.status ?? '',
-          }),
-        );
-        dispatch(setRefreshSettlement(true));
-        setNewdeleteModal(false);
-        setFormData(null);
-        dispatch(
-          addAllNotification({
-            status: Status.SUCCESS,
-            message: 'Settlement rejected successfully'
-          })
-        );
-      } catch {
-        dispatch(
-          addAllNotification({
-            status: Status.ERROR,
-            message: 'Failed to reject settlement'
-          })
-        );
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };
-
-  const handleDownload = async (type: string) => {
-    if (!exportSelectedFilter.length || !exportSelectedFilterDates) {
-      dispatch(
-        addAllNotification({
-          status: Status.ERROR,
-          message:  'Please select both vendors and date range.'
-        })
-      );
-      return;
-    }
-
-    try {
-      const queryParams = buildQueryParams(
-        { page: 'no_pagination', limit: 'no_pagination' },
-        exportSelectedFilter,
-        exportSelectedFilterDates,
-        exportSelectedReportStatus,
-        '',
-        '',
-        undefined,
-        'queryString',
-        true,
-        exportMethodFilter.length > 0 ? exportMethodFilter : [],
-      ) as string;
-
-      const selectedVendorReports = await getAllSettlementsExport(queryParams);
-      const reportsLength = (selectedVendorReports?.data ?? []).length;
-
-      if (reportsLength > 0) {
-        interface ExportedData {
-          Sno: string;
-          Code: string;
-          Status: string;
-          Amount: string;
-          Method: string;
-          ReferenceID: string;
-          CreatedBy?: string;
-          UpdatedBy?: string;
-          CreatedAt: string;
-          UpdatedAt: string;
-        }
-        type ConfigType = {
-          description?: string;
-          reference_id?: string;
-          bank_name?: string;
-          acc_holder_name?: string;
-          acc_no?: string;
-          ifsc?: string;
-          wallet_balance?: string;
-          debit_credit?: string;
-        };
-        const filteredData: ExportedData[] = selectedVendorReports.data.map(
-          (item: {
-            sno: string;
-            code: string;
-            status: string;
-            amount: string;
-            method?: string;
-            config?: ConfigType;
-            created_by?: string;
-            updated_by?: string;
-            created_at: string;
-            updated_at: string;
-          }) => ({
-            Sno: item.sno,
-            Code: item.code,
-            Status: item.status,
-            Amount: String(item.amount),
-            Method: item.method || 'N/A',
-            ReferenceID: item.config?.reference_id || 'N/A',
-            Description:
-              item.method === 'BANK'
-                ? [
-                    item.config?.bank_name,
-                    item.config?.acc_holder_name,
-                    item.config?.acc_no,
-                    item.config?.ifsc,
-                  ].join(', ')
-                : item.method === 'CRYPTO'
-                ? [item.config?.wallet_balance, item.config?.description].join(
-                    ', ',
-                  )
-                : item.config?.description || 'N/A',
-            "SendBy/ReceivedBy": item.config?.debit_credit === "RECEIVED" ? 'Received by Admin' : 'Sent by Admin',
-            CreatedBy: item.created_by || 'N/A',
-            UpdatedBy: item.updated_by || 'N/A',
-            CreatedAt: dayjs(item.created_at)
-              .tz('Asia/Kolkata')
-              .format('DD-MM-YYYY hh:mm:ss A'),
-            UpdatedAt: dayjs(item.updated_at)
-              .tz('Asia/Kolkata')
-              .format('DD-MM-YYYY hh:mm:ss A'),
-          }),
-        );
-        downloadCSV(
-          filteredData,
-          type as ExportFormat,
-          `Vendor-Settlement-Report_${
-            exportSelectedFilterDates.split(' - ')[0]
-          }_to_${exportSelectedFilterDates.split(' - ')[1]}`,
-        );
-        setExportModalOpen(false);
-        setExportSelectedFilter([]);
-        setExportMethodFilter([]);
-        setExportSelectedFilterDates(`${date} - ${date}`);
-        setExportSelectedReportStatus('');
-        dispatch(
-          addAllNotification({
-            status: Status.SUCCESS,
-            message:  `Report exported successfully as ${type}`
-          })
-        );
-      } else {
-        setTimeout(() => {
-          setExportModalOpen(false);
-          setExportSelectedFilter([]);
-          setExportMethodFilter([]);
-          setExportSelectedFilterDates(`${date} - ${date}`);
-          setExportSelectedReportStatus('');
-        }, 100);
-        dispatch(
-          addAllNotification({
-            status: Status.ERROR,
-            message:  'No data available for export'
-          })
-        );
-      }
-    } catch {
-      dispatch(
-        addAllNotification({
-          status: Status.ERROR,
-          message:  'Error exporting report'
-        })
-      );
-    }
-  };
-
-  const handleRefresh = useCallback(() => {
-    dispatch(onload());
-    fetchSettlements(
-      debouncedSearchQuery,
-      undefined,
-      undefined,
-      filterStateRef.current,
-    );
-    // fetchCount();
-    dispatch(
-      addAllNotification({
-        status: Status.SUCCESS,
-        message: 'Settlements refreshed successfully'
-      })
-    );
-  }, [
-    dispatch,
-    fetchSettlements,
-    debouncedSearchQuery,
-    // fetchCount,
-  ]);
-
-  const handleReset = useCallback(async () => {
-    dispatch(onload());
-    dispatch(resetPagination());
-    setSearchQuery('');
-    setFilterValue('');
-    setSelectedColumn('');
-    setSelectedFilter([]);
-    filterStateRef.current = {
-      selectedFilter: [],
-      selectedFilterDates: `${date} - ${date}`,
-      selectedStatus: '',
-      selectedColumn: '',
-      filterValue: '',
-    };
-    setSelectedStatus('');
-    setSelectedFilterDates(`${date} - ${date}`);
-    dispatch(
-      addAllNotification({
-        status: Status.SUCCESS,
-        message:  'All filters reset successfully'
-      })
-    );
-    await fetchSettlements();
-  }, [dispatch, fetchSettlements, date]);
-
-  const applyFilter = useCallback(() => {
-dispatch(
-      setPagination({
-        page: 1,
-        limit: pagination?.limit || 20,
-      }),
-    );    fetchSettlements(
-      debouncedSearchQuery,
-      undefined,
-      undefined,
-      filterStateRef.current,
-    );
-    // fetchCount();
-  }, [fetchSettlements, dispatch, debouncedSearchQuery]);
-
-  const handleRowSelect = useCallback(
-    (id: string) => {
-      if (selectedRows.includes(id)) {
-        const newSelectedRows = selectedRows.filter((i) => i !== id);
-        setSelectedRows(newSelectedRows);
-        if (newSelectedRows.length === 0) {
-          setDrawerOpen(false);
-        }
-      } else {
-        setSelectedRows([...selectedRows, id]);
-        setDrawerOpen(true);
-      }
-    },
-    [selectedRows],
-  );
-
-  const handleSelectAll = () => {
-    if (selectedRows.length) {
-      setSelectedRows([]);
-      setDrawerOpen(false);
-      setTotalSettlementAmount(0);
-    } else {
-      const newSelectedRows = allSettlement.settlement
-        .filter((item: any) =>
-          [Status.INITIATED, Status.SUCCESS, Status.REJECTED, Status.REVERSED].includes(
-            item.status,
-          ),
-        )
-        .map((item: any) => item.id);
-
-      const totalAmount = allSettlement.settlement
-        .filter((item: any) =>
-          [Status.INITIATED, Status.SUCCESS, Status.REJECTED].includes(
-            item.status,
-          ),
-        )
-        .reduce((sum: number, item: any) => sum + (item.amount || 0), 0);
-      setSelectedRows(newSelectedRows);
-      setDrawerOpen(true);
-      setTotalSettlementAmount(totalAmount);
-    }
+  const handleParentTabChange = (index: number) => {
+    setSelectedMethodLabel('');
+    dispatch(setParentTab(index));
+    setTitle(index === 0 ? 'Merchant Settlement' : 'Vendor Settlement');
   };
 
   return (
-    <div className="grid grid-cols-12 gap-y-10 gap-x-6">
-      <Modal
-        handleModal={settlementModal}
-        forOpen={newSettlementModal}
-        title={''}
-      >
-        <DynamicForm
-          sections={editSettlementFormFields(internalUTR)}
-          onSubmit={handleSubmitData}
-          defaultValues={getDefaultValues(formData)}
-          isEditMode={formData ? true : false}
-          handleCancel={settlementModal}
-          isLoading={isLoading}
-        />
-      </Modal>
-
-      <Modal handleModal={deleteModal} forOpen={newdeleteModal} title="">
-        <DynamicForm
-          sections={deleteSettlementFormFields()}
-          onSubmit={handleDeleteSettlement}
-          defaultValues={formData || {}}
-          isEditMode={true}
-          handleCancel={rejectSettlement}
-          isLoading={isLoading}
-        />
-      </Modal>
-
-      <Modal
-        handleModal={resetModal}
-        forOpen={newResetSettlementModal}
-        title={''}
-      >
-        <DynamicForm
-          sections={resetSettlementFormFields()}
-          onSubmit={handleResetData}
-          defaultValues={formData || {}}
-          isEditMode={true}
-          handleCancel={resetSettlement}
-          isLoading={isLoading}
-        />
-      </Modal>
+    <div className="grid grid-cols-12 gap-y-4 sm:gap-y-6 md:gap-y-10 gap-x-3 sm:gap-x-6">
       <div className="col-span-12">
-        <div className="mt-3.5">
-          <div className="flex flex-col">
-            <div className="flex flex-col p-5 sm:items-center sm:flex-row gap-y-2">
-              <div>
-                <div className="relative">
-                  <Lucide
-                    icon="Search"
-                    className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                  />
-                  <FormInput
-                    type="text"
-                    placeholder="Search transactions..."
-                    className="pl-9 sm:w-64 rounded-[0.5rem]"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  {searchQuery && (
-                    <Lucide
-                      icon="X"
-                      className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                      onClick={() => setSearchQuery('')}
-                    />
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 sm:ml-auto">
-                <Menu>
-                  <Menu.Button
-                    as={Button}
-                    variant="outline-secondary"
-                    className="w-full sm:w-auto"
-                    onClick={handleRefresh}
-                  >
-                    <Lucide
-                      icon="RefreshCw"
-                      className="stroke-[1.3] w-4 h-4 mr-2"
-                    />
-                    Refresh
-                  </Menu.Button>
-                </Menu>
-                <Menu>
-                  <Menu.Button
-                    as={Button}
-                    variant="outline-secondary"
-                    className="w-full sm:w-auto"
-                    onClick={handleReset}
-                  >
-                    <Lucide
-                      icon="RotateCcw"
-                      className="stroke-[1.3] w-4 h-4 mr-2"
-                    />
-                    Reset
-                  </Menu.Button>
-                </Menu>
-                <Menu>
-                  <Menu.Button
-                    as={Button}
-                    variant="outline-secondary"
-                    className="w-full sm:w-auto"
-                    onClick={() => setExportModalOpen(true)}
-                  >
-                    <Lucide
-                      icon="Download"
-                      className="stroke-[1.3] w-4 h-4 mr-2"
-                    />
-                    Export
-                    <Lucide
-                      icon="ChevronDown"
-                      className="stroke-[1.3] w-4 h-4 ml-2"
-                    />
-                  </Menu.Button>
-                  {exportModalOpen && (
-                    <Modal
-                      handleModal={() => {
-                        setExportModalOpen(false);
-                        setExportSelectedFilter([]);
-                        setExportMethodFilter([]);
-                        setExportSelectedFilterDates(`${date} - ${date}`);
-                        setExportSelectedReportStatus('');
-                      }}
-                      forOpen={exportModalOpen}
-                      title="Export Settlements"
-                    >
-                      <div className="py-2 my-2 mb-4">
-                        <Litepicker
-                          value={exportSelectedFilterDates || ''}
-                          onChange={(e) => {
-                            setExportSelectedFilterDates(e.target.value);
-                          }}
-                          enforceRange={false}
-                          options={{
-                            autoApply: false,
-                            singleMode: false,
-                            numberOfMonths: 1,
-                            numberOfColumns: 1,
-                            showWeekNumbers: true,
-                            startDate:
-                              exportSelectedFilterDates.split(' - ')[0],
-                            endDate: exportSelectedFilterDates.split(' - ')[1],
-                            dropdowns: {
-                              minYear: 1990,
-                              maxYear: null,
-                              months: true,
-                              years: true,
-                            },
-                          }}
-                          className="w-full pl-9 rounded-[0.5rem]"
-                        />
-                      </div>
-
-                      <div className="my-2 py-2 flex flex-col justify-center">
-                        <div className="flex flex-row">
-                          <MultiSelect
-                            codes={vendorCodes}
-                            selectedFilter={exportSelectedFilter}
-                            // onChange={setSelectedFilter}
-                            setSelectedFilter={(value: VendorCode[]) => {
-                              setExportSelectedFilter(value);
-                            }}
-                            placeholder="Select Vendor Codes..."
-                          />
-                        </div>
-                      </div>
-                      <FormSelect
-                        className="flex-1 mt-2"
-                        value={exportSelectedReportStatus}
-                        onChange={(e) => {
-                          setExportSelectedReportStatus(e.target.value);
-                        }}
-                      >
-                        <option value="">Select status...</option>
-                        {Object.entries(SettlementStatusOptions).map(
-                          ([key, value]) => (
-                            <option key={key} value={value.value}>
-                              {value.label}
-                            </option>
-                          ),
-                        )}
-                      </FormSelect>
-                      <div className="my-2 py-2 flex flex-col justify-center">
-                        <div className="flex flex-row">
-                          <MultiSelect
-                            codes={SettlementOptions.vendorSettlement}
-                            selectedFilter={exportMethodFilter}
-                            setSelectedFilter={(value: any[]) => {
-                              setExportMethodFilter(value);
-                            }}
-                            placeholder="Select Method..."
-                          />
-                        </div>
-                      </div>
-                      <div className="flex flex-row gap-4 my-4 pt-6">
-                        <Button onClick={() => handleDownload('PDF')}>
-                          Export as PDF
-                        </Button>
-                        <Button onClick={() => handleDownload('CSV')}>
-                          Export as CSV
-                        </Button>
-                        <Button onClick={() => handleDownload('XLSX')}>
-                          Export as XLSX
-                        </Button>
-                      </div>
-                    </Modal>
-                  )}
-                </Menu>
-                <Popover className="inline-block">
-                  {({ close }: { close: () => void }) => (
-                    <>
-                      <Popover.Button
-                        as={Button}
-                        variant="outline-secondary"
-                        className="w-full sm:w-auto"
+        <div className="flex items-center min-h-10 mx-2 sm:mx-3 my-2 justify-between gap-2">
+          <div className="text-lg sm:text-xl md:text-2xl font-medium group-[.mode--light]:text-white">
+            {title}
+          </div>
+          <Modal
+            handleModal={settlementModal}
+            forOpen={newSettlementModal}
+            buttonTitle={`Add Settlement`}
+          >
+            <DynamicForm
+              sections={{
+                Add_Settlement: getSettlementsFormFields(
+                  options,
+                  title === 'Merchant Settlement'
+                    ? SettlementOptions.merchantSettlement
+                    : SettlementOptions.vendorSettlement,
+                  updated,
+                  handleMethodChange,
+                  handleBeneficiaryChange,
+                  handleCodeChange,
+                  handleAmountChange,
+                  handleDebitCredit,
+                  handleBankNameChange,
+                  accountNumberOptions,
+                ).Add_Settlement.filter(Boolean) as any[],
+                Bank_Details: getSettlementsFormFields(
+                  options,
+                  title === 'Merchant Settlement'
+                    ? SettlementOptions.merchantSettlement
+                    : SettlementOptions.vendorSettlement,
+                  updated,
+                  handleMethodChange,
+                  handleBeneficiaryChange,
+                  handleCodeChange,
+                  handleAmountChange,
+                  handleDebitCredit,
+                  handleBankNameChange,
+                  accountNumberOptions,
+                ).Bank_Details(
+                  selectedMethodLabel,
+                  beneficiaryOptions,
+                  selectedBeneficiary,
+                  // title,
+                ),
+                Crypto_Details: getSettlementsFormFields(
+                  options,
+                  title === 'Merchant Settlement'
+                    ? SettlementOptions.merchantSettlement
+                    : SettlementOptions.vendorSettlement,
+                  updated,
+                  handleMethodChange,
+                  handleBeneficiaryChange,
+                  handleCodeChange,
+                  handleAmountChange,
+                  handleDebitCredit,
+                  handleBankNameChange,
+                  accountNumberOptions,
+                ).Crypto_Details(selectedMethodLabel),
+                Description: getSettlementsFormFields(
+                  options,
+                  title === 'Merchant Settlement'
+                    ? SettlementOptions.merchantSettlement
+                    : SettlementOptions.vendorSettlement,
+                  updated,
+                  handleMethodChange,
+                  handleBeneficiaryChange,
+                  handleCodeChange,
+                  handleAmountChange,
+                  handleDebitCredit,
+                  handleBankNameChange,
+                  accountNumberOptions,
+                ).Description(selectedMethodLabel),
+                Internal_transfer: getSettlementsFormFields(
+                  options,
+                  title === 'Merchant Settlement'
+                    ? SettlementOptions.merchantSettlement
+                    : SettlementOptions.vendorSettlement,
+                  updated,
+                  handleMethodChange,
+                  handleBeneficiaryChange,
+                  handleCodeChange,
+                  handleAmountChange,
+                  handleDebitCredit,
+                  handleBankNameChange,
+                  accountNumberOptions,
+                ).Internal_transfer(selectedMethodLabel),
+              }}
+              onSubmit={handleSubmitData}
+              defaultValues={defaultValues}
+              isEditMode={false}
+              handleCancel={settlementModal}
+              isLoading={isLoading}
+            />
+          </Modal>
+        </div>
+        {role === Role.ADMIN && (
+          <div className="relative flex flex-col col-span-12 lg:col-span-12 xl:col-span-12 gap-y-4 sm:gap-y-7">
+            <div className="flex flex-col p-3 sm:p-4 md:p-5 box box--stacked">
+              <Tab.Group
+                selectedIndex={parentTab}
+                onChange={handleParentTabChange}
+              >
+                <Tab.List className="flex border-b-0 bg-transparent relative">
+                  <Tab className="relative flex-1">
+                    {({ selected }) => (
+                      <Tab.Button
+                        className={`w-full py-2 sm:py-3 flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base transition-all duration-200 relative ${
+                          selected
+                            ? 'bg-white dark:bg-darkmode-700 text-slate-900 dark:text-white border-t-4 border-l-4 border-r-4 border-gray-100 dark:border-darkmode-400 rounded-tl-xl rounded-tr-xl shadow-sm'
+                            : 'bg-slate-50 dark:bg-darkmode-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-darkmode-700'
+                        }`}
+                        as="button"
+                        style={selected ? {
+                          position: 'relative',
+                          zIndex: 10
+                        } : {}}
                       >
                         <Lucide
-                          icon="ArrowDownWideNarrow"
-                          className="stroke-[1.3] w-4 h-4 mr-2"
+                          icon="CreditCard"
+                          className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]"
                         />
-                        Filter
-                      </Popover.Button>
-                      <Popover.Panel placement="bottom-end">
-                        <form
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            applyFilter();
-                            close();
-                          }}
-                        >
-                          <div className="p-2">
-                            <div className="mt-3">
-                              <div className="text-left text-slate-500 mb-2">
-                                Vendor
-                              </div>
-                              <MultiSelect
-                                codes={vendorCodes}
-                                selectedFilter={selectedFilter}
-                                setSelectedFilter={(value: VendorCode[]) => {
-                                  setSelectedFilter(value);
-                                }}
-                              />
-                            </div>
-                            <div className="mt-3">
-                              <div className="text-left text-slate-500">
-                                Status
-                              </div>
-                              <FormSelect
-                                className="flex-1 mt-2"
-                                value={selectedStatus}
-                                onChange={(e) =>
-                                  setSelectedStatus(e.target.value)
-                                }
-                              >
-                                <option value="">Select a status</option>
-                                {Object.entries(SettlementStatusOptions).map(
-                                  ([key, value]) => (
-                                    <option key={key} value={value.value}>
-                                      {value.label}
-                                    </option>
-                                  ),
-                                )}
-                              </FormSelect>
-                            </div>
-                            <div className="mt-3">
-                              <div className="text-left text-slate-500">
-                                Additional Filters
-                              </div>
-                              <FormSelect
-                                className="flex-1 mt-2"
-                                value={selectedColumn}
-                                onChange={(e) => {
-                                  setSelectedColumn(e.target.value);
-                                  setFilterValue('');
-                                }}
-                              >
-     
-                                <option value="">Select a column</option>
-                                {(role === Role.ADMIN
-                                  ? Columns.SETTLEMENT
-                                  : Columns.VENDOR_SETTLEMENT
-                                )
-                                  .filter(
-                                    (col) =>
-                                      col.key !== 'merchant_details' &&
-                                      col.key !== 'more_details' &&
-                                      col.key !== 'status' &&
-                                      col.key !== 'sno' &&
-                                      col.key !== '' &&
-                                      col.key !== 'config' &&
-                                      col.key !== 'code' &&
-                                      col.key !== 'actions',
-                                  )
-                                  .map((col) => (
-                                    <option key={col.key} value={col.key}>
-                                      {col.label}
-                                    </option>
-                                  ))}
-                              </FormSelect>
-                              {selectedColumn && (
-                                <div className="mt-3">
-                                  <div className="text-left text-slate-500">
-                                    Value for{' '}
-                                    {
-                                      (role === Role.ADMIN
-                                        ? Columns.SETTLEMENT
-                                        : Columns.VENDOR_SETTLEMENT
-                                      ).find(
-                                        (col) => col.key === selectedColumn,
-                                      )?.label
-                                    }
-                                  </div>
-                                  <FormInput
-                                    type="text"
-                                    className="mt-2"
-                                    value={filterValue}
-                                    onChange={(e) =>
-                                      setFilterValue(e.target.value)
-                                    }
-                                    placeholder={`Enter value for ${selectedColumn}`}
-                                  />
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex items-center mt-4">
-                              <Button
-                                variant="secondary"
-                                onClick={() => {
-                                  setSelectedColumn('');
-                                  setFilterValue('');
-                                  close();
-                                }}
-                                className="w-32 ml-auto"
-                              >
-                                Close
-                              </Button>
-                              <Button
-                                variant="primary"
-                                type="submit"
-                                className="w-32 ml-2"
-                              >
-                                Apply
-                              </Button>
-                            </div>
-                          </div>
-                        </form>
-                      </Popover.Panel>
-                    </>
-                  )}
-                </Popover>
-              </div>
-            </div>
-            <div className="overflow-auto xl:overflow-visible">
-              {isPageLoading ? (
-                <div className="flex justify-center items-center w-full h-screen">
-                  <LoadingIcon icon="ball-triangle" className="w-[5%] h-auto" />
-                </div>
-              ) : (
-                <CustomTable
-                  columns={
-                    role === Role.ADMIN
-                      ? Columns.SETTLEMENT
-                      : Columns.VENDOR_SETTLEMENT
-                  }
-                  data={{
-                    rows: allSettlement.settlement,
-                    totalCount: allSettlement.totalCount,
-                  }}
-                  currentPage={Number(pagination?.page) || 1}
-                  pageSize={Number(pagination?.limit) || 20}
-                  onPageChange={handlePageChange}
-                  onPageSizeChange={handlePageSizeChange}
-                  handleRowClick={handleRowSelect}
-                  handleSelectAll={handleSelectAll}
-                  selectedRows={selectedRows}
-                  isSettlement={true}
-                  setTotalPayoutAmount={setTotalSettlementAmount}
-                  actionMenuItems={(row: any) => {
-                    const items: {
-                      label?: string;
-                      icon: 'RotateCcw' | 'CheckSquare' | 'XSquare';
-                      onClick: (row: any) => void;
-                      className?: string;
-                    }[] = [];
-
-                    if (row?.status === Status.INITIATED) {
-                      items.push({
-                        label: 'Approve',
-                        icon: 'CheckSquare',
-                        onClick: () => handleEditModal(row),
-                      });
-                      items.push({
-                        label: 'Reject',
-                        icon: 'XSquare',
-                        onClick: () => handleDeleteModal(row),
-                      });
-                    } else if (
-                      role === Role.ADMIN &&
-                      row?.status === Status.SUCCESS
-                    ) {
-                      items.push({
-                        label: 'Reset',
-                        icon: 'RotateCcw',
-                        onClick: () => handleResetModal(row),
-                      });
-                    }
-                    return items;
-                  }}
-                />
-              )}
+                        <span className="hidden sm:inline">Merchant Settlement</span>
+                        <span className="sm:hidden">Merchant</span>
+                      </Tab.Button>
+                    )}
+                  </Tab>
+                  <Tab className="relative flex-1">
+                    {({ selected }) => (
+                      <Tab.Button
+                        className={`w-full py-2 sm:py-3 flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base transition-all duration-200 relative ${
+                          selected
+                            ? 'bg-white dark:bg-darkmode-700 text-slate-900 dark:text-white border-t-4 border-l-4 border-r-4 border-gray-100 dark:border-darkmode-400 rounded-tl-xl rounded-tr-xl shadow-sm'
+                            : 'bg-slate-50 dark:bg-darkmode-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-darkmode-700'
+                        }`}
+                        as="button"
+                        style={selected ? {
+                          position: 'relative',
+                          zIndex: 10
+                        } : {}}
+                      >
+                        <Lucide
+                          icon="Store"
+                          className="w-5 h-5 ml-px stroke-[2.5]"
+                        />
+                        &nbsp; Vendor Settlement
+                      </Tab.Button>
+                    )}
+                  </Tab>
+                </Tab.List>
+                <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400">
+                  <Tab.Panel className="py-5 leading-relaxed">
+                    <MerchantSettlement
+                      refreshSettlement={refreshSettlement}
+                    />
+                  </Tab.Panel>
+                  <Tab.Panel className="py-5 leading-relaxed">
+                    <VendorSettlement refreshSettlement={refreshSettlement} />
+                  </Tab.Panel>
+                </Tab.Panels>
+              </Tab.Group>
             </div>
           </div>
-        </div>
+        )}
+        {role === Role.MERCHANT && (
+          <div className="relative flex flex-col col-span-12 lg:col-span-12 xl:col-span-12 gap-y-7">
+            <div className="flex flex-col p-5 box box--stacked">
+              <MerchantSettlement refreshSettlement={refreshSettlement} />
+            </div>
+          </div>
+        )}
+        {role === Role.VENDOR && (
+          <div className="relative flex flex-col col-span-12 lg:col-span-12 xl:col-span-12 gap-y-7">
+            <div className="flex flex-col p-5 box box--stacked">
+              <VendorSettlement refreshSettlement={refreshSettlement} />
+            </div>
+          </div>
+        )}
       </div>
-      {drawerOpen && (
-        <Drawer open={drawerOpen} position="bottom">
-          <div className="flex justify-between items-center mx-8 ">
-            <div>
-              <span className="ml-4 text-lg">
-                Total: {totalSettlementAmount}
-              </span>
-              <span className="ml-4">{selectedRows.length} rows selected</span>
-            </div>
-          </div>
-        </Drawer>
-      )}
     </div>
   );
 }
 
-export default VendorSettlement;
+export default Main;
