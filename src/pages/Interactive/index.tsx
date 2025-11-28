@@ -82,7 +82,7 @@ function Main() {
                   variant="primary"
                   className="w-full mt-10"
                 >
-                  <Lucide icon="SendHorizonal" className="w-4 h-4 stroke-[1.3] mr-2" />
+                  <Lucide icon="SendHorizontal" className="w-4 h-4 stroke-[1.3] mr-2" />
                   Assign to Task
                 </Button>
               </div>
@@ -855,7 +855,7 @@ function Main() {
                   variant="primary"
                   className="w-full mt-8"
                 >
-                  <Lucide icon="SendHorizonal" className="w-4 h-4 stroke-[1.3] mr-2" />
+                  <Lucide icon="SendHorizontal" className="w-4 h-4 stroke-[1.3] mr-2" />
                   View Details
                 </Button>
                 <Button

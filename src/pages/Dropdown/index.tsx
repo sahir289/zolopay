@@ -693,7 +693,7 @@ function Main() {
                                   </Menu.Item>
                                   <Menu.Item>
                                     <Lucide
-                                      icon="FileEdit"
+                                      icon="FilePenLine"
                                       className="w-4 h-4 mr-2"
                                     />
                                     CSV
@@ -734,7 +734,7 @@ function Main() {
                       Excel
                     </Menu.Item>
                     <Menu.Item>
-                      <Lucide icon="FileEdit" className="w-4 h-4 mr-2" />
+                      <Lucide icon="FilePenLine" className="w-4 h-4 mr-2" />
                       CSV
                     </Menu.Item>
                     <Menu.Item>

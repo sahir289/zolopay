@@ -451,7 +451,7 @@ function Main() {
                               </div>
                               <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                                 <Lucide
-                                  icon="SquareCheck"
+                                  icon="CheckSquare"
                                   className="block mx-auto"
                                 />
                                 <div className="mt-2 text-xs text-center">
@@ -964,7 +964,7 @@ function Main() {
                               </div>
                               <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                                 <Lucide
-                                  icon="FileEdit"
+                                  icon="FilePenLine"
                                   className="block mx-auto"
                                 />
                                 <div className="mt-2 text-xs text-center">
@@ -1815,7 +1815,7 @@ function Main() {
                                 </div>
                               </div>
                               <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                                <Lucide icon="SendHorizonal" className="block mx-auto" />
+                                <Lucide icon="SendHorizontal" className="block mx-auto" />
                                 <div className="mt-2 text-xs text-center">
                                   SendIcon
                                 </div>
@@ -2836,7 +2836,7 @@ function Main() {
               </div>
               <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                 <Lucide
-                  icon="SquareCheck"
+                  icon="CheckSquare"
                   className="block mx-auto"
                 />
                 <div className="mt-2 text-xs text-center">
@@ -3349,7 +3349,7 @@ function Main() {
               </div>
               <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                 <Lucide
-                  icon="FileEdit"
+                  icon="FilePenLine"
                   className="block mx-auto"
                 />
                 <div className="mt-2 text-xs text-center">
@@ -4197,7 +4197,7 @@ function Main() {
                 </div>
               </div>
               <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                <Lucide icon="SendHorizonal" className="block mx-auto" />
+                <Lucide icon="SendHorizontal" className="block mx-auto" />
                 <div className="mt-2 text-xs text-center">
                   SendIcon
                 </div>
