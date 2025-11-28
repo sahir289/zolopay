@@ -106,7 +106,7 @@ function Main(props: MainProps) {
                                   <Menu.Items className="w-40">
                                     <Menu.Item>
                                       <Lucide
-                                        icon="Copy"
+                                        icon="ClipboardCopy"
                                         className="w-4 h-4 mr-2"
                                       />{" "}
                                       Copy Link

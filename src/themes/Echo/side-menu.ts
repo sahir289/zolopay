@@ -95,20 +95,16 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
       // Example: Add submenus under "Dashboard"
       if (menuItem.title === "Dashboard") {
         menuItem.subMenu = [
-          ...(Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-                title: "Merchant Dashboard",
-                pathname: "/auth/dashboard/merchant",
-                icon: "BarChart" as "BarChart",
-              }]
-            : []),
-          ...(Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-                title: "Vendor Dashboard",
-                pathname: "/auth/dashboard/vendor",
-                icon: "BarChart2" as "BarChart2",
-              }]
-            : []),
+          {
+            title: "Merchant Dashboard",
+            pathname: "/auth/dashboard/merchant",
+            icon: "TrendingUp",
+          },
+          {
+            title: "Vendor Dashboard",
+            pathname: "/auth/dashboard/vendor",
+            icon: "BarChart2",
+          },
         ];
         menuItem.activeDropdown = false;
       }
@@ -118,12 +114,12 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           {
             title: "Payin Transactions",
             pathname: "/auth/transaction-list/payins",
-            icon: "List" as const,
+            icon: "ArrowDownCircle",
           },
           {
             title: "Payout Transactions",
             pathname: "/auth/transaction-list/payouts",
-            icon: "Clock" as const,
+            icon: "ArrowUpCircle" as const,
           },
         ];
         menuItem.activeDropdown = false;
@@ -134,14 +130,14 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             ? [{
             title: "Merchant Settlements",
             pathname: "/auth/settlement/merchants",
-            icon: "DollarSign" as const,
+            icon: "Coins" as const,
             }]
             : [],
           ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
             title: "Vendor Settlements",
             pathname: "/auth/settlement/vendors",
-            icon: "CreditCard" as const,
+            icon: "Wallet" as const,
             }]
             : [],
         ];
@@ -154,14 +150,14 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             ? [{
             title: "Merchant Reports",
             pathname: "/auth/reports/merchants",
-            icon: "BarChart" as const,
+            icon: "FileBarChart" as const,
             }]
             : [],
           ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
             title: "Vendor Reports",
             pathname: "/auth/reports/vendors",
-            icon: "BarChart2" as const, 
+            icon: "FileSpreadsheet" as const, 
             }]
             : [],
         ];
@@ -173,14 +169,14 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             ? [{
             title: "Merchant",
             pathname: "/auth/beneficiaryaccounts/merchants",
-            icon: "BarChart" as const,
+            icon: "User" as const,
             }]
             : [],
           ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
             title: "Vendor",
             pathname: "/auth/beneficiaryaccounts/vendors",
-            icon: "BarChart2" as const,
+            icon: "Users" as const,
             }]
             : [],
         ];
@@ -193,14 +189,14 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             ? [{
             title: "Merchant",
             pathname: "/auth/clients/merchants",
-            icon: "BarChart" as const,
+            icon: "Store" as const,
             }]
             : [],
           ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
             ? [{
             title: "Vendor",
             pathname: "/auth/clients/vendors",
-            icon: "BarChart2" as const,
+            icon: "Building" as const,
             }]
             : [],
         ];
@@ -239,12 +235,12 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           {
             title: "Payin Accounts",
             pathname: "/auth/bankaccounts/payins",
-            icon: "BarChart",
+            icon: "ArrowDown",
           },
           {
             title: "Payout Accounts",
             pathname: "/auth/bankaccounts/payouts",
-            icon: "BarChart2",
+            icon: "ArrowUp",
           },
         ];
         menuItem.activeDropdown = false;

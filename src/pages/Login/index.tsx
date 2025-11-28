@@ -558,7 +558,7 @@ function Main() {
                               onClick={togglePasswordVisibility}
                             >
                               {showPassword ? (
-                                <Lucide className="stroke-[1.4] h-4 w-4" icon="Eye" />
+                                <Lucide className="stroke-[1.4] h-4 w-4" icon="EyeOff" />
                               ) : (
                                 <Lucide className="stroke-[1.4] h-4 w-4" icon="EyeOff" />
                               )}
@@ -645,7 +645,7 @@ function Main() {
                               onClick={togglePasswordVisibility}
                             >
                               {showPassword ? (
-                                <Lucide className="stroke-[1.4] h-4 w-4" icon="Eye" />
+                                <Lucide className="stroke-[1.4] h-4 w-4" icon="EyeOff" />
                               ) : (
                                 <Lucide className="stroke-[1.4] h-4 w-4" icon="EyeOff" />
                               )}
@@ -682,7 +682,7 @@ function Main() {
                               onClick={togglePasswordVisibility}
                             >
                               {showPassword ? (
-                                <Lucide className="stroke-[1.4] h-4 w-4" icon="Eye" />
+                                <Lucide className="stroke-[1.4] h-4 w-4" icon="EyeOff" />
                               ) : (
                                 <Lucide className="stroke-[1.4] h-4 w-4" icon="EyeOff" />
                               )}

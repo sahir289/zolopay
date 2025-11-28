@@ -445,7 +445,7 @@ function Main() {
                                     <Lucide icon="Move" className="w-4 h-4" />
                                   </a>
                                   <a href="" className="ml-3 xl:ml-5">
-                                    <Lucide icon="Trash2" className="w-4 h-4" />
+                                    <Lucide icon="Trash" className="w-4 h-4" />
                                   </a>
                                 </div>
                               </div>
@@ -459,7 +459,7 @@ function Main() {
                                     <Lucide icon="Move" className="w-4 h-4" />
                                   </a>
                                   <a href="" className="ml-3 xl:ml-5">
-                                    <Lucide icon="Trash2" className="w-4 h-4" />
+                                    <Lucide icon="Trash" className="w-4 h-4" />
                                   </a>
                                 </div>
                               </div>
@@ -473,7 +473,7 @@ function Main() {
                                     <Lucide icon="Move" className="w-4 h-4" />
                                   </a>
                                   <a href="" className="ml-3 xl:ml-5">
-                                    <Lucide icon="Trash2" className="w-4 h-4" />
+                                    <Lucide icon="Trash" className="w-4 h-4" />
                                   </a>
                                 </div>
                               </div>
@@ -485,7 +485,7 @@ function Main() {
                               className="w-full border-dashed"
                             >
                               <Lucide
-                                icon="Plus"
+                                icon="PlusCircle"
                                 className="w-4 h-4 mr-2 stroke-[1.3]"
                               />{" "}
                               Add New Option
@@ -543,7 +543,7 @@ function Main() {
                                     <Lucide icon="Move" className="w-4 h-4" />
                                   </a>
                                   <a href="" className="ml-3 xl:ml-5">
-                                    <Lucide icon="Trash2" className="w-4 h-4" />
+                                    <Lucide icon="Trash" className="w-4 h-4" />
                                   </a>
                                 </div>
                               </div>
@@ -557,7 +557,7 @@ function Main() {
                                     <Lucide icon="Move" className="w-4 h-4" />
                                   </a>
                                   <a href="" className="ml-3 xl:ml-5">
-                                    <Lucide icon="Trash2" className="w-4 h-4" />
+                                    <Lucide icon="Trash" className="w-4 h-4" />
                                   </a>
                                 </div>
                               </div>
@@ -571,7 +571,7 @@ function Main() {
                                     <Lucide icon="Move" className="w-4 h-4" />
                                   </a>
                                   <a href="" className="ml-3 xl:ml-5">
-                                    <Lucide icon="Trash2" className="w-4 h-4" />
+                                    <Lucide icon="Trash" className="w-4 h-4" />
                                   </a>
                                 </div>
                               </div>
@@ -583,7 +583,7 @@ function Main() {
                               className="w-full border-dashed"
                             >
                               <Lucide
-                                icon="Plus"
+                                icon="PlusCircle"
                                 className="w-4 h-4 mr-2 stroke-[1.3]"
                               />{" "}
                               Add New Option
@@ -599,7 +599,7 @@ function Main() {
                       className="w-full py-3 bg-slate-50/80 border-slate-200/80 dark:bg-darkmode-400"
                     >
                       <Lucide
-                        icon="Plus"
+                        icon="PlusCircle"
                         className="w-4 h-4 mr-2 stroke-[1.3]"
                       />{" "}
                       Add New Variant
@@ -1021,7 +1021,7 @@ function Main() {
                               </Table.Td>
                               <Table.Td className="!pl-4 text-slate-500">
                                 <a href="">
-                                  <Lucide icon="Trash2" className="w-4 h-4" />
+                                  <Lucide icon="Trash" className="w-4 h-4" />
                                 </a>
                               </Table.Td>
                             </Table.Tr>
@@ -1056,7 +1056,7 @@ function Main() {
                               </Table.Td>
                               <Table.Td className="!pl-4 text-slate-500">
                                 <a href="">
-                                  <Lucide icon="Trash2" className="w-4 h-4" />
+                                  <Lucide icon="Trash" className="w-4 h-4" />
                                 </a>
                               </Table.Td>
                             </Table.Tr>
@@ -1091,7 +1091,7 @@ function Main() {
                               </Table.Td>
                               <Table.Td className="!pl-4 text-slate-500">
                                 <a href="">
-                                  <Lucide icon="Trash2" className="w-4 h-4" />
+                                  <Lucide icon="Trash" className="w-4 h-4" />
                                 </a>
                               </Table.Td>
                             </Table.Tr>
@@ -1103,7 +1103,7 @@ function Main() {
                         className="w-full mt-4 border-dashed"
                       >
                         <Lucide
-                          icon="Plus"
+                          icon="PlusCircle"
                           className="w-4 h-4 mr-2 stroke-[1.3]"
                         />{" "}
                         Add New Wholesale Price
@@ -1449,21 +1449,21 @@ function Main() {
                 variant="outline-secondary"
                 className="w-full border-slate-300/80 bg-white/80 md:w-56 py-2.5 rounded-[0.5rem] dark:bg-darkmode-400"
               >
-                <Lucide icon="PenLine" className="stroke-[1.3] w-4 h-4 mr-2" />
+                <Lucide icon="PencilLine" className="stroke-[1.3] w-4 h-4 mr-2" />
                 Cancel
               </Button>
               <Button
                 variant="outline-secondary"
                 className="w-full border-slate-300/80 bg-white/80 md:w-56 py-2.5 rounded-[0.5rem] dark:bg-darkmode-400"
               >
-                <Lucide icon="PenLine" className="stroke-[1.3] w-4 h-4 mr-2" />
+                <Lucide icon="PencilLine" className="stroke-[1.3] w-4 h-4 mr-2" />
                 Save & Add New
               </Button>
               <Button
                 variant="primary"
                 className="w-full md:w-56 py-2.5 rounded-[0.5rem]"
               >
-                <Lucide icon="PenLine" className="stroke-[1.3] w-4 h-4 mr-2" />
+                <Lucide icon="PencilLine" className="stroke-[1.3] w-4 h-4 mr-2" />
                 Save
               </Button>
             </div>

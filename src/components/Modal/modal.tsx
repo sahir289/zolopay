@@ -73,7 +73,7 @@ const Modal: React.FC<ModalProps> = ({
                     }}
                   >
                     <Lucide
-                      icon="PenLine"
+                      icon="PencilLine"
                       className="stroke-[1.3] w-4 h-4 mr-2"
                     />{" "}
                     {title}

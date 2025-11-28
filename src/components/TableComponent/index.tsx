@@ -83,7 +83,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
         return {
           color: 'text-red-500',
           icon: (
-            <Lucide icon="XCircle" className="w-5 h-5 ml-px stroke-[2.5]" />
+            <Lucide icon="XOctagon" className="w-5 h-5 ml-px stroke-[2.5]" />
           ),
         };
       case Status.BANK_MISMATCH:
@@ -106,7 +106,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
         return {
           color: 'text-green-500',
           icon: (
-            <Lucide icon="CheckCircle" className="w-5 h-5 ml-px stroke-[2.5]" />
+            <Lucide icon="CheckCircle2" className="w-5 h-5 ml-px stroke-[2.5]" />
           ),
         };
       default:
@@ -939,7 +939,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                               <Lucide icon="CheckSquare" className="w-4 h-4 mr-2" /> Edit
                             </Menu.Item>
                             <Menu.Item className="text-danger">
-                              <Lucide icon="Trash2" className="w-4 h-4 mr-2" /> Delete
+                              <Lucide icon="Trash" className="w-4 h-4 mr-2" /> Delete
                             </Menu.Item>
                           </Menu.Items>
                         </Menu>
@@ -1106,7 +1106,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                               </Menu.Item>
                               <Menu.Item className="text-danger">
                                 <Lucide
-                                  icon="Trash2"
+                                  icon="Trash"
                                   className="w-4 h-4 mr-2"
                                 />{' '}
                                 Delete
@@ -1224,7 +1224,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                                   </Menu.Item>
                                   <Menu.Item className="text-danger">
                                     <Lucide
-                                      icon="Trash2"
+                                      icon="Trash"
                                       className="w-4 h-4 mr-2"
                                     />{' '}
                                     Delete
@@ -1435,7 +1435,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                                 onClick={() => setAddMerchant(!addMerchant)}
                               >
                                 <Lucide
-                                  icon="Trash2"
+                                  icon="Trash"
                                   className="w-4 h-4 mr-2"
                                 />
                                 Add Merchant
@@ -1445,7 +1445,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                                 // onClick={
                               >
                                 <Lucide
-                                  icon="Trash2"
+                                  icon="Trash"
                                   className="w-4 h-4 mr-2"
                                 />
                                 Delete
@@ -1548,7 +1548,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                                 onClick={() => setAddataReject(true)}
                               >
                                 <Lucide
-                                  icon="Trash2"
+                                  icon="Trash"
                                   className="w-4 h-4 mr-2"
                                 />
                                 Delete
@@ -1773,7 +1773,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                                 onClick={() => openModal('Delete')}
                               >
                                 <Lucide
-                                  icon="Trash2"
+                                  icon="Trash"
                                   className="w-4 h-4 mr-2"
                                 />
                                 Delete
@@ -2010,7 +2010,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                                   setApprove && setApprove(!approve)
                                 }
                               >
-                                <Lucide icon="Check" className="w-4 h-4 mr-2" />{' '}
+                                <Lucide icon="CheckCircle2" className="w-4 h-4 mr-2" />{' '}
                                 Approve
                               </Menu.Item>
                               <Menu.Item
@@ -2110,7 +2110,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                                 setSettlementreject(true);
                               }}
                             >
-                              <Lucide icon="Trash2" className="w-4 h-4 mr-2" />
+                              <Lucide icon="Trash" className="w-4 h-4 mr-2" />
                               Delete
                             </Menu.Item>
                           </Menu.Items>
@@ -2249,7 +2249,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                               className="text-danger"
                               onClick={() => openModal('Delete')}
                             >
-                              <Lucide icon="Trash2" className="w-4 h-4 mr-2" />
+                              <Lucide icon="Trash" className="w-4 h-4 mr-2" />
                               Delete
                             </Menu.Item>
                           </Menu.Items>
@@ -2352,7 +2352,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                             className="text-danger"
                             onClick={() => openModal('Delete')}
                           >
-                            <Lucide icon="Trash2" className="w-4 h-4 mr-2" />
+                            <Lucide icon="Trash" className="w-4 h-4 mr-2" />
                             Delete
                           </Menu.Item>
                         </Menu.Items>
@@ -2436,7 +2436,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                                  <Lucide icon="CheckSquare" className="w-4 h-4 mr-2" /> Edit
                                </Menu.Item>
                                <Menu.Item className="text-danger">
-                                 <Lucide icon="Trash2" className="w-4 h-4 mr-2" /> Delete
+                                 <Lucide icon="Trash" className="w-4 h-4 mr-2" /> Delete
                                </Menu.Item>
                              </Menu.Items>
                            </Menu>
@@ -2510,7 +2510,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                               className="text-danger"
                               onClick={() => openModal('Delete')}
                             >
-                              <Lucide icon="Trash2" className="w-4 h-4 mr-2" />
+                              <Lucide icon="Trash" className="w-4 h-4 mr-2" />
                               Delete
                             </Menu.Item>
                           </Menu.Items>
@@ -2584,7 +2584,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
                               className="text-danger"
                               onClick={() => openModal('Delete')}
                             >
-                              <Lucide icon="Trash2" className="w-4 h-4 mr-2" />
+                              <Lucide icon="Trash" className="w-4 h-4 mr-2" />
                               Delete
                             </Menu.Item>
                           </Menu.Items>

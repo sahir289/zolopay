@@ -408,7 +408,7 @@ function Main() {
                 id="success-notification-content"
                 className="flex hidden"
               >
-                <Lucide icon="CheckCircle" className="text-success" />
+                <Lucide icon="CheckCircle2" className="text-success" />
                 <div className="ml-4 mr-4">
                   <div className="font-medium">Registration success!</div>
                   <div className="mt-1 text-slate-500">
@@ -422,7 +422,7 @@ function Main() {
                 id="failed-notification-content"
                 className="flex hidden"
               >
-                <Lucide icon="XCircle" className="text-danger" />
+                <Lucide icon="XOctagon" className="text-danger" />
                 <div className="ml-4 mr-4">
                   <div className="font-medium">Registration failed!</div>
                   <div className="mt-1 text-slate-500">

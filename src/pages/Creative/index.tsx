@@ -123,7 +123,7 @@ function Main() {
                     content="Call"
                   >
                     <Lucide
-                      icon="Phone"
+                      icon="PhoneCall"
                       className="w-4 h-4 text-primary fill-primary/10"
                     />
                   </Tippy>
@@ -133,7 +133,7 @@ function Main() {
                     content="Send a message"
                   >
                     <Lucide
-                      icon="Mail"
+                      icon="MailOpen"
                       className="w-4 h-4 text-primary fill-primary/10"
                     />
                   </Tippy>
@@ -171,7 +171,7 @@ function Main() {
               <div className="flex flex-col items-center pt-5">
                 <div className="flex items-center justify-center w-16 h-16 border-4 rounded-full bg-primary border-white/70">
                   <Lucide
-                    icon="Check"
+                    icon="CheckCircle2"
                     className="w-8 h-8 text-white stroke-[1.5]"
                   />
                 </div>
@@ -207,7 +207,7 @@ function Main() {
                     className="absolute z-10 w-full h-full opacity-0 peer"
                   />
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-white transition-all border border-blue-800 rounded-full opacity-0 w-7 h-7 bg-blue-800/80 peer-checked:opacity-100">
-                    <Lucide icon="Check" className="stroke-[1.5] w-3 h-3" />
+                    <Lucide icon="CheckCircle2" className="stroke-[1.5] w-3 h-3" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-blue-800 transition-all border rounded-full w-7 h-7 peer-hover:rotate-180 border-blue-800/50 bg-blue-800/40 peer-checked:opacity-0 peer-hover:bg-blue-800/10"></div>
                 </div>
@@ -219,7 +219,7 @@ function Main() {
                     className="absolute z-10 w-full h-full opacity-0 peer"
                   />
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-white transition-all border border-red-800 rounded-full opacity-0 w-7 h-7 bg-red-800/80 peer-checked:opacity-100">
-                    <Lucide icon="Check" className="stroke-[1.5] w-3 h-3" />
+                    <Lucide icon="CheckCircle2" className="stroke-[1.5] w-3 h-3" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-red-800 transition-all border rounded-full w-7 h-7 peer-hover:rotate-180 border-red-800/50 bg-red-800/40 peer-checked:opacity-0 peer-hover:bg-theme-1/10"></div>
                 </div>
@@ -231,7 +231,7 @@ function Main() {
                     className="absolute z-10 w-full h-full opacity-0 peer"
                   />
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-white transition-all border border-green-800 rounded-full opacity-0 w-7 h-7 bg-green-800/80 peer-checked:opacity-100">
-                    <Lucide icon="Check" className="stroke-[1.5] w-3 h-3" />
+                    <Lucide icon="CheckCircle2" className="stroke-[1.5] w-3 h-3" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-green-800 transition-all border rounded-full w-7 h-7 peer-hover:rotate-180 border-green-800/50 bg-green-800/40 peer-checked:opacity-0 peer-hover:bg-green-800/10"></div>
                 </div>
@@ -243,7 +243,7 @@ function Main() {
                     className="absolute z-10 w-full h-full opacity-0 peer"
                   />
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-white transition-all border border-yellow-800 rounded-full opacity-0 w-7 h-7 bg-yellow-800/80 peer-checked:opacity-100">
-                    <Lucide icon="Check" className="stroke-[1.5] w-3 h-3" />
+                    <Lucide icon="CheckCircle2" className="stroke-[1.5] w-3 h-3" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-yellow-800 transition-all border rounded-full w-7 h-7 peer-hover:rotate-180 border-yellow-800/50 bg-yellow-800/40 peer-checked:opacity-0 peer-hover:bg-yellow-800/10"></div>
                 </div>
@@ -255,7 +255,7 @@ function Main() {
                     className="absolute z-10 w-full h-full opacity-0 peer"
                   />
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-white transition-all border border-orange-800 rounded-full opacity-0 w-7 h-7 bg-orange-800/80 peer-checked:opacity-100">
-                    <Lucide icon="Check" className="stroke-[1.5] w-3 h-3" />
+                    <Lucide icon="CheckCircle2" className="stroke-[1.5] w-3 h-3" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-orange-800 transition-all border rounded-full w-7 h-7 peer-hover:rotate-180 border-orange-800/50 bg-orange-800/40 peer-checked:opacity-0 peer-hover:bg-orange-800/10"></div>
                 </div>
@@ -267,7 +267,7 @@ function Main() {
                     className="absolute z-10 w-full h-full opacity-0 peer"
                   />
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-white transition-all border rounded-full opacity-0 w-7 h-7 bg-amber-800/80 border-amber-800 peer-checked:opacity-100">
-                    <Lucide icon="Check" className="stroke-[1.5] w-3 h-3" />
+                    <Lucide icon="CheckCircle2" className="stroke-[1.5] w-3 h-3" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center m-auto transition-all border rounded-full w-7 h-7 peer-hover:rotate-180 text-amber-800 border-amber-800/50 bg-amber-800/40 peer-checked:opacity-0 peer-hover:bg-amber-800/10"></div>
                 </div>
@@ -279,7 +279,7 @@ function Main() {
                     className="absolute z-10 w-full h-full opacity-0 peer"
                   />
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-white transition-all border rounded-full opacity-0 w-7 h-7 bg-cyan-800/80 border-cyan-800 peer-checked:opacity-100">
-                    <Lucide icon="Check" className="stroke-[1.5] w-3 h-3" />
+                    <Lucide icon="CheckCircle2" className="stroke-[1.5] w-3 h-3" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center m-auto transition-all border rounded-full w-7 h-7 peer-hover:rotate-180 text-cyan-800 border-cyan-800/50 bg-cyan-800/40 peer-checked:opacity-0 peer-hover:bg-cyan-800/10"></div>
                 </div>
@@ -291,7 +291,7 @@ function Main() {
                     className="absolute z-10 w-full h-full opacity-0 peer"
                   />
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-white transition-all border border-teal-800 rounded-full opacity-0 w-7 h-7 bg-teal-800/80 peer-checked:opacity-100">
-                    <Lucide icon="Check" className="stroke-[1.5] w-3 h-3" />
+                    <Lucide icon="CheckCircle2" className="stroke-[1.5] w-3 h-3" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center m-auto text-teal-800 transition-all border rounded-full w-7 h-7 peer-hover:rotate-180 border-teal-800/50 bg-teal-800/40 peer-checked:opacity-0 peer-hover:bg-teal-800/10"></div>
                 </div>
@@ -339,7 +339,7 @@ function Main() {
                         content="Call"
                       >
                         <Lucide
-                          icon="Phone"
+                          icon="PhoneCall"
                           className="w-3 h-3 text-primary fill-primary/10"
                         />
                       </Tippy>
@@ -349,7 +349,7 @@ function Main() {
                         content="Send a message"
                       >
                         <Lucide
-                          icon="Mail"
+                          icon="MailOpen"
                           className="w-3 h-3 text-primary fill-primary/10"
                         />
                       </Tippy>
@@ -375,7 +375,7 @@ function Main() {
                     {events.fakeEvents()[0]?.title}
                   </div>
                   <div className="flex items-center gap-1.5 text-slate-500 mt-1 truncate max-w-[12rem] md:max-w-none">
-                    <Lucide icon="MapPin" className="stroke-[1.3] w-4 h-4" />{" "}
+                    <Lucide icon="MapPinned" className="stroke-[1.3] w-4 h-4" />{" "}
                     {events.fakeEvents()[0]?.location}
                   </div>
                   <div className="flex items-center gap-1.5 text-slate-500 mt-1 truncate max-w-[12rem] md:max-w-none">
@@ -451,7 +451,7 @@ function Main() {
                 <div className="flex items-center gap-2 mt-5">
                   <div className="flex items-center gap-1.5">
                     <Lucide
-                      icon="MapPin"
+                      icon="MapPinned"
                       className="text-primary fill-primary/10 stroke-[1.3] w-4 h-4"
                     />
                     <div className="truncate max-w-[6rem] md:max-w-none">
@@ -461,7 +461,7 @@ function Main() {
                   <div className="w-1.5 h-1.5 mx-1.5 rounded-full bg-slate-300"></div>
                   <div className="flex items-center gap-1.5">
                     <Lucide
-                      icon="Phone"
+                      icon="PhoneCall"
                       className="text-primary fill-primary/10 stroke-[1.3] w-4 h-4"
                     />
                     <div className="truncate max-w-[6rem] md:max-w-none">
@@ -475,7 +475,7 @@ function Main() {
                   variant="primary"
                   className="w-full mt-5"
                 >
-                  <Lucide icon="Mail" className="w-4 h-4 stroke-[1.3] mr-2" />
+                  <Lucide icon="MailOpen" className="w-4 h-4 stroke-[1.3] mr-2" />
                   Send Message
                 </Button>
               </div>
@@ -544,7 +544,7 @@ function Main() {
                     content="Call"
                   >
                     <Lucide
-                      icon="Phone"
+                      icon="PhoneCall"
                       className="w-3 h-3 text-primary fill-primary/10"
                     />
                   </Tippy>
@@ -554,7 +554,7 @@ function Main() {
                     content="Send a message"
                   >
                     <Lucide
-                      icon="Mail"
+                      icon="MailOpen"
                       className="w-3 h-3 text-primary fill-primary/10"
                     />
                   </Tippy>
@@ -579,7 +579,7 @@ function Main() {
                 className="flex items-center px-5 py-4 mt-5 border rounded-lg bg-slate-100 border-slate-200/70 hover hover:bg-slate-200/50 dark:bg-darkmode-400"
               >
                 <Lucide
-                  icon="MapPin"
+                  icon="MapPinned"
                   className="w-5 h-5 text-primary stroke-[1] fill-primary/5"
                 />
                 <div className="ml-3.5">
