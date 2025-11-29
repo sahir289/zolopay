@@ -15,7 +15,7 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({
   handleModal,
-  sendButtonRef,
+  // sendButtonRef,
   title,
   buttonTitle,
   forOpen,
