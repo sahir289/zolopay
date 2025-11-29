@@ -1,46 +1,46 @@
 /* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Lucide from '@/components/Base/Lucide';
 import { Menu, Popover } from '@/components/Base/Headless';
-import Button from '@/components/Base/Button';
-import CustomTable from '../../../components/TableComponent/CommonTable';
 import { FormInput, FormSelect } from '@/components/Base/Form';
-import { Columns, resetPayInFormFields, Role, Status } from '@/constants';
-import {
-  getAllPayInData,
-  getRefreshPayIn,
-  getIsloadingPayinEntries,
-} from '@/redux-toolkit/slices/payin/payinSelectors';
+import Button from '@/components/Base/Button';
+import CustomTable from '../../../../components/TableComponent/CommonTable';
+import { Columns, EditAmountOrUTR, Role, Status } from '@/constants';
 import { useAppSelector } from '@/redux-toolkit/hooks/useAppSelector';
-import { getPaginationData } from '@/redux-toolkit/slices/common/params/paramsSelector';
-import { useAppDispatch } from '@/redux-toolkit/hooks/useAppDispatch';
 import {
-  getAllPayIns,
-  updatePayIns,
-} from '@/redux-toolkit/slices/payin/payinAPI';
+  getAllPayOutData,
+  getRefreshPayOut,
+  getIsLoadPayOut,
+} from '@/redux-toolkit/slices/payout/payoutSelectors';
 import {
-  getPayIns,
+  getPayOuts,
   onload,
-  setIsloadingPayinEntries,
-  setRefreshPayIn,
-} from '@/redux-toolkit/slices/payin/payinSlice';
+  setRefreshPayOut,
+  getTotalCount,
+  setIsloadingPayOutEntries,
+} from '@/redux-toolkit/slices/payout/payoutSlice';
+import { getAllPayOuts } from '@/redux-toolkit/slices/payout/payoutAPI';
+import { useAppDispatch } from '@/redux-toolkit/hooks/useAppDispatch';
+import { getPaginationData } from '@/redux-toolkit/slices/common/params/paramsSelector';
+import { updatePayIns } from '@/redux-toolkit/slices/payin/payinAPI';
 import Modal from '@/components/Modal/modals';
-import DynamicForm from '@/components/CommonForm';
+import ModalContent from '@/components/Modal/ModalContent/ModalContent';
+import { updatePayOuts } from '@/redux-toolkit/slices/payout/payoutAPI';
 import LoadingIcon from '@/components/Base/LoadingIcon';
 import {
   setPagination,
   resetPagination,
 } from '@/redux-toolkit/slices/common/params/paramsSlice';
-import Litepicker from '@/components/Base/Litepicker';
-import MultiSelect from '@/components/MultiSelect/MultiSelect';
+import { getPayOutReportSlice } from '@/redux-toolkit/slices/reports/reportSlice';
 import { downloadCSV } from '@/components/ExportComponent';
-import { getSelectedPayinReport } from '@/redux-toolkit/slices/reports/reportAPI';
-import { getPayInReportSlice } from '@/redux-toolkit/slices/reports/reportSlice';
-import { selectPayinReports } from '@/redux-toolkit/slices/reports/reportSelectors';
+import { getSelectedPayoutReport } from '@/redux-toolkit/slices/reports/reportAPI';
+import { selectPayoutReports } from '@/redux-toolkit/slices/reports/reportSelectors';
+import MultiSelect from '@/components/MultiSelect/MultiSelect';
+import Litepicker from '@/components/Base/Litepicker';
+import DynamicForm from '@/components/CommonForm';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
@@ -48,80 +48,73 @@ import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotificati
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-interface PayInData {
-  user_submitted_utr?: any;
-  id?: string;
+interface PayOutData {
   status?: string;
-  merchant_order_id?: string;
-  amount?: number;
-  bank_res_details?: any;
-  bank_id?: string;
+  reason?: string;
+  method?: string;
+  utr_id?: string;
+  bank_acc_id?: string;
+  id?: string;
 }
-interface AllPayInProps {
+
+interface AllPayOutProps {
   vendorCodes: { label: string; value: string }[];
   merchantCodes: { label: string; value: string }[];
   merchantCodesData: { label: string; value: string }[];
-  bankNames: { label: string; value: string }[];
-  setCallMerchant: React.Dispatch<React.SetStateAction<boolean>>;
-  setCallVendor: React.Dispatch<React.SetStateAction<boolean>>;
-  setCallBank: React.Dispatch<React.SetStateAction<boolean>>;
-}
+setCallMerchant: React.Dispatch<React.SetStateAction<boolean>>;
+  setCallVendor: React.Dispatch<React.SetStateAction<boolean>>;}
 
-interface FilterState {
-  merchant_id?: string[];
-  status?: string;
-  [key: string]: string | string[] | undefined;
-}
-
-const DroppedPayIn: React.FC<AllPayInProps> = ({
+const CompletedPayOut: React.FC<AllPayOutProps> = ({
   vendorCodes,
   merchantCodes,
   merchantCodesData,
-  bankNames,
   setCallMerchant,
   setCallVendor,
-  setCallBank,
 }) => {
-  const dispatch = useAppDispatch();
-  const isFetching = React.useRef(false);
-  const pagination = useAppSelector(getPaginationData);
-  const [payInData, setPayInData] = useState<PayInData>({});
+  const [payOutData, setPayOutData] = useState<PayOutData>({});
+  const [payOutModal, setPayOutModal] = useState(false);
   const [newTransactionModal, setNewTransactionModal] = useState(false);
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const date = dayjs().tz('Asia/Kolkata').format('YYYY-MM-DD');
   const [selectedFilterDates, setSelectedFilterDates] = useState<string>(
     `${date} - ${date}`,
   );
-  const [selectedFilter, setSelectedFilter] = useState<any[]>([]);
-  const [selectedFilterVendor, setSelectedFilterVendor] = useState<any[]>([]);
+  const allPayoutReports = useAppSelector(selectPayoutReports);
+  const [selectedFilter, setSelectedFilter] = useState<string[]>([]);
+  const [selectedFilterVendor, setSelectedFilterVendor] = useState<string[]>(
+    [],
+  );
+  const [selectedFilterData, setSelectedFilterData] = useState<any>();
+  const [editModal, setEditModal] = useState(false);
+  const [selectedData, setSelectedData] = useState<any>(null);
+  const [selectedValue, setSelectedValue] = useState<any>(null);
+  const [editModalType, setEditModalType] = useState<string>('');
   const [selectedColumn, setSelectedColumn] = useState<string>('');
   const [filterValue, setFilterValue] = useState<string>('');
-  const [selectedStatus, setSelectedStatus] = useState<string>('');
+  const [utrId, setUtrId] = useState<string>('');
   const [merchantOrderId, setMerchantOrderId] = useState<string>('');
-  const [userSubmittedUtr, setUserSubmittedUtr] = useState<string>('');
-  const [bankName, setBankName] = useState<string>('');
+  const [nickName, setNickName] = useState<string>('');
+  const [debouncedUtrId, setDebouncedUtrId] = useState<string>('');
   const [debouncedMerchantOrderId, setDebouncedMerchantOrderId] =
     useState<string>('');
-  const [debouncedUserSubmittedUtr, setDebouncedUserSubmittedUtr] =
-    useState<string>('');
-  const [debouncedBankName, setDebouncedBankName] = useState<string>('');
+  const [debouncedNickName, setDebouncedNickName] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
-  const [filters, setFilters] = useState<FilterState>({
-    status: `${Status.DROPPED},${Status.FAILED}`,
-  });
-  const [selectedVendor, setSelectedVendor] = useState<any[]>([]);
+  const [isReset, setIsReset] = useState(false);
+  const pagination = useAppSelector(getPaginationData);
+  const isFetching = useRef(false);
+  const isLoad = useAppSelector(getIsLoadPayOut);
+  const dispatch = useAppDispatch();
+  const refreshPayOut = useAppSelector(getRefreshPayOut);
+
   const data = localStorage.getItem('userData');
-  type RoleType = keyof typeof Role;
   let includeMerchants = false;
   let includeVendors = false;
-  const isLoad = useAppSelector(getIsloadingPayinEntries);
+
+  type RoleType = keyof typeof Role;
   let role: RoleType | null = null;
-  let designation: RoleType | null = null;
   if (data) {
     const parsedData = JSON.parse(data);
     role = parsedData.role;
-    designation = parsedData.designation;
     includeMerchants =
       role === Role.MERCHANT ||
       role === Role.ADMIN ||
@@ -133,38 +126,53 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
       role === Role.VENDOR_OPERATIONS;
   }
 
-  const refreshPayIn = useAppSelector(getRefreshPayIn);
-  const bankOptions = bankNames;
-
   const transactionModal = (data?: any) => {
-    setPayInData(data);
+    setPayOutData(data);
     setNewTransactionModal(!newTransactionModal);
-    newTransactionModal ? setCallBank(true) : null;
   };
-  const openExport = () => {
+
+  const handleReject = async () => {
+    if (payOutData.id) {
+      handlePayOutReject(payOutData?.id, { status: Status.REVERSED });
+    }
+    setPayOutModal(false);
+  };
+
+  const setExportModal = () => {
     setCallMerchant(true);
     setCallVendor(true);
     setExportModalOpen(true);
   };
-  const openFilter = () => {
+  const openfilter = () => {
     setCallMerchant(true);
-    setCallVendor(true);
   };
-  useEffect(() => {
-    dispatch(resetPagination());
-  }, [dispatch]);
-
-  const handlePageChange = useCallback(
-    (page: number) => {
+  const handleCancel = () => {
+    setPayOutModal(false);
+  };
+  const handlePayOutReject = async (id: string, data: any) => {
+    const res = await updatePayOuts(id, data);
+    if (res.meta.message) {
       dispatch(
-        setPagination({
-          page,
-          limit: pagination?.limit || 20,
+        addAllNotification({
+          status: Status.SUCCESS,
+          message: res.meta.message,
         }),
       );
-    },
-    [dispatch, pagination?.limit],
-  );
+      dispatch(setRefreshPayOut(true));
+    } else {
+      dispatch(
+        addAllNotification({
+          status: Status.ERROR,
+          message: res.error.message || 'An error occurred',
+        }),
+      );
+    }
+  };
+
+  useEffect(() => {
+    dispatch(resetPagination());
+    setIsReset(true);
+  }, [dispatch]);
 
   const handlePageSizeChange = useCallback(
     (newLimit: number) => {
@@ -178,104 +186,49 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
     [dispatch],
   );
 
-  const shouldSetSearchInAddData = (
-    merchantOrderId: string,
-    userSubmittedUtr: string,
-    bankName: string,
-    filters: FilterState,
-  ) => {
-    // If there's a search query, always set to true
-    if (merchantOrderId || userSubmittedUtr || bankName) {
-      return true;
-    }
-
-    // Check filters from FilterState
-    const hasFilterStateValues = Boolean(
-      filters.merchant_id?.length ||
-        filters.user_ids?.length ||
-        filters.updated_at ||
-        filters.user_submitted_utr ||
-        filters.merchant_order_id ||
-        filters.utr ||
-        filters.nick_name ||
-        filters.bank_acc_id ||
-        filters.amount ||
-        filters.user,
-    );
-
-    // Check additional filters from component state
-    const hasAdditionalFilters = Boolean(selectedColumn && filterValue);
-
-    return hasFilterStateValues || hasAdditionalFilters;
-  };
-
-  const getPayInData = useCallback(
-    async (filters: FilterState = {}) => {
+  const getPayOutData = useCallback(
+    async (filters?: Record<string, string | string[]>) => {
       if (isFetching.current) return;
       isFetching.current = true;
       try {
-        const inDroppedStatuses = [Status.DROPPED, Status.FAILED];
+        const defaultFilters = {
+          status: Status.APPROVED,
+        };
+        const finalFilters = {
+          ...defaultFilters,
+          ...(filters || {}),
+        };
+
         const params = new URLSearchParams({
           page: (pagination?.page || 1).toString(),
           limit: (pagination?.limit || 20).toString(),
-          status: inDroppedStatuses.join(','),
         });
-        Object.entries(filters).forEach(([key, value]) => {
-          if (value && key !== 'status') {
-            params.append(
-              key,
-              Array.isArray(value) ? value.join(',') : String(value),
-            );
-          }
-        });
+        if (debouncedUtrId) {
+          params.append('utr_id', debouncedUtrId);
+        }
+
         if (debouncedMerchantOrderId) {
           params.append('merchant_order_id', debouncedMerchantOrderId);
         }
-        if (debouncedUserSubmittedUtr) {
-          params.append('user_submitted_utr', debouncedUserSubmittedUtr);
+        if (debouncedNickName) {
+          params.append('user', debouncedNickName);
         }
-        if (debouncedBankName) {
-          params.append('nick_name', debouncedBankName);
-        }
-        if (
-          shouldSetSearchInAddData(
-            debouncedMerchantOrderId,
-            debouncedUserSubmittedUtr,
-            debouncedBankName,
-            filters,
-          )
-        ) {
-          sessionStorage.setItem('searchInAddData', 'true');
-        } else {
-          sessionStorage.setItem('searchInAddData', 'false');
-        }
+        Object.entries(finalFilters).forEach(([key, value]) => {
+          params.append(
+            key,
+            Array.isArray(value) ? value.join(',') : String(value),
+          );
+        });
         isLoad && dispatch(onload());
-        const response = await getAllPayIns(params.toString());
-        if (response) {
-          dispatch(
-            getPayIns({
-              payin: response.payins,
-              totalCount: response.totalCount,
-              loading: false,
-              error: null,
-              refreshPayIn: false,
-              isloadingPayinEntries: isLoad,
-            }),
-          );
-          !isLoad && dispatch(setIsloadingPayinEntries(true));
-        } else {
-          dispatch(
-            addAllNotification({
-              status: Status.ERROR,
-              message: 'No Dropped PayIns Found!',
-            }),
-          );
-        }
+        const response = await getAllPayOuts(params.toString());
+        dispatch(getTotalCount(response.data.totalCount));
+        dispatch(getPayOuts(response.data));
+        !isLoad && dispatch(setIsloadingPayOutEntries(true));
       } catch {
         dispatch(
           addAllNotification({
             status: Status.ERROR,
-            message: 'Error fetching dropped payins',
+            message: 'Error fetching payouts',
           }),
         );
       } finally {
@@ -286,85 +239,99 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
       pagination?.page,
       pagination?.limit,
       dispatch,
+      debouncedUtrId,
       debouncedMerchantOrderId,
-      debouncedUserSubmittedUtr,
-      debouncedBankName,
-      isLoad,
+      debouncedNickName,
     ],
   );
- 
-  useEffect(() => {
-    getPayInData();
-  }, [dispatch ,pagination?.page, pagination?.limit]);
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedMerchantOrderId(merchantOrderId.trim());
-      setDebouncedUserSubmittedUtr(userSubmittedUtr.trim());
-      setDebouncedBankName(bankName.trim());
-    }, 1000);
-    return () => clearTimeout(handler);
-  }, [merchantOrderId, userSubmittedUtr, bankName]);
-
-  useEffect(() => {
-    if (refreshPayIn || debouncedBankName || debouncedMerchantOrderId || debouncedUserSubmittedUtr ) {
-      getPayInData(filters);
-    }
-    setRefreshPayIn(false);
-  }, [
-    debouncedMerchantOrderId,
-    debouncedUserSubmittedUtr,
-    debouncedBankName,
-    refreshPayIn,
-    getPayInData,
-    dispatch,
-  ]);
   const handleRefresh = useCallback(async () => {
     dispatch(onload());
-    dispatch(setIsloadingPayinEntries(true));
-    await getPayInData(filters);
+    dispatch(setIsloadingPayOutEntries(true));
+    await getPayOutData(selectedFilterData || {});
     dispatch(
       addAllNotification({
         status: Status.SUCCESS,
-        message: 'Payins refreshed successfully',
+        message: 'PayOuts refreshed successfully',
       }),
     );
-  }, [dispatch, getPayInData, filters]);
-
+  }, [dispatch, getPayOutData, selectedFilterData]);
+  
   const handleReset = useCallback(async () => {
     dispatch(onload());
     setSelectedFilter([]);
-    setSelectedVendor([]);
     setSelectedFilterVendor([]);
     setSelectedFilterDates('');
+    setUtrId('');
     setMerchantOrderId('');
-    setUserSubmittedUtr('');
-    setBankName('');
-    setDebouncedMerchantOrderId('');
-    setDebouncedUserSubmittedUtr('');
-    setDebouncedBankName('');
+    setNickName('');
     setSelectedColumn('');
     setFilterValue('');
-    setSelectedStatus('');
-    setFilters({});
-    dispatch(setIsloadingPayinEntries(true));
+    setSelectedFilterData({});
     dispatch(resetPagination());
-    await getPayInData({ status: `${Status.DROPPED},${Status.FAILED}` });
+    dispatch(setIsloadingPayOutEntries(true));
+    dispatch(setRefreshPayOut(true));
     dispatch(
       addAllNotification({
         status: Status.SUCCESS,
         message: 'All filters reset successfully',
       }),
     );
-  }, [dispatch]);
-  const payins = useAppSelector(getAllPayInData);
+  }, [dispatch, getPayOutData]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedUtrId(utrId.trim());
+      setDebouncedMerchantOrderId(merchantOrderId.trim());
+      setDebouncedNickName(nickName.trim());
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [utrId, merchantOrderId, nickName]);
+
+  useEffect(() => {
+    setIsReset(true);
+  }, [
+    debouncedUtrId,
+    debouncedMerchantOrderId,
+    debouncedNickName,
+    selectedFilterData,
+  ]);
+
+  useEffect(() => {
+    if (isReset) {
+      getPayOutData(selectedFilterData || {});
+    }
+  }, [
+    debouncedUtrId,
+    debouncedMerchantOrderId,
+    debouncedNickName,
+    selectedFilterData,
+    pagination?.page,
+    pagination?.limit,
+    getPayOutData,
+    isReset,
+  ]);
+
+  useEffect(() => {
+    if (refreshPayOut) {
+      getPayOutData(selectedFilterData || {}).then(() => {
+        dispatch(setRefreshPayOut(false));
+      });
+    }
+  }, [refreshPayOut, getPayOutData, selectedFilterData, dispatch]);
+
+  const payOuts = useAppSelector(getAllPayOutData);
 
   const handleNotifyData = async (id: string) => {
     const url = `update-payment-notified-status/${id}`;
-    const apiData = { type: 'PAYIN' };
-    // dispatch(onload());
-    const res = await updatePayIns(url, apiData);
-    if (res.meta?.message) {
+    const apiData = { type: 'PAYOUT' };
+    dispatch(onload());
+    const res = await updatePayIns(`${url}`, apiData);
+    if (res.meta.message) {
+      dispatch(setRefreshPayOut(true));
       dispatch(
         addAllNotification({
           status: Status.SUCCESS,
@@ -375,57 +342,28 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
       dispatch(
         addAllNotification({
           status: Status.ERROR,
-          message: res.error?.message || 'An error occurred',
+          message: res.error.message,
         }),
       );
     }
   };
+  const handlePageChange = useCallback(
+    (page: number) => {
+      if (page !== pagination?.page) {
+        dispatch(
+          setPagination({
+            page,
+            limit: pagination?.limit || 20,
+          }),
+        );
+      }
+    },
+    [dispatch, pagination?.page, pagination?.limit],
+  );
 
-
-  const handleResetTransaction = async (data: any) => {
-    setIsLoading(true);
-    const nickName = bankNames.filter((name) => name.value === data.bank_id)[0]
-      ?.label;
-    const apiData =
-      payInData.status === Status.BANK_MISMATCH
-        ? { nick_name: nickName }
-        : {
-            merchantOrderId: data.merchant_order_id,
-            confirmed: data.amount,
-            amount: data.amount,
-          };
-    const url =
-      payInData.status === Status.BANK_MISMATCH
-        ? `update-deposit-status/${payInData.merchant_order_id}`
-        : `dispute-duplicate/${payInData.id}`;
-
-    const res = await updatePayIns(url, apiData);
-
-    if (res.meta?.message) {
-      dispatch(
-        addAllNotification({
-          status: Status.SUCCESS,
-          message: res.meta.message,
-        })
-      );
-      transactionModal();
-    } else {
-      dispatch(
-        addAllNotification({
-          status: Status.ERROR,
-          message: res.error?.message || 'An error occurred',
-        })
-      );
-    }
-    setIsLoading(false);
-  };
-
-  const applyFilter = useCallback(async () => {
+  const applyFilter = useCallback(() => {
     const hasNoFilters =
-      !selectedFilter.length &&
-      !selectedVendor.length &&
-      !selectedStatus &&
-      !(selectedColumn && filterValue);
+      !selectedFilter.length && !(selectedColumn && filterValue);
 
     if (hasNoFilters) {
       dispatch(
@@ -443,37 +381,22 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
         limit: pagination?.limit || 20,
       }),
     );
-    const newFilters: FilterState = {};
-
+    const filters: Record<string, any> = {
+      status: Status.APPROVED,
+    };
     if (selectedFilter.length) {
-      newFilters['merchant_id'] = selectedFilter.map((f: any) => f.value);
-    }
-    if (selectedVendor.length) {
-      newFilters['user_ids'] = selectedVendor.map((f: any) => f.value);
-    }
-
-    if (selectedStatus) {
-      newFilters['status'] = selectedStatus;
+      filters['merchant_id'] = selectedFilter.map((f: any) => f.value);
     }
 
     if (selectedColumn && filterValue) {
-      newFilters[selectedColumn] = filterValue;
+      filters[selectedColumn] = filterValue;
     }
-
-    setFilters(newFilters);
-    await getPayInData(newFilters);
-  }, [
-    selectedFilter,
-    selectedStatus,
-    selectedColumn,
-    filterValue,
-    selectedVendor,
-    dispatch,
-  ]);
+    setSelectedFilterData(filters);
+    getPayOutData(filters);
+  }, [selectedFilter, selectedColumn, filterValue, getPayOutData, dispatch]);
 
   type ExportFormat = 'PDF' | 'CSV' | 'XLSX';
-
-  const handleDownload = async (type: ExportFormat) => {
+  const handleDownload = async (type: string) => {
     setSelectedFilter([]);
     const isEmpty = (arr: any[]) => !arr || !arr.length;
 
@@ -484,20 +407,14 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
       Role.MERCHANT_OPERATIONS,
     ].includes(role || '');
     if (role === Role.ADMIN) {
-      if (isEmpty(selectedFilter) && isEmpty(selectedFilterVendor)) {
+      if (
+        (isEmpty(selectedFilter) || isEmpty(selectedFilterVendor)) &&
+        !selectedFilterDates
+      ) {
         dispatch(
           addAllNotification({
             status: Status.ERROR,
-            message: `Please select  merchant or vendor.`,
-          }),
-        );
-        return;
-      }
-      if (!selectedFilterDates) {
-        dispatch(
-          addAllNotification({
-            status: Status.ERROR,
-            message: `Please select date range.`,
+            message: `Please select both merchant/vendor and date range.`,
           }),
         );
         return;
@@ -526,103 +443,107 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
 
     try {
       const [startDate, endDate] = selectedFilterDates.split(' - ');
+
       const isMerchantExport = selectedFilter.length > 0;
       const selectedCodes = isMerchantExport
         ? selectedFilter.map((code: any) => code.value).join(',')
         : selectedFilterVendor.map((code: any) => code.value).join(',');
-      const selectedMerchantReports = await getSelectedPayinReport(
+
+      const selectedPayoutReports = await getSelectedPayoutReport(
         selectedCodes,
         startDate,
         endDate,
-        ['DROPPED', 'FAILED'],
+        ['APPROVED', 'REVERSED'],
       );
 
-      if (!selectedMerchantReports.length) {
+      const completedReports = selectedPayoutReports;
+
+      if (!completedReports.length) {
         dispatch(
           addAllNotification({
             status: Status.ERROR,
-            message:
-              'No dropped/failed payins found for the selected criteria.',
+            message: 'No completed payouts found for the selected criteria.',
           }),
         );
         return;
       }
 
       dispatch(
-        getPayInReportSlice([...allPayinReports, ...selectedMerchantReports]),
+        getPayOutReportSlice([...allPayoutReports, ...completedReports]),
       );
 
-      if (selectedMerchantReports.length > 0) {
+      if (completedReports.length > 0) {
         const fieldMappings = {
           sno: 'SNO',
-          id: 'Id',
-          upi_short_code: 'UPI Short Code',
-          payin_merchant_commission: 'PayIn Merchant Commission',
           merchant_details: 'Payment Partner Code',
           merchant_order_id: 'Merchant Order ID',
-          user_submitted_utr: 'User Submitted UTR',
-          utr: 'UTR',
-          amount: 'Requested Amount',
           status: 'Status',
-          bank_res_details: {
-            utr: 'Bank UTR',
-            amount: 'Recieved Amount',
-          },
+          utr_id: 'UTR',
           user: 'User',
-          nick_name: 'Bank Name',
+          amount: 'Requested Amount',
+          payout_merchant_commission: 'Payout Commission',
+          description: 'Description',
+          nick_name: 'From Bank',
           vendor_code: 'Banking Partner Code',
           updated_at: 'Updated At',
-          created_at: 'Created At',
           approved_at: 'Approved At',
+          created_at: 'Created At',
           rejected_at: 'Rejected At',
         };
 
-        const filteredData = selectedMerchantReports.map((item: any) => {
+        const filteredData = completedReports.map((item: any) => {
+          const getStatusDate = () => {
+            if (item.status === Status.SUCCESS) return item.approved_at;
+            if (item.status === Status.FAILED) return item.failed_at;
+            return item.updated_at;
+          };
           const result: Record<string, any> = {};
-          result[fieldMappings.id] = item?.id || '';
-          if (includeMerchants) {
-            result[fieldMappings.upi_short_code] = item?.upi_short_code || '';
-          }
-          if (includeMerchants) {
-            result[fieldMappings.payin_merchant_commission] =
-              item?.payin_merchant_commission || '0';
-          }
-          result[fieldMappings.amount] = item.amount || '0';
-          result[fieldMappings.bank_res_details.utr] =
-            item.bank_res_details.utr || '';
-          result[fieldMappings.bank_res_details.amount] =
-            item.bank_res_details.amount || '0';
-          result[fieldMappings.status] = item.status || '';
-          if (includeVendors) {
-            result[fieldMappings.nick_name] = item.nick_name || '';
-            result[fieldMappings.vendor_code] = item.vendor_code || '';
-          }
+          result[fieldMappings.sno] = item.sno || '';
           if (includeMerchants) {
             result[fieldMappings.merchant_details] =
               item.merchant_details?.merchant_code || '';
-            result[fieldMappings.user] = item.user || '0';
             result[fieldMappings.merchant_order_id] =
               item.merchant_order_id || '';
+            result[fieldMappings.user] = item.user;
           }
-          result[fieldMappings.created_at] = dayjs(item.created_at)
-            .tz('Asia/Kolkata')
-            .format('DD-MM-YYYY h:mm:ss A');
-
+          (result[fieldMappings.status] =
+            item.status === Status.APPROVED ? 'APPROVED' : `REVERSED`),
+            (result[fieldMappings.status] = item.status || '');
+          result[fieldMappings.amount] = item.amount || 0;
+          result[fieldMappings.payout_merchant_commission] = Number(
+            item.payout_merchant_commission || 0,
+          );
+          result[fieldMappings.utr_id] = item.utr_id;
+          result[fieldMappings.description] =
+            item.status !== Status.APPROVED
+              ? `Transaction was REVERSED ${dayjs(getStatusDate()).format(
+                  'YYYY-MM-DD HH:mm:ss',
+                )}`
+              : '';
+          if (includeVendors) {
+            result[fieldMappings.vendor_code] = item.vendor_code || '';
+            (result[fieldMappings.nick_name] = item.nick_name || '');
+          }
+            (result[fieldMappings.updated_at] = result[
+              fieldMappings.created_at
+            ] =
+              dayjs(item.created_at)
+                .tz('Asia/Kolkata')
+                .format('DD-MM-YYYY h:mm:ss A'));
           result[fieldMappings.updated_at] = dayjs(item.updated_at)
             .tz('Asia/Kolkata')
             .format('DD-MM-YYYY h:mm:ss A');
           return result;
         });
-
         downloadCSV(
           filteredData,
           type as ExportFormat,
-          `dropped-payin-report_${startDate}_to_${endDate}`,
+          `completed-payout-report_${startDate}_to_${endDate}`,
         );
         dispatch(
           addAllNotification({
             status: Status.SUCCESS,
-            message: `Dropped/failed payins exported successfully as ${type}`,
+            message: `Completed payouts exported successfully as ${type}`,
           }),
         );
         setExportModalOpen(false);
@@ -630,7 +551,7 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
         dispatch(
           addAllNotification({
             status: Status.ERROR,
-            message: 'No dropped/failed payins available for export',
+            message: 'No completed payouts available for export',
           }),
         );
       }
@@ -638,13 +559,48 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
       dispatch(
         addAllNotification({
           status: Status.ERROR,
-          message: 'Error exporting report',
+          message: 'Error exporting completed payouts',
         }),
       );
     }
   };
 
-  const allPayinReports = useAppSelector(selectPayinReports);
+  const handleEditModal = (data: any, type: string) => {
+    setSelectedData(data);
+    setSelectedValue({ [type]: data.utr_id });
+    setEditModalType(type);
+    setEditModal(true);
+  };
+
+  const handleEditCancel = () => {
+    setSelectedData(null);
+    setEditModal(false);
+  };
+
+  const handleEditSubmit = async (data: any) => {
+    setIsLoading(true);
+    dispatch(onload());
+    const res = await updatePayOuts(selectedData.id, data);
+    if (res.meta.message) {
+      dispatch(
+        addAllNotification({
+          status: Status.SUCCESS,
+          message: res.meta.message,
+        }),
+      );
+      dispatch(setRefreshPayOut(true));
+    } else {
+      dispatch(
+        addAllNotification({
+          status: Status.ERROR,
+          message: res.meta.message,
+        }),
+      );
+    }
+    setSelectedData(null);
+    setIsLoading(false);
+    setEditModal(false);
+  };
 
   return (
     <>
@@ -652,14 +608,14 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
         <div className="col-span-12">
           <div className="mt-3.5">
             <div className="flex flex-col overflow-x-hidden">
-              <div className="flex flex-col py-5 gap-y-2 mx-3">
+              <div className="flex flex-col p-5 gap-y-2 mx-3">
                 {/* Action Buttons Row */}
                 <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-end">
                   <Menu>
                     <Menu.Button
                       as={Button}
                       variant="outline-secondary"
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
                       onClick={handleRefresh}
                     >
                       <Lucide
@@ -673,11 +629,11 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                     <Menu.Button
                       as={Button}
                       variant="outline-secondary"
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
                       onClick={handleReset}
                     >
                       <Lucide
-                        icon="RefreshCw"
+                        icon="RotateCcw"
                         className="stroke-[1.3] w-4 h-4 mr-2"
                       />
                       Reset
@@ -687,8 +643,8 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                     <Menu.Button
                       as={Button}
                       variant="outline-secondary"
-                      className="w-full sm:w-auto"
-                      onClick={openExport}
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                      onClick={setExportModal}
                     >
                       <Lucide
                         icon="Download"
@@ -708,23 +664,23 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                           setSelectedFilterVendor([]);
                         }}
                         forOpen={exportModalOpen}
-                        title="Export Dropped Deposits"
+                        title="Export Withdrawals"
                       >
                         <div className="py-2 my-2 mb-4">
                           <Litepicker
-                            value={selectedFilterDates}
-                            onChange={(e) =>
-                              setSelectedFilterDates(e.target.value)
-                            }
+                            value={selectedFilterDates || ''}
+                            onChange={(e) => {
+                              setSelectedFilterDates(e.target.value);
+                            }}
                             enforceRange={true}
                             options={{
                               autoApply: false,
                               singleMode: false,
                               numberOfMonths: 1,
                               numberOfColumns: 1,
-                              showWeekNumbers: true,
                               startDate: selectedFilterDates.split(' - ')[0],
                               endDate: selectedFilterDates.split(' - ')[1],
+                              showWeekNumbers: true,
                               dropdowns: {
                                 minYear: 1990,
                                 maxYear: null,
@@ -752,9 +708,9 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                             </div>
                             <div className="p-2 flex justify-center">OR</div>
                             <div className="flex flex-row">
+                              {/* <div className="px-2 flex ">Select Vendor : </div> */}
                               <MultiSelect
                                 codes={vendorCodes}
-                                selectedFilter={selectedFilterVendor}
                                 setSelectedFilter={(value: any[]) => {
                                   setSelectedFilterVendor(value);
                                   if (value.length > 0) setSelectedFilter([]);
@@ -779,6 +735,7 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                             placeholder="Select Banking Partner Codes ..."
                           />
                         )}
+
                         <div className="flex flex-row gap-4 my-4 pt-6">
                           <Button onClick={() => handleDownload('PDF')}>
                             Export as PDF
@@ -799,11 +756,11 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                         <Popover.Button
                           as={Button}
                           variant="outline-secondary"
-                          className="w-full sm:w-auto"
-                          onClick={openFilter}
+                          className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                          onClick={openfilter}
                         >
                           <Lucide
-                            icon="ArrowDownWideNarrow"
+                            icon="SlidersHorizontal"
                             className="stroke-[1.3] w-4 h-4 mr-2"
                           />
                           Filter
@@ -829,37 +786,9 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                                       codes={merchantCodesData}
                                       selectedFilter={selectedFilter}
                                       setSelectedFilter={setSelectedFilter}
-                                      placeholder="Select Merchant..."
                                     />
                                   </div>
                                 )}
-                              {role && [Role.ADMIN].includes(role) && (
-                                <div className="mt-3">
-                                  <div className="text-left text-slate-500 mb-2">
-                                    Vendor
-                                  </div>
-                                  <MultiSelect
-                                    codes={vendorCodes}
-                                    selectedFilter={selectedVendor}
-                                    setSelectedFilter={setSelectedVendor}
-                                    placeholder="Select Vendor..."
-                                  />
-                                </div>
-                                )}
-                                {designation &&
-                                                                  [Role.VENDOR_ADMIN].includes(designation) && (
-                                                                    <div className="mt-3">
-                                                                      <div className="text-left text-slate-500 mb-2">
-                                                                        Vendor
-                                                                      </div>
-                                                                      <MultiSelect
-                                                                        codes={vendorCodes}
-                                                                        selectedFilter={selectedVendor}
-                                                                        setSelectedFilter={setSelectedVendor}
-                                                                        placeholder="Select Vendor..."
-                                                                      />
-                                                                    </div>
-                                                                  )}
                               <div className="mt-3">
                                 <div className="text-left text-slate-500">
                                   Additional Filters
@@ -872,7 +801,7 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                                     setFilterValue('');
                                   }}
                                 >
-                                  <option value="">Select column...</option>
+                                  <option value="">Select a column</option>
                                   {[
                                     ...(role &&
                                     [
@@ -881,63 +810,53 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                                       Role.SUB_MERCHANT,
                                       Role.MERCHANT_OPERATIONS,
                                     ].includes(role)
-                                      ? Columns.PAYIN_DROPPED_MERCHANT
+                                      ? Columns.PAYOUT_MERCHANT
                                       : role &&
                                         [
                                           Role.VENDOR,
                                           Role.VENDOR_OPERATIONS,
                                         ].includes(role)
-                                      ? Columns.PAYIN_DROPPED_VENDOR
-                                      : Columns.PAYIN),
-                                    { key: 'id', label: 'Payin ID' }, 
+                                      ? Columns.PAYOUT_COMPLETED_VENDOR
+                                      : Columns.PAYOUT_COMPLETED),
+                                    { key: 'id', label: 'Payout ID' },
                                   ]
                                     .filter(
                                       (col) =>
-                                        col &&
                                         col.key !== 'merchant_details' &&
-                                        col.key !== 'bank_res_details' &&
-                                        col.key !== 'user_submitted_image' &&
                                         col.key !== 'more_details' &&
                                         col.key !== 'status' &&
                                         col.key !== 'sno' &&
-                                        col.key !== 'vendor_code' &&
-                                        col.key !== 'actions' &&
-                                        col.key !== 'more_details',
+                                        // col.key !== 'user_bank_details' &&
+                                        col.key !== 'actions',
                                     )
-                                    .map(
-                                      (col) =>
-                                        col && (
-                                          <option key={col.key} value={col.key}>
-                                            {col.label}
-                                          </option>
-                                        ),
-                                    )}
+                                    .map((col) => (
+                                      <option key={col.key} value={col.key}>
+                                        {col.label}
+                                      </option>
+                                    ))}
                                 </FormSelect>
                                 {selectedColumn && (
                                   <div className="mt-3">
                                     <div className="text-left text-slate-500">
                                       Value for{' '}
                                       {
+                                        (role &&
                                         [
-                                          ...(role &&
-                                          [
-                                            Role.MERCHANT,
-                                            Role.MERCHANT_ADMIN,
-                                            Role.SUB_MERCHANT,
-                                            Role.MERCHANT_OPERATIONS,
-                                          ].includes(role)
-                                            ? Columns.PAYIN_DROPPED_MERCHANT
-                                            : role &&
-                                              [
-                                                Role.VENDOR,
-                                                Role.VENDOR_OPERATIONS,
-                                              ].includes(role)
-                                            ? Columns.PAYIN_DROPPED_VENDOR
-                                            : Columns.PAYIN),
-                                          { key: 'id', label: 'Payin ID' }, 
-                                        ].find(
-                                          (col) =>
-                                            col && col.key === selectedColumn,
+                                          Role.MERCHANT,
+                                          Role.MERCHANT_ADMIN,
+                                          Role.SUB_MERCHANT,
+                                          Role.MERCHANT_OPERATIONS,
+                                        ].includes(role)
+                                          ? Columns.PAYOUT_MERCHANT
+                                          : role &&
+                                            [
+                                              Role.VENDOR,
+                                              Role.VENDOR_OPERATIONS,
+                                            ].includes(role)
+                                          ? Columns.PAYOUT_COMPLETED_VENDOR
+                                          : Columns.PAYOUT_COMPLETED
+                                        ).find(
+                                          (col) => col.key === selectedColumn,
                                         )?.label
                                       }
                                     </div>
@@ -960,7 +879,6 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                                   onClick={() => {
                                     setSelectedColumn('');
                                     setFilterValue('');
-                                    setSelectedStatus('');
                                     close();
                                   }}
                                   className="w-32 ml-auto"
@@ -968,7 +886,7 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                                   Close
                                 </Button>
                                 <Button
-                                  variant="primary"
+                                  variant="outline-secondary"
                                   type="submit"
                                   className="w-32 ml-2"
                                 >
@@ -985,8 +903,7 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
 
                 {/* Search Inputs Row */}
                 <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
-                  {/* Merchant Order ID - Shown for ADMIN and MERCHANT */}
-                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
+{(role === Role.ADMIN || role === Role.MERCHANT) && (
                     <div className="relative w-full sm:w-auto sm:flex-shrink-0">
                       <Lucide
                         icon="Search"
@@ -1002,13 +919,12 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                       {merchantOrderId && (
                         <Lucide
                           icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
                           onClick={() => setMerchantOrderId('')}
                         />
                       )}
                     </div>
                   )}
-                  {/* User Submitted UTR - Shown for all roles (ADMIN, MERCHANT, VENDOR) */}
                   {(role === Role.ADMIN ||
                     role === Role.MERCHANT ||
                     role === Role.VENDOR) && (
@@ -1021,21 +937,19 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                         type="text"
                         placeholder="UTR..."
                         className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                        value={userSubmittedUtr}
-                        onChange={(e) => setUserSubmittedUtr(e.target.value)}
+                        value={utrId}
+                        onChange={(e) => setUtrId(e.target.value)}
                       />
-                      {userSubmittedUtr && (
+                      {utrId && (
                         <Lucide
                           icon="X"
                           className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setUserSubmittedUtr('')}
+                          onClick={() => setUtrId('')}
                         />
                       )}
                     </div>
                   )}
-
-                  {/* Bank Name - Shown for ADMIN and VENDOR */}
-                  {(role === Role.ADMIN || role === Role.VENDOR) && (
+                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
                     <div className="relative w-full sm:w-auto sm:flex-shrink-0">
                       <Lucide
                         icon="Search"
@@ -1043,109 +957,114 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                       />
                       <FormInput
                         type="text"
-                        placeholder="Bank..."
+                        placeholder="User ID..."
                         className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                        value={bankName}
-                        onChange={(e) => setBankName(e.target.value)}
+                        value={nickName}
+                        onChange={(e) => setNickName(e.target.value)}
                       />
-                      {bankName && (
+                      {nickName && (
                         <Lucide
                           icon="X"
                           className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setBankName('')}
+                          onClick={() => setNickName('')}
                         />
                       )}
                     </div>
                   )}
                 </div>
               </div>
-              <div className="overflow-auto xl:overflow-visible">
-                {payins.loading && payins.isloadingPayinEntries ? (
-                  <div className="flex justify-center items-center w-full h-screen">
-                    <LoadingIcon
-                      icon="ball-triangle"
-                      className="w-[5%] h-auto"
-                    />
-                  </div>
-                ) : (
-                  <CustomTable
-                    columns={
-                      role &&
-                      [
-                        Role.MERCHANT,
-                        Role.MERCHANT_ADMIN,
-                        Role.SUB_MERCHANT,
-                        Role.MERCHANT_OPERATIONS,
-                      ].includes(role)
-                        ? Columns.PAYIN_DROPPED_MERCHANT
-                        : role &&
-                          [Role.VENDOR, Role.VENDOR_OPERATIONS].includes(role)
-                        ? Columns.PAYIN_DROPPED_VENDOR
-                        : Columns.PAYIN
-                    }
-                    data={{ rows: payins.payin, totalCount: payins.totalCount }}
-                    currentPage={Number(pagination?.page) || 1}
-                    pageSize={Number(pagination?.limit) || 20}
-                    onPageChange={handlePageChange}
-                    onPageSizeChange={handlePageSizeChange}
-                    actionMenuItems={(row: PayInData) => {
-                      const items: {
-                        label?: string;
-                        icon: 'BellRing' | 'RotateCcw' | 'RefreshCw';
-                        onClick: (row: PayInData) => void;
-                      }[] = [
-                        {
-                          label: 'Notify',
-                          icon: 'BellRing',
-                          onClick: () => handleNotifyData(row.id || ''),
-                        },
-                      ];
-                      if (
-                        row.status === Status.BANK_MISMATCH ||
-                        row.status === Status.DISPUTE
-                      ) {
-                        items.push({
-                          label: 'Reset',
-                          icon: 'RefreshCw',
-                          onClick: () => transactionModal(row),
-                        });
-                      }
+              {payOuts.loading && isLoad ? (
+                <div className="flex justify-center items-center w-full h-screen">
+                  <LoadingIcon icon="ball-triangle" className="w-[5%] h-auto" />
+                </div>
+              ) : (
+                <CustomTable
+                  columns={
+                    role &&
+                    [
+                      Role.MERCHANT,
+                      Role.MERCHANT_ADMIN,
+                      Role.SUB_MERCHANT,
+                      Role.MERCHANT_OPERATIONS,
+                    ].includes(role)
+                      ? Columns.PAYOUT_MERCHANT
+                      : role &&
+                        [Role.VENDOR, Role.VENDOR_OPERATIONS].includes(role)
+                      ? Columns.PAYOUT_COMPLETED_VENDOR
+                      : Columns.PAYOUT_COMPLETED
+                  }
+                  data={{
+                    rows: payOuts.payout,
+                    totalCount: payOuts.totalCount,
+                  }}
+                  currentPage={Number(pagination?.page) || 1}
+                  pageSize={Number(pagination?.limit) || 20}
+                  onPageChange={handlePageChange}
+                  onPageSizeChange={handlePageSizeChange}
+                  source="Payout"
+                  handleEditModal={handleEditModal}
+                  role={role || undefined}
+                  actionMenuItems={(row: any) => {
+                    const items: {
+                      label?: string;
+                      icon: 'BellRing' | 'RotateCcw' | 'RefreshCw';
+                      onClick: (row: any) => void;
+                    }[] = [];
 
-                      return items;
-                    }}
-                  />
-                )}
-              </div>
+                    // Restrict Reset action for vendor logins
+                    if (
+                      role &&
+                      ![Role.VENDOR, Role.SUB_VENDOR, Role.VENDOR_OPERATIONS].includes(role)
+                    ) {
+                      items.push({
+                        label: 'Reset',
+                        icon: 'RefreshCw',
+                        onClick: () => {
+                          transactionModal(row), setPayOutModal(true);
+                        },
+                      });
+                    }
+
+                    // Always add Notify action
+                    items.push({
+                      label: 'Notify',
+                      icon: 'BellRing',
+                      onClick: () => handleNotifyData(row.id),
+                    });
+
+                    return items;
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>
       </div>
-      {newTransactionModal && (
-        <Modal
-          handleModal={transactionModal}
-          forOpen={newTransactionModal}
-          title={`Reset Incoming Payment`}
+
+      <Modal handleModal={handleCancel} forOpen={payOutModal}>
+        <ModalContent
+          handleCancelDelete={handleCancel}
+          handleConfirmDelete={handleReject}
         >
-          <DynamicForm
-            sections={
-              payInData.status === Status.BANK_MISMATCH
-                ? resetPayInFormFields(bankOptions).RESET_BANK
-                : resetPayInFormFields().RESET_DISPUTE
-            }
-            onSubmit={handleResetTransaction}
-            defaultValues={
-              payInData.status === Status.DISPUTE
-                ? { amount: payInData.bank_res_details.amount }
-                : {}
-            }
-            isEditMode={true}
-            handleCancel={transactionModal}
-            isLoading={isLoading}
-          />
-        </Modal>
-      )}
+          Are you sure you want to reset this Transaction?
+        </ModalContent>
+      </Modal>
+      <Modal handleModal={handleEditCancel} forOpen={editModal}>
+        <DynamicForm
+          sections={Object.fromEntries(
+            Object.entries(EditAmountOrUTR(editModalType)).filter(
+              ([_, value]) => Array.isArray(value),
+            ),
+          )}
+          onSubmit={handleEditSubmit}
+          defaultValues={selectedValue}
+          isEditMode={true}
+          handleCancel={handleEditCancel}
+          isLoading={isLoading}
+        />
+      </Modal>
     </>
   );
 };
 
-export default DroppedPayIn;
+export default CompletedPayOut;

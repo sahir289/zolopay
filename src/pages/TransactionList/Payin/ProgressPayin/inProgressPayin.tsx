@@ -7,7 +7,7 @@ import React, { useCallback, useEffect, useState, useRef } from 'react';
 import Lucide from '@/components/Base/Lucide';
 import { Menu, Popover } from '@/components/Base/Headless';
 import Button from '@/components/Base/Button';
-import CustomTable from '../../../components/TableComponent/CommonTable';
+import CustomTable from '../../../../components/TableComponent/CommonTable';
 import { FormInput, FormSelect } from '@/components/Base/Form';
 import { Columns, resetPayInFormFields, Role, Status } from '@/constants';
 import {
@@ -43,7 +43,6 @@ import { getSelectedPayinReport } from '@/redux-toolkit/slices/reports/reportAPI
 import { getPayInReportSlice } from '@/redux-toolkit/slices/reports/reportSlice';
 import { selectPayinReports } from '@/redux-toolkit/slices/reports/reportSelectors';
 import dayjs from 'dayjs';
-import { checkPendingStatus } from '@/redux-toolkit/slices/payin/payinAPI';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotifications';
@@ -73,6 +72,7 @@ interface ImgUtrState {
     userSubmittedUtr: string;
     amount: string;
     code: string;
+    user_submitted_image: string | File;
   };
 }
 interface AllPayInProps {
@@ -84,7 +84,8 @@ interface AllPayInProps {
   setCallVendor: React.Dispatch<React.SetStateAction<boolean>>;
   setCallBank: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const InReviewPayIn: React.FC<AllPayInProps> = ({
+
+const InProgressPayIn: React.FC<AllPayInProps> = ({
   vendorCodes,
   merchantCodes,
   merchantCodesData,
@@ -108,8 +109,6 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
   const [selectedColumn, setSelectedColumn] = useState<string>('');
   const [filterValue, setFilterValue] = useState<string>('');
   const [selectedStatus, setSelectedStatus] = useState<string>('');
-
-  // const [searchQuery, setSearchQuery] = useState<string>('');
   const [merchantOrderId, setMerchantOrderId] = useState<string>('');
   const [userSubmittedUtr, setUserSubmittedUtr] = useState<string>('');
   const [bankName, setBankName] = useState<string>('');
@@ -121,20 +120,26 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
 
   const [isLoading, setIsLoading] = useState(false);
   const [filters, setFilters] = useState<FilterState>({
-    status: `${Status.BANK_MISMATCH},${Status.DISPUTE},${Status.IMAGE_PENDING},${Status.DUPLICATE},${Status.PENDING}`,
+    status: `${Status.ASSIGNED},${Status.INITIATED},${Status.PENDING}`,
   });
   const [imgUtr, setImgUtr] = useState<ImgUtrState>({
     bool: false,
     merchantOrderId: '',
-    data: { userSubmittedUtr: '', amount: '', code: '' },
+    data: {
+      userSubmittedUtr: '',
+      amount: '',
+      code: '',
+      user_submitted_image: '',
+    },
   });
   const isFetching = useRef(false);
   const data = localStorage.getItem('userData');
   type RoleType = keyof typeof Role;
-  let role: RoleType | null = null;
-  let designation: RoleType | null = null;
   let includeMerchants = false;
   let includeVendors = false;
+
+  let role: RoleType | null = null;
+  let designation: RoleType | null = null;
   if (data) {
     const parsedData = JSON.parse(data);
     role = parsedData.role;
@@ -156,7 +161,7 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
   const transactionModal = (data?: any) => {
     setPayInData(data);
     setNewTransactionModal(!newTransactionModal);
-    if (newTransactionModal) setCallBank(true);
+    newTransactionModal ? setCallBank : null;
   };
 
   useEffect(() => {
@@ -187,12 +192,11 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
     [dispatch],
   );
 
-  // Updated shouldSetSearchInAddData (from AllPayIn)
   const shouldSetSearchInAddData = (
     merchantOrderId: string,
     userSubmittedUtr: string,
     bankName: string,
-    filters: FilterState,
+    filters: FilterState 
   ) => {
     if (merchantOrderId || userSubmittedUtr || bankName) {
       return true;
@@ -217,22 +221,16 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
 
     return hasFilterStateValues || hasAdditionalFilters;
   };
+
   const getPayInData = useCallback(
     async (filters: FilterState = {}) => {
       if (isFetching.current) return;
       isFetching.current = true;
       try {
-        const inProgressStatuses = [
-          Status.BANK_MISMATCH,
-          Status.DISPUTE,
-          Status.IMAGE_PENDING,
-          Status.DUPLICATE,
-          Status.PENDING,
-        ];
         const params = new URLSearchParams({
           page: (pagination?.page || 1).toString(),
           limit: (pagination?.limit || 20).toString(),
-          status: inProgressStatuses.join(','),
+          status: [Status.ASSIGNED, Status.INITIATED].join(','),
         });
 
         Object.entries(filters).forEach(([key, value]) => {
@@ -313,8 +311,10 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
       isLoad,
     ],
   );
-
-  // Added debouncing logic for search fields (from AllPayIn)
+    useEffect(() => {
+      getPayInData();
+    }, [dispatch ,pagination?.page, pagination?.limit]);
+  // Updated debouncing logic (from AllPayIn)
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedMerchantOrderId(merchantOrderId.trim());
@@ -330,7 +330,7 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
       getPayInData(filters).then(() => {
         dispatch(setRefreshPayIn(false));
       });
-    } 
+    }
   }, [
     debouncedMerchantOrderId,
     debouncedUserSubmittedUtr,
@@ -340,24 +340,7 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
     dispatch,
   ]);
 
-  const checkPendingPayins = async () => {
-    try {
-      await checkPendingStatus();
-      dispatch(
-        addAllNotification({
-          status: Status.SUCCESS,
-          message: 'Checked Pending Status',
-        }),
-      );
-    } catch {
-      dispatch(
-        addAllNotification({
-          status: Status.ERROR,
-          message: 'Failed to Checked Pending Status',
-        }),
-      );
-    }
-  };
+  // Updated processUtr (unchanged from InProgressPayIn)
   useEffect(() => {
     if (imgUtr.bool) {
       const processUtrImg = async () => {
@@ -390,18 +373,9 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
     }
   }, [imgUtr, dispatch]);
 
-  const openExport = () => {
-    setCallMerchant(true);
-    setCallVendor(true);
-    setExportModalOpen(true);
-  };
-  const openFilter = () => {
-    setCallMerchant(true);
-    setCallVendor(true);
-  };
-  const handleRefresh = useCallback(async () => {
+  const handleRefresh = useCallback(() => {
     dispatch(setIsloadingPayinEntries(true));
-    await getPayInData(filters);
+    getPayInData(filters);
     dispatch(
       addAllNotification({
         status: Status.SUCCESS,
@@ -410,13 +384,12 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
     );
   }, [dispatch, getPayInData, filters]);
 
-  // Updated handleReset to include new search fields
+  // Updated handleReset to include new search inputs
   const handleReset = useCallback(async () => {
-    dispatch(onload());
     setSelectedFilter([]);
     setSelectedVendor([]);
     setSelectedFilterVendor([]);
-    setSelectedFilterDates(`${date} - ${date}`); // Reset to current date
+    setSelectedFilterDates(`${date} - ${date}`); 
     setMerchantOrderId('');
     setUserSubmittedUtr('');
     setBankName('');
@@ -427,9 +400,9 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
     setFilterValue('');
     setSelectedStatus('');
     setFilters({});
-    dispatch(setIsloadingPayinEntries(true));
     dispatch(resetPagination());
-    await getPayInData({});
+    dispatch(setIsloadingPayinEntries(true));
+    await getPayInData({ status: `${Status.ASSIGNED},${Status.INITIATED}` });
     dispatch(
       addAllNotification({
         status: Status.SUCCESS,
@@ -438,16 +411,12 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
     );
   }, [dispatch, date]);
 
-  useEffect(() => {
-    getPayInData();
-  }, [dispatch, pagination?.page, pagination?.limit]);
-  
   const payins = useAppSelector(getAllPayInData);
 
   const handleNotifyData = async (id: string) => {
     const url = `update-payment-notified-status/${id}`;
     const apiData = { type: 'PAYIN' };
-    // dispatch(onload());
+    dispatch(onload());
     const res = await updatePayIns(url, apiData);
     if (res.meta?.message) {
       dispatch(
@@ -456,7 +425,6 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
           message: res.meta.message,
         }),
       );
-      // dispatch(setRefreshPayIn(true));
     } else {
       dispatch(
         addAllNotification({
@@ -466,7 +434,15 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
       );
     }
   };
-
+  const openExport = () => {
+    setCallMerchant(true);
+    setCallVendor(true);
+    setExportModalOpen(true);
+  };
+  const openFilter = () => {
+    setCallMerchant(true);
+    setCallVendor(true);
+  };
   const handleResetTransaction = async (data: any) => {
     setIsLoading(true);
     const nickName = bankNames.filter((name) => name.value === data.bank_id)[0]
@@ -490,7 +466,7 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
       dispatch(
         addAllNotification({
           status: Status.SUCCESS,
-          message: res.meta?.message || 'Updated Successfully',
+          message: res.meta.message,
         }),
       );
       transactionModal();
@@ -501,7 +477,6 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
           message: res.error?.message || 'An error occurred',
         }),
       );
-      transactionModal();
     }
     setIsLoading(false);
   };
@@ -544,8 +519,9 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
     if (selectedColumn && filterValue) {
       newFilters[selectedColumn] = filterValue;
     }
+
     setFilters(newFilters);
-   await getPayInData(newFilters);
+    await getPayInData(newFilters);
   }, [
     selectedFilter,
     selectedStatus,
@@ -572,7 +548,7 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
         dispatch(
           addAllNotification({
             status: Status.ERROR,
-            message: `Please select merchant or vendor.`,
+            message: `Please select both merchant or vendor`,
           }),
         );
         return;
@@ -581,7 +557,19 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
         dispatch(
           addAllNotification({
             status: Status.ERROR,
-            message: `Please select date range.`,
+            message: `Please select  date range.`,
+          }),
+        );
+        return;
+      }
+      if (
+        (isEmpty(selectedFilter) || isEmpty(selectedFilterVendor)) &&
+        !selectedFilterDates
+      ) {
+        dispatch(
+          addAllNotification({
+            status: Status.ERROR,
+            message: `Please select both merchant/vendor and date range.`,
           }),
         );
         return;
@@ -618,14 +606,14 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
         selectedCodes,
         startDate,
         endDate,
-        ['IMG_PENDING', 'PENDING', 'BANK_MISMATCH', 'DISPUTE', 'DUPLICATE'],
+        ['INITIATED', 'ASSIGNED'],
       );
 
       if (!selectedMerchantReports.length) {
         dispatch(
           addAllNotification({
             status: Status.ERROR,
-            message: 'No payins found for the selected criteria.',
+            message: 'No in-progress payins found for the selected criteria.',
           }),
         );
         return;
@@ -671,8 +659,6 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
               item?.payin_merchant_commission || '0';
           }
           result[fieldMappings.amount] = item.amount || '0';
-          result[fieldMappings.user_submitted_utr] =
-            item.user_submitted_utr || '';
           result[fieldMappings.bank_res_details.utr] =
             item.bank_res_details.utr || '';
           result[fieldMappings.bank_res_details.amount] =
@@ -685,13 +671,14 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
           if (includeMerchants) {
             result[fieldMappings.merchant_details] =
               item.merchant_details?.merchant_code || '';
-            result[fieldMappings.user] = item.user || '';
+            result[fieldMappings.user] = item.user || '0';
             result[fieldMappings.merchant_order_id] =
               item.merchant_order_id || '';
           }
           result[fieldMappings.created_at] = dayjs(item.created_at)
             .tz('Asia/Kolkata')
             .format('DD-MM-YYYY h:mm:ss A');
+
           result[fieldMappings.updated_at] = dayjs(item.updated_at)
             .tz('Asia/Kolkata')
             .format('DD-MM-YYYY h:mm:ss A');
@@ -701,12 +688,12 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
         downloadCSV(
           filteredData,
           type as ExportFormat,
-          `review-payin-report_${startDate}_to_${endDate}`,
+          `in-progress-payin-report__${startDate}_to_${endDate}`,
         );
         dispatch(
           addAllNotification({
             status: Status.SUCCESS,
-            message: `Review payins exported successfully as ${type}`,
+            message: `In-progress payins exported successfully as ${type}`,
           }),
         );
         setExportModalOpen(false);
@@ -714,7 +701,7 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
         dispatch(
           addAllNotification({
             status: Status.ERROR,
-            message: 'No review payins available for export',
+            message: 'No in-progress payins available for export',
           }),
         );
       }
@@ -740,381 +727,341 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
                 {/* Action Buttons Row */}
                 <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-end">
                   <Menu>
-                      <Menu.Button
-                        as={Button}
-                        variant="outline-secondary"
-                        className="w-full sm:w-auto"
-                        onClick={handleRefresh}
+                    <Menu.Button
+                      as={Button}
+                      variant="outline-secondary"
+                      className="w-full sm:w-auto"
+                      onClick={handleRefresh}
+                    >
+                      <Lucide
+                        icon="RefreshCw"
+                        className="stroke-[1.3] w-4 h-4 mr-2"
+                      />
+                      Refresh
+                    </Menu.Button>
+                  </Menu>
+                  <Menu>
+                    <Menu.Button
+                      as={Button}
+                      variant="outline-secondary"
+                      className="w-full sm:w-auto"
+                      onClick={handleReset}
+                    >
+                      <Lucide
+                        icon="RefreshCw"
+                        className="stroke-[1.3] w-4 h-4 mr-2"
+                      />
+                      Reset
+                    </Menu.Button>
+                  </Menu>
+                  <Menu>
+                    <Menu.Button
+                      as={Button}
+                      variant="outline-secondary"
+                      className="w-full sm:w-auto"
+                      onClick={() => openExport()}
+                    >
+                      <Lucide
+                        icon="Download"
+                        className="stroke-[1.3] w-4 h-4 mr-2"
+                      />
+                      Export
+                      <Lucide
+                        icon="ChevronDown"
+                        className="stroke-[1.3] w-4 h-4 ml-2"
+                      />
+                    </Menu.Button>
+                    {exportModalOpen && (
+                      <Modal
+                        handleModal={() => {
+                          setExportModalOpen((prev) => !prev);
+                          setSelectedFilter([]);
+                          setSelectedFilterVendor([]);
+                        }}
+                        forOpen={exportModalOpen}
+                        title="Export In-Progress Deposits"
                       >
-                        <Lucide
-                          icon="RefreshCw"
-                          className="stroke-[1.3] w-4 h-4 mr-2"
-                        />
-                        Refresh
-                      </Menu.Button>
-                    </Menu>
-                    <Menu>
-                      <Menu.Button
-                        as={Button}
-                        variant="outline-secondary"
-                        className="w-full sm:w-auto"
-                        onClick={handleReset}
-                      >
-                        <Lucide
-                          icon="RefreshCw"
-                          className="stroke-[1.3] w-4 h-4 mr-2"
-                        />
-                        Reset
-                      </Menu.Button>
-                    </Menu>
-                    <Menu>
-                      <Menu.Button
-                        as={Button}
-                        variant="outline-secondary"
-                        className="w-full sm:w-auto"
-                        onClick={checkPendingPayins}
-                      >
-                        <Lucide
-                          icon="History"
-                          className="stroke-[1.3] w-4 h-4 mr-2"
-                        />
-                        Pending
-                      </Menu.Button>
-                    </Menu>
-                    <Menu>
-                      <Menu.Button
-                        as={Button}
-                        variant="outline-secondary"
-                        className="w-full sm:w-auto"
-                        onClick={openExport}
-                      >
-                        <Lucide
-                          icon="Download"
-                          className="stroke-[1.3] w-4 h-4 mr-2"
-                        />
-                        Export
-                        <Lucide
-                          icon="ChevronDown"
-                          className="stroke-[1.3] w-4 h-4 ml-2"
-                        />
-                      </Menu.Button>
-                      {exportModalOpen && (
-                        <Modal
-                          handleModal={() => {
-                            setExportModalOpen((prev) => !prev);
-                            setSelectedFilter([]);
-                            setSelectedFilterVendor([]);
-                          }}
-                          forOpen={exportModalOpen}
-                          title="Export In-Progress Deposits"
-                        >
-                          <div className="py-2 my-2 mb-4">
-                            <Litepicker
-                              value={selectedFilterDates}
-                              onChange={(e) =>
-                                setSelectedFilterDates(e.target.value)
-                              }
-                              enforceRange={true}
-                              options={{
-                                autoApply: false,
-                                singleMode: false,
-                                numberOfColumns: 1,
-                                numberOfMonths: 1,
-                                startDate: selectedFilterDates.split(' - ')[0],
-                                endDate: selectedFilterDates.split(' - ')[1],
-                                showWeekNumbers: true,
-                                dropdowns: {
-                                  minYear: 1990,
-                                  maxYear: null,
-                                  months: true,
-                                  years: true,
-                                },
-                              }}
-                              className="w-full pl-9 rounded-[0.5rem] group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200 group-[.mode--light]:!border-transparent dark:group-[.mode--light]:!bg-darkmode-900/30 dark:!box"
-                            />
-                          </div>
-                          {role === Role.ADMIN ? (
-                            <div className="my-2 py-2 flex flex-col justify-center">
-                              <div className="flex flex-row">
-                                <MultiSelect
-                                  codes={merchantCodes}
-                                  selectedFilter={selectedFilter}
-                                  setSelectedFilter={(value: any[]) => {
-                                    setSelectedFilter(value);
-                                    if (value.length > 0)
-                                      setSelectedFilterVendor([]);
-                                  }}
-                                  placeholder="Select Payment Partner Codes ..."
-                                  disabled={selectedFilterVendor?.length > 0}
-                                />
-                              </div>
-                              <div className="p-2 flex justify-center">OR</div>
-                              <div className="flex flex-row">
-                                <MultiSelect
-                                  codes={vendorCodes}
-                                  selectedFilter={selectedFilterVendor}
-                                  setSelectedFilter={(value: any[]) => {
-                                    setSelectedFilterVendor(value);
-                                    if (value.length > 0) setSelectedFilter([]);
-                                  }}
-                                  placeholder="Select Banking Partner Codes ..."
-                                  disabled={selectedFilter?.length > 0}
-                                />
-                              </div>
+                        <div className="py-2 my-2 mb-4">
+                          <Litepicker
+                            value={selectedFilterDates}
+                            onChange={(e) =>
+                              setSelectedFilterDates(e.target.value)
+                            }
+                            enforceRange={true}
+                            options={{
+                              autoApply: false,
+                              singleMode: false,
+                              numberOfMonths: 1,
+                              numberOfColumns: 1,
+                              showWeekNumbers: true,
+                              startDate: selectedFilterDates.split(' - ')[0],
+                              endDate: selectedFilterDates.split(' - ')[1],
+                              dropdowns: {
+                                minYear: 1990,
+                                maxYear: null,
+                                months: true,
+                                years: true,
+                              },
+                            }}
+                            className="w-full pl-9 rounded-[0.5rem] group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200 group-[.mode--light]:!border-transparent dark:group-[.mode--light]:!bg-darkmode-900/30 dark:!box"
+                          />
+                        </div>
+                        {role === Role.ADMIN ? (
+                          <div className="my-2 py-2 flex flex-col justify-center">
+                            <div className="flex flex-row">
+                              <MultiSelect
+                                codes={merchantCodes}
+                                selectedFilter={selectedFilter}
+                                setSelectedFilter={(value: any[]) => {
+                                  setSelectedFilter(value);
+                                  if (value.length > 0)
+                                    setSelectedFilterVendor([]);
+                                }}
+                                placeholder="Select Payment Partner Codes ..."
+                                disabled={selectedFilterVendor?.length > 0}
+                              />
                             </div>
-                          ) : role === Role.MERCHANT ? (
-                            <MultiSelect
-                              codes={merchantCodes}
-                              selectedFilter={selectedFilter}
-                              setSelectedFilter={setSelectedFilter}
-                              placeholder="Select Payment Partner Codes ..."
-                            />
-                          ) : (
-                            <MultiSelect
-                              codes={vendorCodes}
-                              selectedFilter={selectedFilterVendor}
-                              setSelectedFilter={setSelectedFilterVendor}
-                              placeholder="Select Banking Partner Codes ..."
-                            />
-                          )}
-                          <div className="flex flex-row gap-4 my-4 pt-6">
-                            <Button onClick={() => handleDownload('PDF')}>
-                              Export as PDF
-                            </Button>
-                            <Button onClick={() => handleDownload('CSV')}>
-                              Export as CSV
-                            </Button>
-                            <Button onClick={() => handleDownload('XLSX')}>
-                              Export as XLSX
-                            </Button>
+                            <div className="p-2 flex justify-center">OR</div>
+                            <div className="flex flex-row">
+                              <MultiSelect
+                                codes={vendorCodes}
+                                selectedFilter={selectedFilterVendor}
+                                setSelectedFilter={(value: any[]) => {
+                                  setSelectedFilterVendor(value);
+                                  if (value.length > 0) setSelectedFilter([]);
+                                }}
+                                placeholder="Select Banking Partner Codes ..."
+                                disabled={selectedFilter?.length > 0}
+                              />
+                            </div>
                           </div>
-                        </Modal>
-                      )}
-                    </Menu>
-                    <Popover className="inline-block">
-                      {({ close }: { close: () => void }) => (
-                        <>
-                          <Popover.Button
-                            as={Button}
-                            variant="outline-secondary"
-                            className="w-full sm:w-auto"
-                            onClick={openFilter}
+                        ) : role === Role.MERCHANT ? (
+                          <MultiSelect
+                            codes={merchantCodes}
+                            selectedFilter={selectedFilter}
+                            setSelectedFilter={setSelectedFilter}
+                            placeholder="Select Payment Partner Codes ..."
+                          />
+                        ) : (
+                          <MultiSelect
+                            codes={vendorCodes}
+                            selectedFilter={selectedFilterVendor}
+                            setSelectedFilter={setSelectedFilterVendor}
+                            placeholder="Select Banking Partner Codes ..."
+                          />
+                        )}
+                        <div className="flex flex-row gap-4 my-4 pt-6">
+                          <Button onClick={() => handleDownload('PDF')}>
+                            Export as PDF
+                          </Button>
+                          <Button onClick={() => handleDownload('CSV')}>
+                            Export as CSV
+                          </Button>
+                          <Button onClick={() => handleDownload('XLSX')}>
+                            Export as XLSX
+                          </Button>
+                        </div>
+                      </Modal>
+                    )}
+                  </Menu>
+                  <Popover className="inline-block">
+                    {({ close }: { close: () => void }) => (
+                      <>
+                        <Popover.Button
+                          as={Button}
+                          variant="outline-secondary"
+                          className="w-full sm:w-auto"
+                          onClick={openFilter}
+                        >
+                          <Lucide
+                            icon="ArrowDownWideNarrow"
+                            className="stroke-[1.3] w-4 h-4 mr-2"
+                          />
+                          Filter
+                        </Popover.Button>
+                        <Popover.Panel placement="bottom-end">
+                          <form
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              applyFilter();
+                              close();
+                            }}
                           >
-                            <Lucide
-                              icon="ArrowDownWideNarrow"
-                              className="stroke-[1.3] w-4 h-4 mr-2"
-                            />
-                            Filter
-                          </Popover.Button>
-                          <Popover.Panel placement="bottom-end">
-                            <form
-                              onSubmit={(e) => {
-                                e.preventDefault();
-                                applyFilter();
-                                close();
-                              }}
-                            >
-                              <div className="p-2">
-                                {role &&
-                                  [Role.ADMIN, Role.MERCHANT_ADMIN].includes(
-                                    role,
-                                  ) && (
-                                    <div className="mt-3">
-                                      <div className="text-left text-slate-500 mb-2">
-                                        Merchant
-                                      </div>
-                                      <MultiSelect
-                                        codes={merchantCodesData}
-                                        selectedFilter={selectedFilter}
-                                        setSelectedFilter={setSelectedFilter}
-                                        placeholder="Select Merchant..."
-                                      />
-                                    </div>
-                                  )}
-                                {role && [Role.ADMIN].includes(role) && (
+                            <div className="p-2">
+                              {role &&
+                                [Role.ADMIN, Role.MERCHANT_ADMIN].includes(
+                                  role,
+                                ) && (
                                   <div className="mt-3">
                                     <div className="text-left text-slate-500 mb-2">
-                                      Vendor
+                                      Merchant
                                     </div>
                                     <MultiSelect
-                                      codes={vendorCodes}
-                                      selectedFilter={selectedVendor}
-                                      setSelectedFilter={setSelectedVendor}
-                                      placeholder="Select Vendor..."
+                                      codes={merchantCodesData}
+                                      selectedFilter={selectedFilter}
+                                      setSelectedFilter={setSelectedFilter}
+                                      placeholder="Select Merchant..."
                                     />
                                   </div>
                                 )}
-                                {designation &&
-                                  [Role.VENDOR_ADMIN].includes(designation) && (
-                                    <div className="mt-3">
-                                      <div className="text-left text-slate-500 mb-2">
-                                        Vendor
-                                      </div>
-                                      <MultiSelect
-                                        codes={vendorCodes}
-                                        selectedFilter={selectedVendor}
-                                        setSelectedFilter={setSelectedVendor}
-                                        placeholder="Select Vendor..."
-                                      />
-                                    </div>
-                                  )}
+                              {role && [Role.ADMIN].includes(role) && (
                                 <div className="mt-3">
-                                  <div className="text-left text-slate-500">
-                                    Additional Filters
+                                  <div className="text-left text-slate-500 mb-2">
+                                    Vendor
                                   </div>
-                                  <FormSelect
-                                    className="flex-1 mt-2"
-                                    value={selectedColumn}
-                                    onChange={(e) => {
-                                      setSelectedColumn(e.target.value);
-                                      setFilterValue('');
-                                    }}
-                                  >
-                                    <option value="">Select column...</option>
-                                    {[
-                                      { key: 'id', label: 'Payin ID' },
-                                      ...(role &&
-                                      [
-                                        Role.MERCHANT,
-                                        Role.MERCHANT_ADMIN,
-                                        Role.SUB_MERCHANT,
-                                        Role.MERCHANT_OPERATIONS,
-                                      ].includes(role)
-                                        ? Columns.PAYIN_PROGRESS_MERCHANT
-                                        : role &&
+                                  <MultiSelect
+                                    codes={vendorCodes}
+                                    selectedFilter={selectedVendor}
+                                    setSelectedFilter={setSelectedVendor}
+                                    placeholder="Select Vendor..."
+                                  />
+                                </div>
+                                )}
+                                {designation &&
+                                                                                                  [Role.VENDOR_ADMIN].includes(designation) && (
+                                                                                                    <div className="mt-3">
+                                                                                                      <div className="text-left text-slate-500 mb-2">
+                                                                                                        Vendor
+                                                                                                      </div>
+                                                                                                      <MultiSelect
+                                                                                                        codes={vendorCodes}
+                                                                                                        selectedFilter={selectedVendor}
+                                                                                                        setSelectedFilter={setSelectedVendor}
+                                                                                                        placeholder="Select Vendor..."
+                                                                                                      />
+                                                                                                    </div>
+                                                                                                  )}
+                              <div className="mt-3">
+                                <div className="text-left text-slate-500">
+                                  Additional Filters
+                                </div>
+                                <FormSelect
+                                  className="flex-1 mt-2"
+                                  value={selectedColumn}
+                                  onChange={(e) => {
+                                    setSelectedColumn(e.target.value);
+                                    setFilterValue('');
+                                  }}
+                                >
+                                  <option value="">Select column...</option>
+                                  {[
+                                    ...(role &&
+                                    [
+                                      Role.MERCHANT,
+                                      Role.MERCHANT_ADMIN,
+                                      Role.SUB_MERCHANT,
+                                      Role.MERCHANT_OPERATIONS,
+                                    ].includes(role)
+                                      ? Columns.PAYIN_PROGRESS_MERCHANT
+                                      : role &&
+                                        [
+                                          Role.VENDOR,
+                                          Role.VENDOR_OPERATIONS,
+                                        ].includes(role)
+                                      ? Columns.PAYIN_PROGRESS_VENDOR
+                                      : Columns.PAYIN),
+                                    { key: 'id', label: 'Payin ID' }, 
+                                  ]
+                                    .filter(
+                                      (col) =>
+                                        col &&
+                                        col.key !== 'merchant_details' &&
+                                        col.key !== 'bank_res_details' &&
+                                        col.key !== 'user_submitted_image' &&
+                                        col.key !== 'more_details' &&
+                                        col.key !== 'status' &&
+                                        col.key !== 'sno' &&
+                                        col.key !== 'vendor_code' &&
+                                        col.key !== 'actions' &&
+                                        col.key !== 'more_details',
+                                    )
+                                    .map(
+                                      (col) =>
+                                        col && (
+                                          <option key={col.key} value={col.key}>
+                                            {col.label}
+                                          </option>
+                                        ),
+                                    )}
+                                </FormSelect>
+                                {selectedColumn && (
+                                  <div className="mt-3">
+                                    <div className="text-left text-slate-500">
+                                      Value for{' '}
+                                      {
+                                        [
+                                          ...(role &&
                                           [
-                                            Role.VENDOR,
-                                            Role.VENDOR_OPERATIONS,
+                                            Role.MERCHANT,
+                                            Role.MERCHANT_ADMIN,
+                                            Role.SUB_MERCHANT,
+                                            Role.MERCHANT_OPERATIONS,
                                           ].includes(role)
-                                        ? Columns.PAYIN_PROGRESS_VENDOR
-                                        : Columns.PAYIN),
-                                    ]
-                                      .filter(
-                                        (col) =>
-                                          col &&
-                                          col.key !== 'merchant_details' &&
-                                          col.key !== 'bank_res_details' &&
-                                          col.key !== 'user_submitted_image' &&
-                                          col.key !== 'more_details' &&
-                                          col.key !== 'status' &&
-                                          col.key !== 'sno' &&
-                                          col.key !== 'vendor_code' &&
-                                          col.key !== 'actions',
-                                      )
-                                      .map(
-                                        (col) =>
-                                          col && (
-                                            <option
-                                              key={col.key}
-                                              value={col.key}
-                                            >
-                                              {col.label}
-                                            </option>
-                                          ),
-                                      )}
-                                  </FormSelect>
-
-                                  {selectedColumn && (
-                                    <div className="mt-3">
-                                      <div className="text-left text-slate-500">
-                                        Value for{' '}
-                                        {
-                                          [
-                                            { key: 'id', label: 'Payin ID' },
-                                            ...(role &&
-                                            [
-                                              Role.MERCHANT,
-                                              Role.MERCHANT_ADMIN,
-                                              Role.SUB_MERCHANT,
-                                              Role.MERCHANT_OPERATIONS,
-                                            ].includes(role)
-                                              ? Columns.PAYIN_PROGRESS_MERCHANT
-                                              : role &&
-                                                [
-                                                  Role.VENDOR,
-                                                  Role.VENDOR_OPERATIONS,
-                                                ].includes(role)
-                                              ? Columns.PAYIN_PROGRESS_VENDOR
-                                              : Columns.PAYIN),
-                                          ].find(
-                                            (col) =>
-                                              col && col.key === selectedColumn,
-                                          )?.label
-                                        }
-                                      </div>
-                                      <FormInput
-                                        type="text"
-                                        className="mt-2"
-                                        value={filterValue}
-                                        onChange={(e) =>
-                                          setFilterValue(e.target.value)
-                                        }
-                                        placeholder={`Enter value for ${selectedColumn}`}
-                                      />
+                                            ? Columns.PAYIN_PROGRESS_MERCHANT
+                                            : role &&
+                                              [
+                                                Role.VENDOR,
+                                                Role.VENDOR_OPERATIONS,
+                                              ].includes(role)
+                                            ? Columns.PAYIN_PROGRESS_VENDOR
+                                            : Columns.PAYIN),
+                                          { key: 'id', label: 'Payin ID' }, 
+                                        ].find(
+                                          (col) =>
+                                            col && col.key === selectedColumn,
+                                        )?.label
+                                      }
                                     </div>
-                                  )}
-                                </div>
-
-                                <div className="flex items-center mt-4">
-                                  <Button
-                                    type="button"
-                                    variant="secondary"
-                                    onClick={() => {
-                                      setSelectedColumn('');
-                                      setFilterValue('');
-                                      setSelectedStatus('');
-                                      close();
-                                    }}
-                                    className="w-32 ml-auto"
-                                  >
-                                    Close
-                                  </Button>
-                                  <Button
-                                    variant="primary"
-                                    type="submit"
-                                    className="w-32 ml-2"
-                                  >
-                                    Apply
-                                  </Button>
-                                </div>
+                                    <FormInput
+                                      type="text"
+                                      className="mt-2"
+                                      value={filterValue}
+                                      onChange={(e) =>
+                                        setFilterValue(e.target.value)
+                                      }
+                                      placeholder={`Enter value for ${selectedColumn}`}
+                                    />
+                                  </div>
+                                )}
                               </div>
-                            </form>
-                          </Popover.Panel>
-                        </>
-                      )}
-                    </Popover>
+                              <div className="flex items-center mt-4">
+                                <Button
+                                  variant="secondary"
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedColumn('');
+                                    setFilterValue('');
+                                    setSelectedStatus('');
+                                    close();
+                                  }}
+                                  className="w-32 ml-auto"
+                                >
+                                  Close
+                                </Button>
+                                <Button
+                                  variant="primary"
+                                  type="submit"
+                                  className="w-32 ml-2"
+                                >
+                                  Apply
+                                </Button>
+                              </div>
+                            </div>
+                          </form>
+                        </Popover.Panel>
+                      </>
+                    )}
+                  </Popover>
                 </div>
 
                 {/* Search Inputs Row */}
                 <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
-{/* Commented out original search input */}
-                  {/* <div className="relative">
-                    <Lucide
-                      icon="Search"
-                      className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                    />
-                    <FormInput
-                      type="text"
-                      placeholder="Search In-Progress PayIns..."
-                      className="pl-9 sm:w-64 rounded-[0.5rem]"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    {searchQuery && (
-                      <Lucide
-                        icon="X"
-                        className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                        onClick={() => setSearchQuery('')}
-                      />
-                    )}
-                  </div> */}
-
-                  {/* New search inputs (from AllPayIn) */}
+                  {/* Updated Search Inputs (from AllPayIn) */}
                   {(role === Role.ADMIN || role === Role.MERCHANT) && (
                     <div className="relative w-full sm:w-auto sm:flex-shrink-0">
                       <Lucide
                         icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                        className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
                       />
                       <FormInput
                         type="text"
@@ -1126,7 +1073,7 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
                       {merchantOrderId && (
                         <Lucide
                           icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
                           onClick={() => setMerchantOrderId('')}
                         />
                       )}
@@ -1274,4 +1221,4 @@ const InReviewPayIn: React.FC<AllPayInProps> = ({
   );
 };
 
-export default InReviewPayIn;
+export default InProgressPayIn;

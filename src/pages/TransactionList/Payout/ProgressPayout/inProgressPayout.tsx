@@ -7,7 +7,7 @@ import Lucide from '@/components/Base/Lucide';
 import { Menu, Popover, Tab } from '@/components/Base/Headless';
 import { FormInput, FormSelect } from '@/components/Base/Form';
 import Button from '@/components/Base/Button';
-import CustomTable from '../../../components/TableComponent/CommonTable';
+import CustomTable from '../../../../components/TableComponent/CommonTable';
 import {
   approvePayOutFormFields,
   addVendorForBank,
@@ -128,7 +128,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
   const isLoad = useAppSelector(getIsLoadPayOut);
   const [selectedFilterData, setSelectedFilterData] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
-  const [pendingAmount, setPendingAmount] = useState<number>(0);
+  // const [pendingAmount, setPendingAmount] = useState<number>(0);
   const [selectedReason, setSelectedReason] = useState<string>(
     'Invalid account details',
   );
@@ -647,7 +647,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
           role === Role.OPERATIONS ||
           role === Role.TRANSACTIONS
         ) {
-          setPendingAmount(response.data.totalAmount);
+          // setPendingAmount(response.data.totalAmount);
         }
         !isLoad && dispatch(setIsloadingPayOutEntries(true));
       } catch {
@@ -1164,7 +1164,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
               <div className="flex flex-col p-5 gap-y-2 mx-3">
                 {/* Action Buttons Row */}
                 <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-end">
-                  {(role === Role.ADMIN ||
+                  {/* {(role === Role.ADMIN ||
                     role === Role.OPERATIONS ||
                     role === Role.TRANSACTIONS) && (
                     <div className="w-full sm:w-auto bg-white dark:bg-darkmode-800 border border-dashed border-slate-300 dark:border-darkmode-600 rounded-lg shadow-md px-3 py-2 flex items-center justify-center h-10">
@@ -1181,7 +1181,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                           ₹{pendingAmount}
                         </span>
                       </div>
-                    )}
+                    )} */}
 
                     <Menu>
                       <Menu.Button

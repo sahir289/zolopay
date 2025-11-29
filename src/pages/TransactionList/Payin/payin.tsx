@@ -15,16 +15,17 @@ import { getTabs } from '@/redux-toolkit/slices/common/tabs/tabSelectors';
 import { onload } from '@/redux-toolkit/slices/payin/payinSlice';
 import { getAllPayInsSum } from '@/redux-toolkit/slices/payin/payinAPI';
 import { Status } from '@/constants';
-import AllPayIn from '@/pages/TransactionList/Payin/allPayin';
-import CompletedPayIn from '@/pages/TransactionList/Payin/completedPayin';
-import InProgressPayIn from '@/pages/TransactionList/Payin/inProgressPayin';
-import DroppedPayIn from '@/pages/TransactionList/Payin/droppedPayin';
-import ReviewPayIn from '@/pages/TransactionList/Payin/review';
+import AllPayIn from '@/pages/TransactionList/Payin/AllPayin/allPayin';
+import CompletedPayIn from '@/pages/TransactionList/Payin/CompletedPayin/completedPayin';
+import InProgressPayIn from '@/pages/TransactionList/Payin/ProgressPayin/inProgressPayin';
+import DroppedPayIn from '@/pages/TransactionList/Payin/DroppedPayin/droppedPayin';
+// import ReviewPayIn from '@/pages/TransactionList/Payin/review';
 import { getAllVendorCodes } from '@/redux-toolkit/slices/vendor/vendorAPI';
 import { getAllMerchantCodes } from '@/redux-toolkit/slices/merchants/merchantAPI';
 import { getAllBankNames } from '@/redux-toolkit/slices/bankDetails/bankDetailsAPI';
 import { getBankNames } from '@/redux-toolkit/slices/bankDetails/bankDetailsSlice';
 import { selectAllBankNames } from '@/redux-toolkit/slices/bankDetails/bankDetailsSelectors';
+import InReviewPayIn from './Review/review';
 interface PayInSummary {
   status: string;
   totalAmount: number;
@@ -424,7 +425,7 @@ const PayInComponent: React.FC = () => {
             />
           </Tab.Panel>
           <Tab.Panel className="p-2 sm:p-4 md:p-5 leading-relaxed">
-            <ReviewPayIn
+            <InReviewPayIn
               vendorCodes={vendorCodes}
               merchantCodes={merchantCodes}
               merchantCodesData={merchantCodesData}
