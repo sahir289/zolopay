@@ -653,81 +653,8 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
           <div className="mt-3.5">
             <div className="flex flex-col overflow-x-hidden">
               <div className="flex flex-col py-5 gap-y-2 mx-3">
-                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
-                  {/* Merchant Order ID - Shown for ADMIN and MERCHANT */}
-                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
-                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="Order ID..."
-                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                        value={merchantOrderId}
-                        onChange={(e) => setMerchantOrderId(e.target.value)}
-                      />
-                      {merchantOrderId && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setMerchantOrderId('')}
-                        />
-                      )}
-                    </div>
-                  )}
-                  {/* User Submitted UTR - Shown for all roles (ADMIN, MERCHANT, VENDOR) */}
-                  {(role === Role.ADMIN ||
-                    role === Role.MERCHANT ||
-                    role === Role.VENDOR) && (
-                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="UTR..."
-                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                        value={userSubmittedUtr}
-                        onChange={(e) => setUserSubmittedUtr(e.target.value)}
-                      />
-                      {userSubmittedUtr && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setUserSubmittedUtr('')}
-                        />
-                      )}
-                    </div>
-                  )}
-
-                  {/* Bank Name - Shown for ADMIN and VENDOR */}
-                  {(role === Role.ADMIN || role === Role.VENDOR) && (
-                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="Bank..."
-                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                        value={bankName}
-                        onChange={(e) => setBankName(e.target.value)}
-                      />
-                      {bankName && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setBankName('')}
-                        />
-                      )}
-                    </div>
-                  )}
-                
-                  <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto sm:ml-auto">
+                {/* Action Buttons Row */}
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-end">
                   <Menu>
                     <Menu.Button
                       as={Button}
@@ -1055,6 +982,81 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                     )}
                   </Popover>
                 </div>
+
+                {/* Search Inputs Row */}
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
+                  {/* Merchant Order ID - Shown for ADMIN and MERCHANT */}
+                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
+                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="Order ID..."
+                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                        value={merchantOrderId}
+                        onChange={(e) => setMerchantOrderId(e.target.value)}
+                      />
+                      {merchantOrderId && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setMerchantOrderId('')}
+                        />
+                      )}
+                    </div>
+                  )}
+                  {/* User Submitted UTR - Shown for all roles (ADMIN, MERCHANT, VENDOR) */}
+                  {(role === Role.ADMIN ||
+                    role === Role.MERCHANT ||
+                    role === Role.VENDOR) && (
+                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="UTR..."
+                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                        value={userSubmittedUtr}
+                        onChange={(e) => setUserSubmittedUtr(e.target.value)}
+                      />
+                      {userSubmittedUtr && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setUserSubmittedUtr('')}
+                        />
+                      )}
+                    </div>
+                  )}
+
+                  {/* Bank Name - Shown for ADMIN and VENDOR */}
+                  {(role === Role.ADMIN || role === Role.VENDOR) && (
+                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="Bank..."
+                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                        value={bankName}
+                        onChange={(e) => setBankName(e.target.value)}
+                      />
+                      {bankName && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setBankName('')}
+                        />
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="overflow-auto xl:overflow-visible">

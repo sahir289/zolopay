@@ -471,7 +471,7 @@ function Main() {
           <Modal
             handleModal={settlementModal}
             forOpen={newSettlementModal}
-            buttonTitle={`Add Settlement`}
+            buttonTitle={`Create Settlement`}
           >
             <DynamicForm
               sections={{

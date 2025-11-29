@@ -626,7 +626,7 @@ function ChargeBack() {
               <Modal
                 handleModal={chargebackModal}
                 forOpen={newUserModal}
-                buttonTitle={`Add Dispute`}
+                buttonTitle={`Create Dispute`}
               >
                 <DynamicForm
                   sections={ChargeBacksFormFields}
@@ -641,35 +641,14 @@ function ChargeBack() {
         </div>
         <div className="mt-3.5">
           <div className="flex flex-col box box--stacked">
-            <div className="flex flex-col p-5 sm:items-center sm:flex-row gap-y-2">
-              <div>
-                <div className="relative">
-                  <Lucide
-                    icon="Search"
-                    className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                  />
-                  <FormInput
-                    type="text"
-                    placeholder="Search ChargeBacks..."
-                    className="pl-9 sm:w-64 rounded-[0.5rem]"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  {searchQuery && (
-                    <Lucide
-                      icon="X"
-                      className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                      onClick={() => setSearchQuery('')}
-                    />
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 sm:ml-auto">
+            <div className="flex flex-col p-5 gap-y-2">
+              {/* Action Buttons Row */}
+              <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 w-full sm:justify-end">
                 <Menu>
                   <Menu.Button
                     as={Button}
                     variant="outline-secondary"
-                    className="w-full sm:w-auto"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
                     onClick={handleRefresh}
                   >
                     <Lucide
@@ -683,11 +662,11 @@ function ChargeBack() {
                   <Menu.Button
                     as={Button}
                     variant="outline-secondary"
-                    className="w-full sm:w-auto"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
                     onClick={handleReset}
                   >
                     <Lucide
-                      icon="RefreshCw"
+                      icon="RotateCcw"
                       className="stroke-[1.3] w-4 h-4 mr-2"
                     />
                     Reset
@@ -697,7 +676,7 @@ function ChargeBack() {
                   <Menu.Button
                     as={Button}
                     variant="outline-secondary"
-                    className="w-full sm:w-auto"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
                     onClick={() => {
                       setExportModalOpen(true);
                       setSelectedFilterExport([]);
@@ -820,10 +799,10 @@ function ChargeBack() {
                       <Popover.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
                       >
                         <Lucide
-                          icon="ArrowDownWideNarrow"
+                          icon="SlidersHorizontal"
                           className="stroke-[1.3] w-4 h-4 mr-2"
                         />
                         Filter
@@ -921,7 +900,7 @@ function ChargeBack() {
                                 Close
                               </Button>
                               <Button
-                                variant="primary"
+                                variant="outline-secondary"
                                 type="submit"
                                 className="w-32 ml-2"
                               >
@@ -934,6 +913,30 @@ function ChargeBack() {
                     </>
                   )}
                 </Popover>
+              </div>
+
+              {/* Search Input Row */}
+              <div className="w-full">
+                <div className="relative">
+                  <Lucide
+                    icon="Search"
+                    className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                  />
+                  <FormInput
+                    type="text"
+                    placeholder="Search ChargeBacks..."
+                    className="pl-9 sm:w-64 rounded-[0.5rem]"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  {searchQuery && (
+                    <Lucide
+                      icon="X"
+                      className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                      onClick={() => setSearchQuery('')}
+                    />
+                  )}
+                </div>
               </div>
             </div>
             <div className="overflow-auto xl:overflow-visible">

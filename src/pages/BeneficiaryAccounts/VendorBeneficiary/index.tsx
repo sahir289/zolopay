@@ -671,7 +671,7 @@ const BeneficiaryAccounts: React.FC = () => {
             <Modal
               handleModal={beneficiaryModal}
               forOpen={newUserModal}
-              buttonTitle={`Add Payee`}
+              buttonTitle={`Create Payee`}
             >
               <DynamicForm
                 sections={
@@ -787,8 +787,41 @@ const BeneficiaryAccounts: React.FC = () => {
                     </Tab>
                   )}
                 </Tab.List> */}
-                <div className="flex flex-col border-l border-r border-t-4 border-t-gray-100 dark:border-t-darkmode-400 border-gray-100 dark:border-darkmode-400 p-5 sm:items-center sm:flex-row gap-y-2">
-                  <div>
+                <div className="flex flex-col border-l border-r border-t-4 border-t-gray-100 dark:border-t-darkmode-400 border-gray-100 dark:border-darkmode-400 p-5 gap-y-2">
+                  {/* Action Buttons Row */}
+                  <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 w-full sm:justify-end">
+                    <Menu>
+                      <Menu.Button
+                        as={Button}
+                        variant="outline-secondary"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                        onClick={handleRefresh}
+                      >
+                        <Lucide
+                          icon="RefreshCw"
+                          className="stroke-[1.3] w-4 h-4 mr-2"
+                        />
+                        Refresh
+                      </Menu.Button>
+                    </Menu>
+                    <Menu>
+                      <Menu.Button
+                        as={Button}
+                        variant="outline-secondary"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                        onClick={handleReset}
+                      >
+                        <Lucide
+                          icon="RotateCcw"
+                          className="stroke-[1.3] w-4 h-4 mr-2"
+                        />
+                        Reset
+                      </Menu.Button>
+                    </Menu>
+                  </div>
+
+                  {/* Search Input Row */}
+                  <div className="w-full">
                     <div className="relative">
                       <Lucide
                         icon="Search"
@@ -809,36 +842,6 @@ const BeneficiaryAccounts: React.FC = () => {
                         />
                       )}
                     </div>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 sm:ml-auto">
-                    <Menu>
-                      <Menu.Button
-                        as={Button}
-                        variant="outline-secondary"
-                        className="w-full sm:w-auto"
-                        onClick={handleRefresh}
-                      >
-                        <Lucide
-                          icon="RefreshCw"
-                          className="stroke-[1.3] w-4 h-4 mr-2"
-                        />
-                        Refresh
-                      </Menu.Button>
-                    </Menu>
-                    <Menu>
-                      <Menu.Button
-                        as={Button}
-                        variant="outline-secondary"
-                        className="w-full sm:w-auto"
-                        onClick={handleReset}
-                      >
-                        <Lucide
-                          icon="RefreshCw"
-                          className="stroke-[1.3] w-4 h-4 mr-2"
-                        />
-                        Reset
-                      </Menu.Button>
-                    </Menu>
                   </div>
                 </div>
               </Tab.Group>

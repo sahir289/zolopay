@@ -277,26 +277,28 @@ function Main() {
   return (
     <>
       <div className="flex flex-col min-h-10 w-full px-2 sm:px-4">
-        <div className="flex justify-between items-center gap-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-2 mb-4">
           <div className="text-lg sm:text-xl md:text-2xl font-medium group-[.mode--light]:text-white">
             {title}
           </div>
-          {role !== Role.VENDOR && (
-            <Modal
-              handleModal={transactionModal}
-              forOpen={newTransactionModal}
-              buttonTitle={`Add ${title}`}
-            >
-              <DynamicForm
-                sections={getTransactionFormFields(merchantOptions, role ?? '', oneTime, handleOneTimeChange).PAYIN}
-                onSubmit={handleCreate}
-                defaultValues={{ ...formValues, ot: oneTime }}
-                isEditMode={false}
-                handleCancel={transactionModal}
-                isLoading={isLoading}
-              />
-            </Modal>
-          )}
+          <div className="flex flex-wrap items-center gap-2">
+            {role !== Role.VENDOR && (
+              <Modal
+                handleModal={transactionModal}
+                forOpen={newTransactionModal}
+                buttonTitle={`Create ${title}`}
+              >
+                <DynamicForm
+                  sections={getTransactionFormFields(merchantOptions, role ?? '', oneTime, handleOneTimeChange).PAYIN}
+                  onSubmit={handleCreate}
+                  defaultValues={{ ...formValues, ot: oneTime }}
+                  isEditMode={false}
+                  handleCancel={transactionModal}
+                  isLoading={isLoading}
+                />
+              </Modal>
+            )}
+          </div>
         </div>
       </div>
       <div className="grid grid-cols-12 gap-3 sm:gap-6 mt-2">

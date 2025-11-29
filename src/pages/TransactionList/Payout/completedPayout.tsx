@@ -609,82 +609,13 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
           <div className="mt-3.5">
             <div className="flex flex-col overflow-x-hidden">
               <div className="flex flex-col p-5 gap-y-2 mx-3">
-                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
-                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
-                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="Order ID..."
-                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                        value={merchantOrderId}
-                        onChange={(e) => setMerchantOrderId(e.target.value)}
-                      />
-                      {merchantOrderId && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setMerchantOrderId('')}
-                        />
-                      )}
-                    </div>
-                  )}
-                  {(role === Role.ADMIN ||
-                    role === Role.MERCHANT ||
-                    role === Role.VENDOR) && (
-                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="UTR..."
-                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                        value={utrId}
-                        onChange={(e) => setUtrId(e.target.value)}
-                      />
-                      {utrId && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setUtrId('')}
-                        />
-                      )}
-                    </div>
-                  )}
-                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
-                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="User ID..."
-                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                        value={nickName}
-                        onChange={(e) => setNickName(e.target.value)}
-                      />
-                      {nickName && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setNickName('')}
-                        />
-                      )}
-                    </div>
-                  )}
-                
-                  <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto sm:ml-auto">
+                {/* Action Buttons Row */}
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-end">
                   <Menu>
                     <Menu.Button
                       as={Button}
                       variant="outline-secondary"
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
                       onClick={handleRefresh}
                     >
                       <Lucide
@@ -698,11 +629,11 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                     <Menu.Button
                       as={Button}
                       variant="outline-secondary"
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
                       onClick={handleReset}
                     >
                       <Lucide
-                        icon="RefreshCw"
+                        icon="RotateCcw"
                         className="stroke-[1.3] w-4 h-4 mr-2"
                       />
                       Reset
@@ -712,7 +643,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                     <Menu.Button
                       as={Button}
                       variant="outline-secondary"
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
                       onClick={setExportModal}
                     >
                       <Lucide
@@ -825,11 +756,11 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                         <Popover.Button
                           as={Button}
                           variant="outline-secondary"
-                          className="w-full sm:w-auto"
+                          className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
                           onClick={openfilter}
                         >
                           <Lucide
-                            icon="ArrowDownWideNarrow"
+                            icon="SlidersHorizontal"
                             className="stroke-[1.3] w-4 h-4 mr-2"
                           />
                           Filter
@@ -955,7 +886,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                                   Close
                                 </Button>
                                 <Button
-                                  variant="primary"
+                                  variant="outline-secondary"
                                   type="submit"
                                   className="w-32 ml-2"
                                 >
@@ -969,6 +900,77 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                     )}
                   </Popover>
                 </div>
+
+                {/* Search Inputs Row */}
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
+{(role === Role.ADMIN || role === Role.MERCHANT) && (
+                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="Order ID..."
+                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                        value={merchantOrderId}
+                        onChange={(e) => setMerchantOrderId(e.target.value)}
+                      />
+                      {merchantOrderId && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setMerchantOrderId('')}
+                        />
+                      )}
+                    </div>
+                  )}
+                  {(role === Role.ADMIN ||
+                    role === Role.MERCHANT ||
+                    role === Role.VENDOR) && (
+                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="UTR..."
+                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                        value={utrId}
+                        onChange={(e) => setUtrId(e.target.value)}
+                      />
+                      {utrId && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setUtrId('')}
+                        />
+                      )}
+                    </div>
+                  )}
+                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
+                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="User ID..."
+                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                        value={nickName}
+                        onChange={(e) => setNickName(e.target.value)}
+                      />
+                      {nickName && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setNickName('')}
+                        />
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
               {payOuts.loading && isLoad ? (
