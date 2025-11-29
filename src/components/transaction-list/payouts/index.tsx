@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Lucide from '@/components/Base/Lucide';
-import { Menu, Popover } from '@/components/Base/Headless';
+import { Menu, Popover, Tab } from '@/components/Base/Headless';
 import { FormInput, FormSelect } from '@/components/Base/Form';
 import Button from '@/components/Base/Button';
 import CustomTable from '../../../components/TableComponent/CommonTable';
@@ -118,6 +118,9 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
     const [selectedFilterDates, setSelectedFilterDates] = useState<string>(
         `${date} - ${date}`,
     );
+    const [selectedSubTab, setSelectedSubTab] = useState<string>(
+        Status.INITIATED,
+    );
     const [totalPayoutAmount, setTotalPayoutAmount] = useState<number>(0);
     const [selectedFilter, setSelectedFilter] = useState<any[]>([]);
     const [selectedFilterVendor, setSelectedFilterVendor] = useState<any[]>([]);
@@ -125,7 +128,7 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
     const [merchantOrderId, setMerchantOrderId] = useState<string>('');
     const [nickName, setNickName] = useState<string>('');
     
-    const [pendingAmount, setPendingAmount] = useState<number>(0);
+    // const [pendingAmount, setPendingAmount] = useState<number>(0);
     const [editModal, setEditModal] = useState(false);
     const [selectedData, setSelectedData] = useState<any>(null);
     const [selectedValue, setSelectedValue] = useState<any>(null);
@@ -285,13 +288,13 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
             response = await getAllPayOuts(params.toString());
             dispatch(getTotalCount(response.data.totalCount));
             dispatch(getPayOuts(response.data));
-            if (
-                role === Role.ADMIN ||
-                role === Role.OPERATIONS ||
-                role === Role.TRANSACTIONS
-            ) {
-                setPendingAmount(response.data.totalAmount);
-            }
+            // if (
+            //     role === Role.ADMIN ||
+            //     role === Role.OPERATIONS ||
+            //     role === Role.TRANSACTIONS
+            // ) {
+            //     setPendingAmount(response.data.totalAmount);
+            // }
             !isLoad && dispatch(setIsloadingPayOutEntries(true));
             
         } catch {
@@ -837,7 +840,8 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
         setSelectedColumn('');
         setFilterValue('');
         setSelectedStatus('');
-        setSelectedFilterData({});
+        setSelectedSubTab(Status.INITIATED);
+        setSelectedFilterData(status === 'progress' ? { status: Status.INITIATED} : {});
         dispatch(resetPagination());
         dispatch(setIsloadingPayOutEntries(true));
         dispatch(setRefreshPayOut(true));
@@ -891,6 +895,17 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
         }
     };
 
+    const handleSubTabChange = useCallback(
+        (isInitiated: boolean) => {
+            const newStatus = isInitiated ? Status.INITIATED : Status.PENDING;
+            setSelectedSubTab(newStatus);
+            dispatch(setPagination({ page: 1, limit: pagination?.limit || 20 }));
+            const updatedFilters = { ...selectedFilterData, status: newStatus };
+            setSelectedFilterData(updatedFilters);
+            getPayOutData(updatedFilters);
+        },
+        [dispatch, pagination?.limit, selectedFilterData],
+    );
     const transactionModal = (data?: PayOutData) => {
         if (!newTransactionModal) {
         if (
@@ -1209,7 +1224,7 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
                             <h2 className="capitalize text-2xl">{status}</h2>
 
                             <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto sm:ml-auto">
-                                {(role === Role.ADMIN ||
+                                {/* {(role === Role.ADMIN ||
                                     role === Role.OPERATIONS ||
                                     role === Role.TRANSACTIONS) && (status === 'progress') && (
                                     <div className="w-full sm:w-auto bg-white dark:bg-darkmode-800 border border-dashed border-slate-300 dark:border-darkmode-600 rounded-lg shadow-md px-3 py-2 flex items-center justify-center h-10">
@@ -1226,7 +1241,7 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
                                         ₹{pendingAmount}
                                     </span>
                                     </div>
-                                )}
+                                )} */}
                                 
                                 <Menu>
                                 <Menu.Button
@@ -1649,6 +1664,33 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
                             </Menu>
                         </div>
                     </div>
+                </div>
+                <div className="mb-4 border-b border-slate-200/60 dark:border-darkmode-400">
+                    <Tab.Group
+                        selectedIndex={selectedSubTab === Status.INITIATED ? 0 : 1}
+                        onChange={(tabIndex) => handleSubTabChange(tabIndex === 0)}
+                    >
+                    <Tab.List variant="tabs">
+                        <Tab>
+                        <Tab.Button
+                            className="w-full py-2 flex items-center justify-center"
+                            as="button"
+                        >
+                            <Lucide icon="HardDrive" className="w-4 h-4 mr-2" />
+                            INITIATED
+                        </Tab.Button>
+                        </Tab>
+                        <Tab>
+                        <Tab.Button
+                            className="w-full py-2 flex items-center justify-center"
+                            as="button"
+                        >
+                            <Lucide icon="Timer" className="w-4 h-4 mr-2" />
+                            PENDING
+                        </Tab.Button>
+                        </Tab>
+                    </Tab.List>
+                    </Tab.Group>
                 </div>
                 <div className="overflow-auto xl:overflow-visible">
                     {payOuts.loading && isLoad ? (
