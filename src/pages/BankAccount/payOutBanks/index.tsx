@@ -1959,6 +1959,12 @@ const BankAccount: React.FC = () => {
                             icon: 'PencilLine',
                             onClick: () => {
                               setBankToEdit(row);
+                              setFormInitialValues({
+                                ...row,
+                                is_phonepay: row?.config?.is_phonepay ?? false,
+                                is_intent: row?.config?.is_intent ?? false,
+                                is_staticQR: row?.config?.is_staticQR ?? false,
+                              });
                               setNewUserModal(true);
                               setaddMerchant(false);
                               setAddMerchantFlag(false);
