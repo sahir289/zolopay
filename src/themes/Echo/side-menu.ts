@@ -150,6 +150,28 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             title: "Withdrawals",
             pathname: "/auth/transaction-list/payouts",
             icon: "ArrowUpCircle" as const,
+            subMenu: [
+              {
+                title: "All",
+                pathname: "/auth/transaction-list/payouts/all",
+                icon: "ArrowDownCircle" as const,
+              },
+              {
+                title: "Progress",
+                pathname: "/auth/transaction-list/payouts/progress",
+                icon: "ArrowUpCircle" as const,
+              },
+              {
+                title: "Completed",
+                pathname: "/auth/transaction-list/payouts/completed",
+                icon: "CheckCircle" as const,
+              },
+              {
+                title: "Dropped",
+                pathname: "/auth/transaction-list/payouts/rejected",
+                icon: "XCircle" as const,
+              },
+            ]
           },
         ];
       }

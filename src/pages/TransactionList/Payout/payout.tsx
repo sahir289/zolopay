@@ -18,10 +18,10 @@ import { getAllVendorCodes } from '@/redux-toolkit/slices/vendor/vendorAPI';
 import { getAllMerchantCodes } from '@/redux-toolkit/slices/merchants/merchantAPI';
 
 // Normal imports instead of lazy loading
-import AllPayOut from '@/pages/TransactionList/Payout/allPayout';
-import CompletedPayOut from '@/pages/TransactionList/Payout/completedPayout';
-import InProgressPayOut from '@/pages/TransactionList/Payout/inProgressPayout';
-import RejectedPayOut from '@/pages/TransactionList/Payout/rejectedPayout';
+import AllPayOut from '@/pages/TransactionList/Payout/AllPayout/allPayout';
+import CompletedPayOut from '@/pages/TransactionList/Payout/CompletedPayout/completedPayout';
+import InProgressPayOut from '@/pages/TransactionList/Payout/ProgressPayout/inProgressPayout';
+import RejectedPayOut from '@/pages/TransactionList/Payout/RejectedPayout/rejectedPayout';
 
 // Commented out lazy loading approach:
 // const AllPayOut = withLazyLoading(() => import('@/pages/TransactionList/Payout/allPayout'), { chunkName: 'AllPayOut' });
