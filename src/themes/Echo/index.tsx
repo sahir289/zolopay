@@ -40,15 +40,7 @@ import {
 } from '@/constants';
 import Modal from '../../components/Modal/modals';
 import DynamicForm from '@/components/CommonForm';
-// import { getAllMerchants } from '@/redux-toolkit/slices/merchants/merchantAPI';
 import { triggerCrossTabLogout } from '@/utils/crossTabAuthSync';
-// import { getPaginationData } from '@/redux-toolkit/slices/common/params/paramsSelector';
-// import { setIsSocketHit } from '@/redux-toolkit/slices/notification/notificationSlice';
-// import { getNotificationsCount } from '@/redux-toolkit/slices/notification/notificationAPI';
-// import {
-//   // selectNotificationsCount,
-//   // selectIsSocketHit,
-// } from '@/redux-toolkit/slices/notification/notificationSelector';
 import { getUsersById } from '@/redux-toolkit/slices/user/userAPI';
 import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotifications';
 const debounce = (func: Function, wait: number) => {
@@ -130,8 +122,6 @@ const buildBreadcrumbPath = (menuItems: Array<FormattedMenu | string>) => {
 
 function Main() {
   const dispatch = useAppDispatch();
-  // const isRefreshCount = useAppSelector(selectIsSocketHit);
-  // const notificationsCount = useAppSelector(selectNotificationsCount);
   const { setToken } = useAuth();
   const compactMenu = useAppSelector(selectCompactMenu);
   const setCompactMenu = (val: boolean) => {
@@ -141,8 +131,6 @@ function Main() {
   const [isSidebarFixed, setIsSidebarFixed] = useState(
     localStorage.getItem('isSidebarFixed') === 'true',
   );
-  // const [compactMenuOnHover, setCompactMenuOnHover] = useState(false);
-  // const [activeMobileMenu, setActiveMobileMenu] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const [formattedMenu, setFormattedMenu] = useState<
@@ -188,38 +176,12 @@ function Main() {
           }
         }
       }
-      // if (userData?.designation === Role.MERCHANT) {
-      //   const queryString = new URLSearchParams({
-      //     page: (pagination?.page || 1).toString(),
-      //     limit: (pagination?.limit || 10).toString(),
-      //   }).toString();
-      //   const response = await getAllMerchants(queryString);
-      //   setApiKey(response?.merchants[0].config?.keys?.private || '');
-      // }
     } else {
       // setApiKey('your-api-key');
     }
     setIsBlurred(!isBlurred);
   };
 
-  // const displayNotificationCount = useCallback(
-  //   debounce(async () => {
-  //     try {
-  //       const count = await getNotificationsCount();
-  //       dispatch(setNotificationsCount(count));
-  //       dispatch(setIsSocketHit(false));
-  //     } catch (error) {
-  //       console.error('Failed to fetch notifications count', error);
-  //     }
-  //   }, 500),
-  //   [dispatch],
-  // );
-  // useEffect(() => {
-  // displayNotificationCount();
-  //   if (isRefreshCount) {
-  //     dispatch(setIsSocketHit(false));
-  //   }
-  // }, [isRefreshCount, dispatch]);
 
   const handleChangePassword = async (data: {
     password: string;
@@ -346,15 +308,6 @@ function Main() {
     }
   }, []);
 
-  // const toggleSidebarMode = (event: React.MouseEvent) => {
-  //   event.preventDefault();
-  //   const newFixedState = !isSidebarFixed;
-  //   setIsSidebarFixed(newFixedState);
-  //   if (!newFixedState) {
-  //     const storedCompactMenu = localStorage.getItem('compactMenu');
-  //     setCompactMenu(storedCompactMenu === 'true' || window.innerWidth <= 1600);
-  //   }
-  // };
 
   const compactLayout = () => {
     if (!isSidebarFixed) {
@@ -659,7 +612,60 @@ function Main() {
                                     className="w-4 h-4 mr-3"
                                   />
                                   <span className="truncate">{subMenu.title}</span>
+                                  {subMenu.subMenu && (
+                          <Lucide
+                            icon="ChevronDown"
+                            className="ml-auto w-4 h-4 transition-transform duration-200"
+                          />
+                        )}
                                 </a>
+                                {subMenu.subMenu && (
+                                  <Transition
+                                    in={subMenu.activeDropdown}
+                                    onEnter={enter}
+                                    onExit={leave}
+                                    timeout={300}
+                                  >
+                                    <ul className="pl-8 space-y-2">
+                                      {subMenu.subMenu.map((subSubMenu, subSubMenuKey) => (
+                                        <li key={subSubMenuKey}>
+                                          <a
+                                            href=""
+                                            className={clsx([
+                                              'flex items-center px-4 py-2 rounded-lg transition-all duration-200',
+                                              subSubMenu.active
+                                                ? 'bg-blue-100 text-blue-700'
+                                                : 'text-gray-600 hover:bg-gray-100',
+                                            ])}
+                                            onClick={(event: React.MouseEvent) => {
+                                              event.preventDefault();
+                                              if (
+                                                subSubMenu.pathname &&
+                                                !subSubMenu.subMenu
+                                              ) {
+                                                dispatch(
+                                                  setActiveMenuWithReset(
+                                                    subSubMenu.pathname,
+                                                  ),
+                                                );
+                                              }
+                                              linkTo(subSubMenu, navigate);
+                                              setFormattedMenu([...formattedMenu]);
+                                            }}
+                                          > 
+                                            <Lucide
+                                              icon={subSubMenu.icon || 'Circle'}
+                                              className="w-4 h-4 mr-3"
+                                            />
+                                            <span className="truncate">
+                                              {subSubMenu.title}
+                                            </span>
+                                          </a>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </Transition>
+                                )}
                               </li>
                             ))}
                           </ul>

@@ -118,11 +118,60 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             title: "Deposits",
             pathname: "/auth/transaction-list/payins",
             icon: "ArrowDownCircle" as const,
+            subMenu: [
+              {
+                title: "All",
+                pathname: "/auth/transaction-list/payins/all",
+                icon: "ArrowDownCircle" as const,
+              },
+              {
+                title: "Progress",
+                pathname: "/auth/transaction-list/payins/progress",
+                icon: "ArrowUpCircle" as const,
+              },
+              {
+                title: "Completed",
+                pathname: "/auth/transaction-list/payins/completed",
+                icon: "CheckCircle" as const,
+              },
+              {
+                title: "Dropped",
+                pathname: "/auth/transaction-list/payins/dropped",
+                icon: "XCircle" as const,
+              },
+              {
+                title: "Review",
+                pathname: "/auth/transaction-list/payins/review",
+                icon: "XCircle" as const,
+              },
+            ]
           },
           {
             title: "Withdrawals",
             pathname: "/auth/transaction-list/payouts",
             icon: "ArrowUpCircle" as const,
+            subMenu: [
+              {
+                title: "All",
+                pathname: "/auth/transaction-list/payouts/all",
+                icon: "ArrowDownCircle" as const,
+              },
+              {
+                title: "Progress",
+                pathname: "/auth/transaction-list/payouts/progress",
+                icon: "ArrowUpCircle" as const,
+              },
+              {
+                title: "Completed",
+                pathname: "/auth/transaction-list/payouts/completed",
+                icon: "CheckCircle" as const,
+              },
+              {
+                title: "Dropped",
+                pathname: "/auth/transaction-list/payouts/rejected",
+                icon: "XCircle" as const,
+              },
+            ]
           },
         ];
       }

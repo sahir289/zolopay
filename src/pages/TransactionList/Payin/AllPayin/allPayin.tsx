@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Lucide from '@/components/Base/Lucide';
 import { Menu, Popover } from '@/components/Base/Headless';
 import Button from '@/components/Base/Button';
-import CustomTable from '../../../components/TableComponent/CommonTable';
+import CustomTable from '../../../../components/TableComponent/CommonTable';
 import { FormInput, FormSelect } from '@/components/Base/Form';
 import {
   Columns,

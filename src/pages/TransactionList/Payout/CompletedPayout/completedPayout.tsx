@@ -7,7 +7,7 @@ import Lucide from '@/components/Base/Lucide';
 import { Menu, Popover } from '@/components/Base/Headless';
 import { FormInput, FormSelect } from '@/components/Base/Form';
 import Button from '@/components/Base/Button';
-import CustomTable from '../../../components/TableComponent/CommonTable';
+import CustomTable from '../../../../components/TableComponent/CommonTable';
 import { Columns, EditAmountOrUTR, Role, Status } from '@/constants';
 import { useAppSelector } from '@/redux-toolkit/hooks/useAppSelector';
 import {
