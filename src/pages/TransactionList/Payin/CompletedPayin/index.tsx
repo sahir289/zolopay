@@ -285,7 +285,7 @@ function Main() {
             <Modal
               handleModal={transactionModal}
               forOpen={newTransactionModal}
-              buttonTitle={`Add ${title}`}
+              buttonTitle={`Create ${title}`}
             >
               <DynamicForm
                 sections={getTransactionFormFields(merchantOptions, role ?? '', oneTime, handleOneTimeChange).PAYIN}

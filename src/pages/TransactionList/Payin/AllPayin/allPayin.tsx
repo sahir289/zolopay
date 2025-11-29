@@ -1248,6 +1248,7 @@ const AllPayIn: React.FC<AllPayInProps> = ({
                         type="text"
                         placeholder="Order ID..."
                         className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                        formInputSize="sm"
                         value={merchantOrderId}
                         onChange={(e) => setMerchantOrderId(e.target.value)}
                       />
@@ -1314,7 +1315,7 @@ const AllPayIn: React.FC<AllPayInProps> = ({
                     <Menu.Button
                       as={Button}
                       variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1 p-1"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg py-1 px-4"
                       onClick={handleRefresh}
                     >
                       <Lucide
