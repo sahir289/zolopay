@@ -694,7 +694,7 @@ function Main() {
         )}
         <div
           className={clsx([
-            'absolute h-[65px] transition-[margin] duration-300 mt-3.5 inset-x-0 top-0 z-[60] bg-white shadow-md',
+            'absolute h-[65px] transition-[margin] duration-300 mt-3.5 inset-x-0 top-0 z-[10] bg-white shadow-md',
             isSidebarFixed && 'xl:ml-[275px]',
             !isSidebarFixed && !compactMenu && 'xl:ml-[275px]',
             !isSidebarFixed &&
