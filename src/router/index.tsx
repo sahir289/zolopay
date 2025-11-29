@@ -9,8 +9,6 @@ import Users from '@/pages/Users/index';
 import MerchantsClients from '@/pages/Clients/Merchant';
 import VendorsClients from '@/pages/Clients/Vendors';
 import Roles from '@/pages/Roles/index';
-import PayInTransaction from '@/pages/TransactionList/Payin';
-import PayOutTransaction from '@/pages/TransactionList/Payout';
 import Chat from '@/pages/Chat/index';
 import Login from '@/pages/Login/index';
 import Register from '@/pages/Register/index';
@@ -36,6 +34,10 @@ import CompletedPayIn from '@/pages/TransactionList/Payin/completedPayin';
 import DroppedPayIn from '@/pages/TransactionList/Payin/droppedPayin';
 import InProgressPayIn from '@/pages/TransactionList/Payin/inProgressPayin';
 import InReviewPayIn from '@/pages/TransactionList/Payin/review';
+import AllPayOut from '@/pages/TransactionList/Payout/allPayout';
+import CompletedPayOut from '@/pages/TransactionList/Payout/completedPayout';
+import InProgressPayOut from '@/pages/TransactionList/Payout/inProgressPayout';
+import RejectedPayOut from '@/pages/TransactionList/Payout/rejectedPayout';
 
 function Router(): React.ReactElement | null {
   const routes = [
@@ -248,7 +250,6 @@ function Router(): React.ReactElement | null {
           children: [
             {
               path: 'payins',
-              // element: <PayInTransaction />,
               children: [
                 {
                   path: 'all',
@@ -274,7 +275,24 @@ function Router(): React.ReactElement | null {
             },
             {
               path: 'payouts',
-              element: <PayOutTransaction />,
+              children: [
+                {
+                  path: 'all',
+                  element: <AllPayOut />
+                },
+                {
+                  path: 'completed',
+                  element: <CompletedPayOut />
+                },
+                {
+                  path: 'in-progress',
+                  element: <InProgressPayOut />
+                },
+                {
+                  path: 'rejected',
+                  element: <RejectedPayOut />
+                },
+              ]
             },
           ],
         },

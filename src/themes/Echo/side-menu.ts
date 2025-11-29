@@ -117,7 +117,6 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
         menuItem.subMenu = [
           {
             title: "Payin Transactions",
-            pathname: "/auth/transaction-list/payins",
             icon: "ArrowDownCircle" as const,
             subMenu: [
               {
@@ -149,8 +148,29 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           },
           {
             title: "Payout Transactions",
-            pathname: "/auth/transaction-list/payouts",
             icon: "ArrowUpCircle" as const,
+            subMenu: [
+              {
+                title: "All",
+                pathname: "/auth/transaction-list/payouts/all",
+                icon: "List" as const
+              },
+              {
+                title: "Completed",
+                pathname: "/auth/transaction-list/payouts/completed",
+                icon: "CheckCircle2" as const
+              },
+              {
+                title: "In Progress",
+                pathname: "/auth/transaction-list/payouts/in-progress",
+                icon: "Clock" as const
+              },
+              {
+                title: "Rejected",
+                pathname: "/auth/transaction-list/payouts/rejected",
+                icon: "ShieldX" as const
+              },
+            ]
           },
         ];
         menuItem.activeDropdown = false;
