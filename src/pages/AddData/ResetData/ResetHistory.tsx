@@ -31,12 +31,7 @@ import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotificati
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-type ResetHistoryProps = {
-  selectedIndex: number;
-  tabState: number;
-};
-
-function ResetHistory({ selectedIndex, tabState }: ResetHistoryProps) {
+function ResetHistory() {
 
   const dispatch = useAppDispatch();
   const pagination = useAppSelector(getPaginationData);
@@ -178,15 +173,15 @@ function ResetHistory({ selectedIndex, tabState }: ResetHistoryProps) {
       ]);
 
   useEffect(() => {
-    if(selectedIndex){
+    // if(selectedIndex){
     fetchResetHistory();
-    }
+    // }
   }, [pagination?.page, pagination?.limit, fetchResetHistory]);
   useEffect(() => {
-    if (refreshDataEntries && selectedIndex === tabState) {
+    // if (refreshDataEntries && selectedIndex === tabState) {
       fetchResetHistory();
       dispatch(setRefreshDataEntries(false));
-    }
+    // }
   }, [refreshDataEntries, fetchResetHistory, dispatch]);
   // const handleDownload = async (type: ExportFormat) => {
   //   try {
@@ -459,7 +454,7 @@ const handleReset = useCallback(async () => {
                     <Modal
                       handleModal={() => setExportModalOpen((prev) => !prev)}
                       forOpen={exportModalOpen}
-                      title="Export PayIns"
+                      title="Export Deposits"
                     >
                       <div className="py-2 my-2 mb-4">
                         <Litepicker

@@ -398,7 +398,7 @@ function Main() {
       <div className="dashboard-container p-4">
         <div className="dashboard-header flex flex-col md:flex-row justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
-            Merchant Dashboard
+            Payment Partner Overview
           </h1>
         </div>
         <MerchantBoard

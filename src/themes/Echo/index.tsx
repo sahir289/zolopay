@@ -15,7 +15,7 @@ import { useAppDispatch } from '@/redux-toolkit/hooks/useAppDispatch';
 import { useAppSelector } from '@/redux-toolkit/hooks/useAppSelector';
 import { FormattedMenu, linkTo, nestedMenu, enter, leave } from './side-menu';
 import Lucide from '@/components/Base/Lucide';
-import users from '@/assets/images/users/users.svg';
+import users from '@/assets/images/users/user.jpg';
 import clsx from 'clsx';
 import SimpleBar from 'simplebar';
 import { useAuth } from '@/components/context/AuthContext';
@@ -40,15 +40,7 @@ import {
 } from '@/constants';
 import Modal from '../../components/Modal/modals';
 import DynamicForm from '@/components/CommonForm';
-import { getAllMerchants } from '@/redux-toolkit/slices/merchants/merchantAPI';
 import { triggerCrossTabLogout } from '@/utils/crossTabAuthSync';
-import { getPaginationData } from '@/redux-toolkit/slices/common/params/paramsSelector';
-// import { setIsSocketHit } from '@/redux-toolkit/slices/notification/notificationSlice';
-// import { getNotificationsCount } from '@/redux-toolkit/slices/notification/notificationAPI';
-// import {
-//   // selectNotificationsCount,
-//   // selectIsSocketHit,
-// } from '@/redux-toolkit/slices/notification/notificationSelector';
 import { getUsersById } from '@/redux-toolkit/slices/user/userAPI';
 import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotifications';
 const debounce = (func: Function, wait: number) => {
@@ -130,8 +122,6 @@ const buildBreadcrumbPath = (menuItems: Array<FormattedMenu | string>) => {
 
 function Main() {
   const dispatch = useAppDispatch();
-  // const isRefreshCount = useAppSelector(selectIsSocketHit);
-  // const notificationsCount = useAppSelector(selectNotificationsCount);
   const { setToken } = useAuth();
   const compactMenu = useAppSelector(selectCompactMenu);
   const setCompactMenu = (val: boolean) => {
@@ -141,8 +131,6 @@ function Main() {
   const [isSidebarFixed, setIsSidebarFixed] = useState(
     localStorage.getItem('isSidebarFixed') === 'true',
   );
-  // const [compactMenuOnHover, setCompactMenuOnHover] = useState(false);
-  // const [activeMobileMenu, setActiveMobileMenu] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const [formattedMenu, setFormattedMenu] = useState<
@@ -158,9 +146,9 @@ function Main() {
   };
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [passwordError, setPasswordError] = useState('');
-  const [apiKey, setApiKey] = useState('your-api-key');
+  // const [apiKey, setApiKey] = useState('your-api-key');
   const [isBlurred, setIsBlurred] = useState(true);
-  const pagination = useAppSelector(getPaginationData);
+  // const pagination = useAppSelector(getPaginationData);
   const [verification, setVerification] = useState(false);
   const [, setVerified] = useState(false);
   const [showPassword] = useState(false);
@@ -188,38 +176,12 @@ function Main() {
           }
         }
       }
-      if (userData?.designation === Role.MERCHANT) {
-        const queryString = new URLSearchParams({
-          page: (pagination?.page || 1).toString(),
-          limit: (pagination?.limit || 10).toString(),
-        }).toString();
-        const response = await getAllMerchants(queryString);
-        setApiKey(response?.merchants[0].config?.keys?.private || '');
-      }
     } else {
-      setApiKey('your-api-key');
+      // setApiKey('your-api-key');
     }
     setIsBlurred(!isBlurred);
   };
 
-  // const displayNotificationCount = useCallback(
-  //   debounce(async () => {
-  //     try {
-  //       const count = await getNotificationsCount();
-  //       dispatch(setNotificationsCount(count));
-  //       dispatch(setIsSocketHit(false));
-  //     } catch (error) {
-  //       console.error('Failed to fetch notifications count', error);
-  //     }
-  //   }, 500),
-  //   [dispatch],
-  // );
-  // useEffect(() => {
-  // displayNotificationCount();
-  //   if (isRefreshCount) {
-  //     dispatch(setIsSocketHit(false));
-  //   }
-  // }, [isRefreshCount, dispatch]);
 
   const handleChangePassword = async (data: {
     password: string;
@@ -346,15 +308,6 @@ function Main() {
     }
   }, []);
 
-  // const toggleSidebarMode = (event: React.MouseEvent) => {
-  //   event.preventDefault();
-  //   const newFixedState = !isSidebarFixed;
-  //   setIsSidebarFixed(newFixedState);
-  //   if (!newFixedState) {
-  //     const storedCompactMenu = localStorage.getItem('compactMenu');
-  //     setCompactMenu(storedCompactMenu === 'true' || window.innerWidth <= 1600);
-  //   }
-  // };
 
   const compactLayout = () => {
     if (!isSidebarFixed) {
@@ -659,6 +612,12 @@ function Main() {
                                     className="w-4 h-4 mr-3"
                                   />
                                   <span className="truncate">{subMenu.title}</span>
+                                  {subMenu.subMenu && (
+                          <Lucide
+                            icon="ChevronDown"
+                            className="ml-auto w-4 h-4 transition-transform duration-200"
+                          />
+                        )}
                                 </a>
                                 {subMenu.subMenu && (
                                   <Transition
@@ -668,32 +627,39 @@ function Main() {
                                     timeout={300}
                                   >
                                     <ul className="pl-8 space-y-2">
-                                      {subMenu.subMenu.map((subMenu, subMenuKey) => (
-                                        <li key={subMenuKey}>
+                                      {subMenu.subMenu.map((subSubMenu, subSubMenuKey) => (
+                                        <li key={subSubMenuKey}>
                                           <a
                                             href=""
                                             className={clsx([
                                               'flex items-center px-4 py-2 rounded-lg transition-all duration-200',
-                                              subMenu.active
+                                              subSubMenu.active
                                                 ? 'bg-blue-100 text-blue-700'
                                                 : 'text-gray-600 hover:bg-gray-100',
                                             ])}
                                             onClick={(event: React.MouseEvent) => {
                                               event.preventDefault();
-                                              if (subMenu.pathname && !subMenu.subMenu) {
+                                              if (
+                                                subSubMenu.pathname &&
+                                                !subSubMenu.subMenu
+                                              ) {
                                                 dispatch(
-                                                  setActiveMenuWithReset(subMenu.pathname),
+                                                  setActiveMenuWithReset(
+                                                    subSubMenu.pathname,
+                                                  ),
                                                 );
                                               }
-                                              linkTo(subMenu, navigate);
+                                              linkTo(subSubMenu, navigate);
                                               setFormattedMenu([...formattedMenu]);
                                             }}
-                                          >
+                                          > 
                                             <Lucide
-                                              icon={subMenu.icon || 'Circle'}
+                                              icon={subSubMenu.icon || 'Circle'}
                                               className="w-4 h-4 mr-3"
                                             />
-                                            <span className="truncate">{subMenu.title}</span>
+                                            <span className="truncate">
+                                              {subSubMenu.title}
+                                            </span>
                                           </a>
                                         </li>
                                       ))}
@@ -728,7 +694,7 @@ function Main() {
         )}
         <div
           className={clsx([
-            'absolute h-[65px] transition-[margin] duration-300 mt-3.5 inset-x-0 top-0 z-[60] bg-white shadow-md',
+            'absolute h-[65px] transition-[margin] duration-300 mt-3.5 inset-x-0 top-0 z-[10] bg-white shadow-md',
             isSidebarFixed && 'xl:ml-[275px]',
             !isSidebarFixed && !compactMenu && 'xl:ml-[275px]',
             !isSidebarFixed &&
@@ -787,27 +753,30 @@ function Main() {
                 >
                   <img
                     alt="Profile"
-                    src={users || 'https://via.placeholder.com/36'}
+                    src={users}
                     className="w-8 h-8 rounded-full object-cover"
                   />
                   <span className="hidden sm:block text-gray-700 font-medium">
                     {userData.name || 'Guest'}
                   </span>
+                  <Lucide
+                    icon={isOpen ? "ChevronUp" : "ChevronDown"}
+                    className="w-4 h-4 text-gray-500"
+                  />
                 </button>
                 {isOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-50">
+                  <div className="absolute right-0 mt-2 w-56 bg-white shadow-lg rounded-lg z-50 border border-gray-200">
                     <div className="p-4 border-b">
                       <p className="text-sm font-medium text-gray-700">
                         {userData.name || 'Guest'}
                       </p>
-                      <p className="text-xs text-gray-500">
-                        {userData.designation}
-                      </p>
+                      <p className="text-xs text-gray-500">{userData.designation}</p>
                     </div>
                     <div className="py-2">
                     {userData.designation === Role.ADMIN && (
-                          <div className="flex items-center space-x-3">
-                            <span>Unique ID:</span>
+                          <div className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 transition">
+                            <Lucide icon="Key" className="w-4 h-4 text-gray-500" />
+                            <span className="text-sm text-gray-700">Unique ID:</span>
                             <span
                               className={`block text-xs text-gray-500 dark:text-gray-400 ${
                                 isBlurred ? 'blur-sm' : ''
@@ -832,11 +801,12 @@ function Main() {
                             </button>
                           </div>
                         )}
-                        {[Role.MERCHANT, Role.SUB_MERCHANT].includes(
+                        {/* {[Role.MERCHANT, Role.SUB_MERCHANT].includes(
                           userData.designation || '',
                         ) && (
-                          <div className="flex items-center space-x-3 mt-2">
-                            <span>API Key:</span>
+                          <div className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 transition">
+                            <Lucide icon="Key" className="w-4 h-4 text-gray-500" />
+                            <span className="text-sm text-gray-700">API Key:</span>
                             <span
                               className={`block text-xs text-gray-500 dark:text-gray-400 ${
                                 isBlurred ? 'blur-sm' : ''
@@ -860,11 +830,11 @@ function Main() {
                               )}
                             </button>
                           </div>
-                        )}
+                        )} */}
                   </div>
                   <hr />
                       <button
-                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="flex items-center space-x-3 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                         onClick={() => {
                           setShowChangePasswordModal(true);
                           setIsOpen(false);
@@ -877,7 +847,7 @@ function Main() {
                         Change Password
                       </button>
                       <button
-                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="flex items-center space-x-3 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                         onClick={() => {
                           HandleLogOut();
                           setIsOpen(false);

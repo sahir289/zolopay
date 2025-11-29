@@ -20,10 +20,10 @@ import { getMerchantCodes } from "@/redux-toolkit/slices/merchants/merchantSlice
 import { createPayOut } from "@/redux-toolkit/slices/payout/payoutAPI";
 
 type PayinsHeaderProps = {
-    title?: 'PayIns' | 'PayOuts',
+    title?: 'Deposits' | 'Withdrawals',
 }
 
-export default function TransactionPageHeader ({ title = 'PayIns'}: PayinsHeaderProps) {
+export default function TransactionPageHeader ({ title = 'Deposits'}: PayinsHeaderProps) {
     const dispatch = useAppDispatch();
     const [newTransactionModal, setNewTransactionModal] = useState(false);
     const [oneTime, setOneTime] = useState(false);
@@ -85,7 +85,7 @@ export default function TransactionPageHeader ({ title = 'PayIns'}: PayinsHeader
             return;
           }
     
-          if (title === 'PayIns') {
+          if (title === 'Deposits') {
             const transformedValues = {
               ...data,
               user_id: data.user_id.replace(/\s+/g, '_'),
@@ -114,7 +114,7 @@ export default function TransactionPageHeader ({ title = 'PayIns'}: PayinsHeader
     
           if (res?.meta?.message || res?.data) {
             //seperate msg for payin payout
-            if (title === 'PayIns') {
+            if (title === 'Deposits') {
               dispatch(
                 addAllNotification({
                   status: Status.SUCCESS,
@@ -136,7 +136,7 @@ export default function TransactionPageHeader ({ title = 'PayIns'}: PayinsHeader
             setFormValues({});
             setOneTime(false);
     
-            if (title === 'PayIns') {
+            if (title === 'Deposits') {
               dispatch(setRefreshPayIn(true));
               if (res.data?.payInUrl) {
                 setLink(res.data.payInUrl);
@@ -152,7 +152,7 @@ export default function TransactionPageHeader ({ title = 'PayIns'}: PayinsHeader
                 message: res.error.message,
               }),
             );
-            title === 'PayIns'
+            title === 'Deposits'
               ? dispatch(setRefreshPayIn(true))
               : dispatch(setRefreshPayOut(true));
             transactionModal();

@@ -14,7 +14,9 @@ import Login from '@/pages/Login/index';
 import Register from '@/pages/Register/index';
 import LandingPage from '@/pages/LandingPage/index';
 import ChargeBack from '@/pages/ChargeBack/index';
-import AddData from '@/pages/AddData/index';
+import AddData from '@/pages/AddData/AddData/index';
+import CheckUtr from '@/pages/AddData/CheckUtr/index';
+import ResetData from '@/pages/AddData/ResetData/index';
 import Designation from '@/pages/Designation/index';
 import PayOutBanks from '@/pages/BankAccount/payOutBanks';
 import PayInBanks from '@/pages/BankAccount/payInBanks';
@@ -29,15 +31,15 @@ import MerchantSettlement from '@/pages/Settlement/MerchantSettlement';
 import VendorSettlement from '@/pages/Settlement/VendorSettlement';
 import VendorAccountReports from '@/pages/Reports/VendorAccountReports';
 import AccountReports from '@/pages/Reports/AccountReports';
-import AllPayIn from '@/pages/TransactionList/Payin/allPayin';
-import CompletedPayIn from '@/pages/TransactionList/Payin/completedPayin';
-import DroppedPayIn from '@/pages/TransactionList/Payin/droppedPayin';
-import InProgressPayIn from '@/pages/TransactionList/Payin/inProgressPayin';
-import InReviewPayIn from '@/pages/TransactionList/Payin/review';
-import AllPayOut from '@/pages/TransactionList/Payout/allPayout';
-import CompletedPayOut from '@/pages/TransactionList/Payout/completedPayout';
-import InProgressPayOut from '@/pages/TransactionList/Payout/inProgressPayout';
-import RejectedPayOut from '@/pages/TransactionList/Payout/rejectedPayout';
+import AllPayIn from '@/pages/TransactionList/Payin/AllPayin/allPayin';
+import CompletedPayIn from '@/pages/TransactionList/Payin/CompletedPayin/completedPayin';
+import DroppedPayIn from '@/pages/TransactionList/Payin/DroppedPayin/droppedPayin';
+import InProgressPayIn from '@/pages/TransactionList/Payin/ProgressPayin/inProgressPayin';
+import InReviewPayIn from '@/pages/TransactionList/Payin/Review/review';
+import AllPayOut from '@/pages/TransactionList/Payout/AllPayout/allPayout';
+import CompletedPayOut from '@/pages/TransactionList/Payout/CompletedPayout/completedPayout';
+import InProgressPayOut from '@/pages/TransactionList/Payout/ProgressPayout/inProgressPayout';
+import RejectedPayOut from '@/pages/TransactionList/Payout/RejectedPayout/rejectedPayout';
 
 function Router(): React.ReactElement | null {
   const routes = [
@@ -409,7 +411,7 @@ function Router(): React.ReactElement | null {
           ],
         },
         {
-          path: 'add-data',
+          path: 'data-entries',
           element: (
             <ProtectedRoute
               allowedRoles={[
@@ -425,10 +427,47 @@ function Router(): React.ReactElement | null {
           ),
           children: [
             {
-              path: '/auth/add-data',
+              path: 'add-data',
               element: (
                 <VendorBankResponseProtectedRoute>
+                <ProtectedRoute
+                allowedRoles={[
+                Role.ADMIN,
+                Role.TRANSACTIONS,
+                Role.OPERATIONS,
+                ]}
+                />
                   <AddData />
+                </VendorBankResponseProtectedRoute>
+              ),
+            },
+            {
+              path: 'check-utr',
+              element: (
+                <VendorBankResponseProtectedRoute>
+                <ProtectedRoute
+                allowedRoles={[
+                Role.ADMIN,
+                Role.TRANSACTIONS,
+                Role.OPERATIONS,
+                ]}
+                />
+                  <CheckUtr />
+                </VendorBankResponseProtectedRoute>
+              ),
+            },
+            {
+              path: 'reset-data',
+              element: (
+                <VendorBankResponseProtectedRoute>
+                <ProtectedRoute
+                allowedRoles={[
+                Role.ADMIN,
+                Role.TRANSACTIONS,
+                Role.OPERATIONS,
+                ]}
+                />
+                  <ResetData />
                 </VendorBankResponseProtectedRoute>
               ),
             },

@@ -63,10 +63,10 @@ export default function DashboardStatCard (props: DashboardStatCardProps) {
             </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            <SubCard title="Reverse Withdrawals" value={asINR(props.reverseWithdrawals)} icon={<RotateCcw className="w-5 h-5"/>}/>
-            <SubCard title="Commission" value={asINR(props.commission)} icon={<Percent className="w-5 h-5"/>}/>
-            <SubCard title="ChargeBacks" value={asINR(props.chargebacks)} icon={<AlertTriangle className="w-5 h-5"/>}/>
-            <SubCard title="Adjustments" value={asINR(props.adjustments)} icon={<IndianRupee className="w-5 h-5"/>}/>
+            <SubCard title="Reversed Funds" value={asINR(props.reverseWithdrawals)} icon={<RotateCcw className="w-5 h-5"/>}/>
+            <SubCard title="Service Fees" value={asINR(props.commission)} icon={<Percent className="w-5 h-5"/>}/>
+            <SubCard title="Disputes" value={asINR(props.chargebacks)} icon={<AlertTriangle className="w-5 h-5"/>}/>
+            <SubCard title="Balance Adjustments" value={asINR(props.adjustments)} icon={<IndianRupee className="w-5 h-5"/>}/>
         </div>
         </>
     )

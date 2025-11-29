@@ -24,11 +24,11 @@ import {
   removeNotificationById,
 } from '@/redux-toolkit/slices/AllNoti/allNotifications';
 
-type ResetHistoryProps = {
-  setTabState: any;
-};
+// type ResetHistoryProps = {
+//   setTabState: any;
+// };
 
-function EntityForm({ setTabState }: ResetHistoryProps) {
+function EntityForm() {
   const dispatch = useAppDispatch();
   const [newTransactionModal, setNewTransactionModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -110,7 +110,7 @@ function EntityForm({ setTabState }: ResetHistoryProps) {
         );
         autoClearNotification(notificationId);
       }
-      setTabState(0);
+      // setTabState(0);
     } catch (error: any) {
       const notificationId = `${Date.now()}-${Math.random()}`;
       dispatch(
@@ -152,7 +152,7 @@ function EntityForm({ setTabState }: ResetHistoryProps) {
         autoClearNotification(notificationId);
         // dispatch(setRefreshDataEntries(true));
       }
-      setTabState(2);
+      // setTabState(2);
     } catch (error: any) {
       const notificationId = `${Date.now()}-${Math.random()}`;
       dispatch(
@@ -186,7 +186,7 @@ function EntityForm({ setTabState }: ResetHistoryProps) {
           }),
         );
         autoClearNotification(notificationId);
-        setTabState(1);
+        // setTabState(1);
       } else if (response.data.data.message) {
         const notificationId = `${Date.now()}-${Math.random()}`;
         dispatch(
@@ -206,7 +206,7 @@ function EntityForm({ setTabState }: ResetHistoryProps) {
           }),
         );
         autoClearNotification(notificationId);
-        setTabState(1);
+        // setTabState(1);
       }
     } catch (error: any) {
       const notificationId = `${Date.now()}-${Math.random()}`;

@@ -5,7 +5,7 @@
 import React from 'react';
 
 import TransactionPageHeader from '@/components/transaction-list/header';
-import Sumbar from '@/components/transaction-list/payins/sum-bar';
+// import Sumbar from '@/components/transaction-list/payins/sum-bar';
 import Payins from '@/components/transaction-list/payins';
 
 const CompletedPayIn: React.FC = () => {
@@ -13,7 +13,7 @@ const CompletedPayIn: React.FC = () => {
   return (
     <>
       <TransactionPageHeader />
-      <Sumbar />
+       {/* <Sumbar /> */}
       <Payins status='completed'/>
     </>
   );

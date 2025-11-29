@@ -1,19 +1,23 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// import Lucide from '@/components/Base/Lucide';
+// import BarChart from '@/components/VerticalBarChart';
 import { useMemo } from 'react';
+// import MultiSelect from '@/components/MultiSelect/MultiSelect';
+// import Litepicker from '@/components/Base/Litepicker';
 import DashboardStatCard from '@/components/dashboard-stat-card';
 import DashboardFilter from '@/components/dashboard-filter';
 import DashboardListCard from '@/components/dashboard-list-card';
-import DashboardChart from '@/components/dashboard-chart';
+// import DashboardChart from '@/components/dashboard-chart';
 
 function VendorBoard({
   calculationData,
-  vendorPayinChartData,
-  vendorPayoutChartData,
-  ChargebackChartData,
-  ReverseChartData,
-  totalVendorCommissionData,
-  vendorSettlementChartData,
+  // vendorPayinChartData,
+  // vendorPayoutChartData,
+  // ChargebackChartData,
+  // ReverseChartData,
+  // totalVendorCommissionData,
+  // vendorSettlementChartData,
   vendorSelectedFilterDates,
   setVendorSelectedFilterDates,
   vendorSelectedFilter,
@@ -50,17 +54,17 @@ function VendorBoard({
 
   const commissionsData = useMemo(() => [
     {
-      type: 'Payin',
+      type: 'Deposits',
       sent: calculationData?.vendorTotalCalculations?.total_payin_commission || 0,
       received: calculationData?.vendorTotalCalculations?.total_payin_received_commission || 0,
     },
     {
-      type: 'Payout',
+      type: 'Withdrawals',
       sent: calculationData?.vendorTotalCalculations?.total_payout_commission || 0,
       received: calculationData?.vendorTotalCalculations?.total_payout_received_commission || 0,
     },
     {
-      type: 'Reversed',
+      type: 'Reversed Payments',
       sent: calculationData?.vendorTotalCalculations?.total_reverse_payout_commission || 0,
       received: calculationData?.vendorTotalCalculations?.total_reverse_received_commission || 0,
     },
@@ -70,7 +74,7 @@ function VendorBoard({
       received: calculationData?.vendorTotalCalculations?.total_settlement_received_commission || 0,
     },
     {
-      type: 'Adjustments',
+      type: 'Balance Adjustments',
       sent: calculationData?.vendorTotalCalculations?.total_adjustment_commission || 0,
       received: calculationData?.vendorTotalCalculations?.total_adjustment_received_commission || 0,
     },
@@ -117,15 +121,15 @@ function VendorBoard({
         <DashboardListCard title='Commissions' data={commissionsData}/>
       </div>
 
-      <DashboardChart
-        title='Vendor Calculations'
+      {/* <DashboardChart
+        title='Banking Partner Metrics'
         deposits={vendorPayinChartData}
         withdrawals={vendorPayoutChartData}
         commission={totalVendorCommissionData}
         reversals={ReverseChartData}
         settlements={vendorSettlementChartData}
         chargebacks={ChargebackChartData}
-      />
+      /> */}
     </div>
   );
 }

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Tab } from '@/components/Base/Headless';
-import Lucide from '@/components/Base/Lucide';
+// import Lucide from '@/components/Base/Lucide';
 import React, { useEffect, useState } from 'react';
 // import { withLazyLoading } from '@/utils/lazyStrategies';
 import Modal from '../../../components/Modal/modals';
@@ -70,16 +70,16 @@ function Main() {
   const refreshSettlement = useAppSelector(getRefreshSettlement);
   const getInitialTitle = (role: RoleType | null) => {
     if (role === Role.ADMIN) {
-      return 'Vendor Settlement';
+      return 'Banking Partner Reconciliation';
     }
     if (role === Role.MERCHANT) {
-      return 'Merchant Settlement';
+      return 'Payment Partner Reconciliation';
     }
-    return 'Vendor Settlement';
+    return 'Banking Partner Reconciliation';
   };
   useEffect(() => {
     if (role === Role.ADMIN) {
-      setTitle(parentTab === 0 ? 'Merchant Settlement' : 'Vendor Settlement');
+      setTitle(parentTab === 0 ? 'Payment Partner Settlement' : 'Banking Partner Settlement');
     }
   }, [parentTab]);
   const [title, setTitle] = useState(getInitialTitle(role));
@@ -158,13 +158,13 @@ function Main() {
         // limit: pagination.limit.toString(),
         forSettlementFlag: 'true',
         beneficiary_role:
-          title === 'Merchant Settlement' && parentTab === 0
+          title === 'Payment Partner Settlement' && parentTab === 0
         ? Role.MERCHANT
         : Role.VENDOR,
         beneficiary_user_id: user_id,
       };
 
-      if (title !== 'Merchant Settlement') {
+      if (title !== 'Payment Partner Settlement') {
         queryParams.is_enabled = 'true';
       }
 
@@ -336,7 +336,7 @@ function Main() {
     const userId =
       selectedVendor?.value?.toString() ||
       null;
-    // if (title === 'Merchant Settlement') {
+    // if (title === 'Payment Partner Settlement') {
     //   data.bank_id = data.bank_name;
     // delete data.bank_name;
     // delete data.acc_holder_name;
@@ -432,7 +432,7 @@ function Main() {
   const handleParentTabChange = (index: number) => {
     setSelectedMethodLabel('');
     dispatch(setParentTab(index));
-    setTitle(index === 0 ? 'Merchant Settlement' : 'Vendor Settlement');
+    setTitle(index === 0 ? 'Payment Partner Settlement' : 'Banking Partner Settlement');
   };
 
   return (
@@ -451,7 +451,7 @@ function Main() {
               sections={{
                 Add_Settlement: getSettlementsFormFields(
                   options,
-                  title === 'Merchant Settlement'
+                  title === 'Payment Partner Settlement'
                     ? SettlementOptions.merchantSettlement
                     : SettlementOptions.vendorSettlement,
                   updated,
@@ -465,7 +465,7 @@ function Main() {
                 ).Add_Settlement.filter(Boolean) as any[],
                 Bank_Details: getSettlementsFormFields(
                   options,
-                  title === 'Merchant Settlement'
+                  title === 'Payment Partner Reconciliation'
                     ? SettlementOptions.merchantSettlement
                     : SettlementOptions.vendorSettlement,
                   updated,
@@ -484,7 +484,7 @@ function Main() {
                 ),
                 Crypto_Details: getSettlementsFormFields(
                   options,
-                  title === 'Merchant Settlement'
+                  title === 'Payment Partner Settlement'
                     ? SettlementOptions.merchantSettlement
                     : SettlementOptions.vendorSettlement,
                   updated,
@@ -498,7 +498,7 @@ function Main() {
                 ).Crypto_Details(selectedMethodLabel),
                 Description: getSettlementsFormFields(
                   options,
-                  title === 'Merchant Settlement'
+                  title === 'Payment Partner Reconciliation'
                     ? SettlementOptions.merchantSettlement
                     : SettlementOptions.vendorSettlement,
                   updated,
@@ -512,7 +512,7 @@ function Main() {
                 ).Description(selectedMethodLabel),
                 Internal_transfer: getSettlementsFormFields(
                   options,
-                  title === 'Merchant Settlement'
+                  title === 'Payment Partner Reconciliation'
                     ? SettlementOptions.merchantSettlement
                     : SettlementOptions.vendorSettlement,
                   updated,
@@ -540,7 +540,7 @@ function Main() {
                 selectedIndex={parentTab}
                 onChange={handleParentTabChange}
               >
-                <Tab.List className="flex border-b-0 bg-transparent relative">
+                {/* <Tab.List className="flex border-b-0 bg-transparent relative">
                   <Tab className="relative flex-1">
                     {({ selected }) => (
                       <Tab.Button
@@ -586,7 +586,7 @@ function Main() {
                       </Tab.Button>
                     )}
                   </Tab>
-                </Tab.List>
+                </Tab.List> */}
                 <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400">
                   <Tab.Panel className="py-5 leading-relaxed">
                     <MerchantSettlement

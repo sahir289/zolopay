@@ -665,13 +665,13 @@ const BeneficiaryAccounts: React.FC = () => {
       <div className="col-span-12">
         <div className="flex flex-col  md:h-10 gap-y-3 md:items-center md:flex-row">
           <div className="text-base font-medium group-[.mode--light]:text-white">
-            Beneficiary Accounts
+            Banking Partners
           </div>
           <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 md:ml-auto">
             <Modal
               handleModal={beneficiaryModal}
               forOpen={newUserModal}
-              buttonTitle={`Add Beneficiary`}
+              buttonTitle={`Add Payee`}
             >
               <DynamicForm
                 sections={

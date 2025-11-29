@@ -9,7 +9,7 @@ import { FormInput, FormSelect } from '@/components/Base/Form';
 import Button from '@/components/Base/Button';
 import CustomTable from '@/components/TableComponent/CommonTable';
 import { DataEntryOptions, Role, Status } from '@/constants';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   EditAmountOrUTR,
   Columns,
@@ -85,12 +85,12 @@ interface FilterState {
   [key: string]: string | string[] | undefined;
 }
 
-interface AddDataHistoryProps {
-  selectedIndex: number;
-  tabState: number;
-}
+// interface AddDataHistoryProps {
+//   selectedIndex: number;
+//   tabState: number;
+// }
 
-const AddDataHistory: React.FC<AddDataHistoryProps> = ({ selectedIndex }) => {
+const AddDataHistory = () => { 
   const dispatch = useAppDispatch();
   const pagination = useAppSelector(getPaginationData);
   const [isPageLoading, setIsPageLoading] = useState(false);
@@ -487,9 +487,9 @@ const AddDataHistory: React.FC<AddDataHistoryProps> = ({ selectedIndex }) => {
         params as Record<string, string>,
       ).toString();
       let response;
-      if (selectedIndex === 0) {
+      // if (selectedIndex === 0) {
         response = await getBankResponsesReports(queryString);
-      }
+      // }
       const dataToExport = response?.data?.rows || response?.rows || [];
       if (!dataToExport.length) {
         dispatch(
@@ -1311,7 +1311,7 @@ const AddDataHistory: React.FC<AddDataHistoryProps> = ({ selectedIndex }) => {
         <Modal
           handleModal={handleEditCancel}
           forOpen={editModal}
-          title="Edit Transaction"
+          title="Edit Payment"
         >
           {!editEditingField ? (
             <div className="p-4">
@@ -1532,7 +1532,7 @@ const AddDataHistory: React.FC<AddDataHistoryProps> = ({ selectedIndex }) => {
         <Modal
           handleModal={() => setImportModalOpen(false)}
           forOpen={importModalOpen}
-          title="Import PayIns"
+          title="Import Deposits"
         >
           <div className="py-4 my-4">
             <div className="w-[90%] mx-4">
@@ -1688,7 +1688,7 @@ const AddDataHistory: React.FC<AddDataHistoryProps> = ({ selectedIndex }) => {
         <Modal
           handleModal={() => setExportModalOpen(false)}
           forOpen={exportModalOpen}
-          title="Export Bank Response Data"
+          title="Export Banking Response Data"
         >
           <div className="py-2 my-2 mb-4">
             <Litepicker
