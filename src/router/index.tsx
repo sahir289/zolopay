@@ -9,7 +9,12 @@ import Users from '@/pages/Users/index';
 import MerchantsClients from '@/pages/Clients/Merchant';
 import VendorsClients from '@/pages/Clients/Vendors';
 import Roles from '@/pages/Roles/index';
-import PayInTransaction from '@/pages/TransactionList/Payin';
+// import PayInTransaction from '@/pages/TransactionList/Payin';
+import AllPayin from '@/pages/TransactionList/Payin/AllPayin';
+import CompletedPayin from '@/pages/TransactionList/Payin/CompletedPayin';
+import InProgressPayin from '@/pages/TransactionList/Payin/ProgressPayin';
+import DroppedPayin from '@/pages/TransactionList/Payin/DroppedPayin';
+import ReviewPayin from '@/pages/TransactionList/Payin/Review';
 import PayOutTransaction from '@/pages/TransactionList/Payout';
 import Chat from '@/pages/Chat/index';
 import Login from '@/pages/Login/index';
@@ -245,7 +250,29 @@ function Router(): React.ReactElement | null {
           children: [
             {
               path: 'payins',
-              element: <PayInTransaction />,
+              // element: <PayInTransaction />,
+              children: [
+                {
+                  path: 'all',
+                  element: <AllPayin />,
+                },
+                {
+                  path: 'progress',
+                  element: <InProgressPayin />,
+                },
+                {
+                  path: 'completed',
+                  element: <CompletedPayin />,
+                },
+                {
+                  path: 'dropped',
+                  element: <DroppedPayin />,
+                },
+                {
+                  path: 'review',
+                  element: <ReviewPayin />,
+                },
+              ],
             },
             {
               path: 'payouts',
