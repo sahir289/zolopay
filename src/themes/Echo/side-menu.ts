@@ -119,6 +119,33 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
             title: "Payin Transactions",
             pathname: "/auth/transaction-list/payins",
             icon: "ArrowDownCircle" as const,
+            subMenu: [
+              {
+                title: "All",
+                pathname: "/auth/transaction-list/payins/all",
+                icon: "List" as const
+              },
+              {
+                title: "Completed",
+                pathname: "/auth/transaction-list/payins/completed",
+                icon: "CheckCircle2" as const
+              },
+              {
+                title: "In Progress",
+                pathname: "/auth/transaction-list/payins/in-progress",
+                icon: "Clock" as const
+              },
+              {
+                title: "Dropped",
+                pathname: "/auth/transaction-list/payins/dropped",
+                icon: "XOctagon" as const
+              },
+              {
+                title: "Review",
+                pathname: "/auth/transaction-list/payins/review",
+                icon: "AlertTriangle" as const
+              },
+            ]
           },
           {
             title: "Payout Transactions",
@@ -128,6 +155,7 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
         ];
         menuItem.activeDropdown = false;
       }
+
       if (menuItem.title === "Settlements") {
         menuItem.subMenu = [
           ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role

@@ -31,6 +31,11 @@ import MerchantSettlement from '@/pages/Settlement/MerchantSettlement';
 import VendorSettlement from '@/pages/Settlement/VendorSettlement';
 import VendorAccountReports from '@/pages/Reports/VendorAccountReports';
 import AccountReports from '@/pages/Reports/AccountReports';
+import AllPayIn from '@/pages/TransactionList/Payin/allPayin';
+import CompletedPayIn from '@/pages/TransactionList/Payin/completedPayin';
+import DroppedPayIn from '@/pages/TransactionList/Payin/droppedPayin';
+import InProgressPayIn from '@/pages/TransactionList/Payin/inProgressPayin';
+import InReviewPayIn from '@/pages/TransactionList/Payin/review';
 
 function Router(): React.ReactElement | null {
   const routes = [
@@ -243,7 +248,29 @@ function Router(): React.ReactElement | null {
           children: [
             {
               path: 'payins',
-              element: <PayInTransaction />,
+              // element: <PayInTransaction />,
+              children: [
+                {
+                  path: 'all',
+                  element: <AllPayIn />
+                },
+                {
+                  path: 'completed',
+                  element: <CompletedPayIn />
+                },
+                {
+                  path: 'dropped',
+                  element: <DroppedPayIn />
+                },
+                {
+                  path: 'in-progress',
+                  element: <InProgressPayIn />
+                },
+                {
+                  path: 'review',
+                  element: <InReviewPayIn />
+                },
+              ]
             },
             {
               path: 'payouts',

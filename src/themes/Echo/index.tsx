@@ -660,6 +660,46 @@ function Main() {
                                   />
                                   <span className="truncate">{subMenu.title}</span>
                                 </a>
+                                {subMenu.subMenu && (
+                                  <Transition
+                                    in={subMenu.activeDropdown}
+                                    onEnter={enter}
+                                    onExit={leave}
+                                    timeout={300}
+                                  >
+                                    <ul className="pl-8 space-y-2">
+                                      {subMenu.subMenu.map((subMenu, subMenuKey) => (
+                                        <li key={subMenuKey}>
+                                          <a
+                                            href=""
+                                            className={clsx([
+                                              'flex items-center px-4 py-2 rounded-lg transition-all duration-200',
+                                              subMenu.active
+                                                ? 'bg-blue-100 text-blue-700'
+                                                : 'text-gray-600 hover:bg-gray-100',
+                                            ])}
+                                            onClick={(event: React.MouseEvent) => {
+                                              event.preventDefault();
+                                              if (subMenu.pathname && !subMenu.subMenu) {
+                                                dispatch(
+                                                  setActiveMenuWithReset(subMenu.pathname),
+                                                );
+                                              }
+                                              linkTo(subMenu, navigate);
+                                              setFormattedMenu([...formattedMenu]);
+                                            }}
+                                          >
+                                            <Lucide
+                                              icon={subMenu.icon || 'Circle'}
+                                              className="w-4 h-4 mr-3"
+                                            />
+                                            <span className="truncate">{subMenu.title}</span>
+                                          </a>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </Transition>
+                                )}
                               </li>
                             ))}
                           </ul>
