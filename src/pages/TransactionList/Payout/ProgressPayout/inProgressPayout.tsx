@@ -1156,15 +1156,22 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
   };
 
   return (
-    <>
+    <div>
       <div className="grid grid-cols-12 gap-y-10 gap-x-6">
         <div className="col-span-12">
           <div className="mt-3.5">
             <div className="flex flex-col overflow-x-hidden">
-              <div className="flex flex-col p-5 gap-y-2 mx-3">
+              <div className="flex flex-col py-5 gap-y-2 mx-3">
                 {/* Action Buttons Row */}
-                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-end">
-                  {/* {(role === Role.ADMIN ||
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-between">
+                  <div className="flex justify-start">
+                    <div className="text-lg sm:text-xl md:text-2xl font-medium group-[.mode--light]:text-white">
+                      In Progress
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end">
+                    {/* {(role === Role.ADMIN ||
                     role === Role.OPERATIONS ||
                     role === Role.TRANSACTIONS) && (
                     <div className="w-full sm:w-auto bg-white dark:bg-darkmode-800 border border-dashed border-slate-300 dark:border-darkmode-600 rounded-lg shadow-md px-3 py-2 flex items-center justify-center h-10">
@@ -1187,36 +1194,8 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                       <Menu.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                        onClick={handleRefresh}
-                      >
-                        <Lucide
-                          icon="RefreshCw"
-                          className="stroke-[1.3] w-4 h-4 mr-2"
-                        />
-                        Refresh
-                      </Menu.Button>
-                    </Menu>
-                    <Menu>
-                      <Menu.Button
-                        as={Button}
-                        variant="outline-secondary"
-                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                        onClick={handleReset}
-                      >
-                        <Lucide
-                          icon="RotateCcw"
-                          className="stroke-[1.3] w-4 h-4 mr-2"
-                        />
-                        Reset
-                      </Menu.Button>
-                    </Menu>
-                    <Menu>
-                      <Menu.Button
-                        as={Button}
-                        variant="outline-secondary"
-                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                        onClick={() => setExportModal()}
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg mr-2"
+                        onClick={setExportModal}
                       >
                         <Lucide
                           icon="Download"
@@ -1473,11 +1452,12 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                         </>
                       )}
                     </Popover>
+                  </div>
                 </div>
 
                 {/* Search Inputs Row */}
                 <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
-{(role === Role.ADMIN || role === Role.MERCHANT) && (
+                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
                     <div className="relative w-full sm:w-auto sm:flex-shrink-0">
                       <Lucide
                         icon="Search"
@@ -1543,6 +1523,34 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                       )}
                     </div>
                   )} */}
+                  <Menu>
+                    <Menu.Button
+                      as={Button}
+                      variant="outline-secondary"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                      onClick={handleRefresh}
+                    >
+                      <Lucide
+                        icon="RefreshCw"
+                        className="stroke-[1.3] w-4 h-4 mr-2"
+                      />
+                      Refresh
+                    </Menu.Button>
+                  </Menu>
+                  <Menu>
+                    <Menu.Button
+                      as={Button}
+                      variant="outline-secondary"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                      onClick={handleReset}
+                    >
+                      <Lucide
+                        icon="RotateCcw"
+                        className="stroke-[1.3] w-4 h-4 mr-2"
+                      />
+                      Reset
+                    </Menu.Button>
+                  </Menu>
                 </div>
               </div>
               <div className="mb-4 border-b border-slate-200/60 dark:border-darkmode-400">
@@ -1603,7 +1611,13 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                   actionMenuItems={(row: any) => {
                     const items: {
                       label?: string;
-                      icon: 'BellRing' | 'RotateCcw' | 'CheckSquare' | 'XSquare' | 'RefreshCw' | 'XOctagon';
+                      icon:
+                        | 'BellRing'
+                        | 'RotateCcw'
+                        | 'CheckSquare'
+                        | 'XSquare'
+                        | 'RefreshCw'
+                        | 'XOctagon';
                       onClick: (row: any) => void;
                     }[] = [];
                     if (
@@ -1786,7 +1800,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
           </div>
         </Drawer>
       )}
-    </>
+    </div>
   );
 };
 

@@ -64,7 +64,7 @@ import { getPayOutsReports } from '@/redux-toolkit/slices/payout/payoutAPI';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotifications';
-import MultiSelect from '@/components/MultiSelect/MultiSelect';
+// import MultiSelect from '@/components/MultiSelect/MultiSelect';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -1674,124 +1674,70 @@ const BankAccount: React.FC = () => {
                   </Tab>
                 </Tab.List> */}
                 <div className="flex flex-col border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400 p-5 gap-y-2">
-                  {/* Action Buttons Row */}
-                  <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 w-full sm:justify-end">
-                    <Menu>
-                      <Menu.Button
-                        as={Button}
-                        variant="outline-secondary"
-                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                        onClick={() => {
-                          setSelectedVendorExport(true);
-                          setSelectedFilterVendorExport('');
-                          setSelectedStatus('');
-                        }}
-                      >
-                        <Lucide
-                          icon="Download"
-                          className="stroke-[1.3] w-4 h-4 mr-2"
-                        />
-                        Export
-                      </Menu.Button>
-                      {selectedVendorExport && (
-                        <Modal
-                          handleModal={() => {
-                            setSelectedVendorExport((prev) => !prev);
-                          }}
-                          forOpen={selectedVendorExport}
-                          title="Export Banking Details"
+                  {/* Title and Action Buttons Row */}
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-between">
+                    <div className="flex justify-start">
+                      <div className="text-lg sm:text-xl md:text-2xl font-medium">Bank Accounts</div>
+                    </div>
+                    <div className="flex justify-end">
+                      <Menu>
+                        <Menu.Button
+                          as={Button}
+                          variant="outline-secondary"
+                          className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg mr-2"
                         >
-                          <div className="py-2 my-2 mb-4">
-                            <Litepicker
-                              value={selectedFilterDates || ''}
-                              onChange={(e) => {
-                                setSelectedFilterDates(e.target.value);
-                              }}
-                              enforceRange={false}
-                              options={{
-                                autoApply: false,
-                                singleMode: false,
-                                numberOfColumns: 1,
-                                numberOfMonths: 1,
-                                showWeekNumbers: true,
-                                dropdowns: {
-                                  minYear: 1990,
-                                  maxYear: null,
-                                  months: true,
-                                  years: true,
-                                },
-                                startDate: date,
-                                endDate: date,
-                              }}
-                              placeholder="Select a date range"
-                              className="w-full pl-9 rounded-[0.5rem] group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200 group-[.mode--light]:!border-transparent dark:group-[.mode--light]:!bg-darkmode-900/30 dark:!box"
-                            />
-                          </div>
+                          <Lucide
+                            icon="Download"
+                            className="stroke-[1.3] w-4 h-4 mr-2"
+                          />
+                          Export
+                          <Lucide
+                            icon="ChevronDown"
+                            className="stroke-[1.3] w-4 h-4 ml-2"
+                          />
+                        </Menu.Button>
+                        {/* Export Modal logic here if needed */}
+                      </Menu>
+                      <Menu>
+                        <Menu.Button
+                          as={Button}
+                          variant="outline-secondary"
+                          className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                        >
+                          <Lucide
+                            icon="SlidersHorizontal"
+                            className="stroke-[1.3] w-4 h-4 mr-2"
+                          />
+                          Filter
+                        </Menu.Button>
+                        {/* Filter Popover logic here if needed */}
+                      </Menu>
+                    </div>
+                  </div>
 
-                          <div className="my-2 py-2 flex flex-col justify-center">
-                            <div className="flex flex-row">
-                              <MultiSelect
-                                codes={vendorCodes}
-                                selectedFilter={selectedFilterVendorExport}
-                                setSelectedFilter={(value: any[]) => {
-                                  setSelectedFilterVendorExport(value);
-                                }}
-                                placeholder="Select Banking Partner Codes ..."
-                                // disabled={selectedFilter?.length > 0}
-                              />
-                            </div>
-                            {selectedMethod === 'PayIn' ? (
-                              <div className="flex flex-row mt-4">
-                                <MultiSelect
-                                  codes={[
-                                    { label: 'Used', value: 'used' },
-                                    { label: 'Unused', value: 'unused' },
-                                    {
-                                      label: 'Internal Transfer',
-                                      value: '/internalTransfer',
-                                    },
-                                    { label: 'Repeated', value: '/repeated' },
-                                    { label: 'Freezed', value: '/freezed' },
-                                  ]}
-                                  selectedFilter={selectedStatus}
-                                  setSelectedFilter={(value: any[]) => {
-                                    setSelectedStatus(value);
-                                  }}
-                                  placeholder="Select Status ..."
-                                  // disabled={selectedFilter?.length > 0}
-                                />
-                              </div>
-                            ) : (
-                              <div className="flex flex-row mt-4">
-                                <MultiSelect
-                                  codes={[
-                                    { label: 'Approved', value: 'APPROVED' },
-                                    { label: 'Reversed', value: 'REVERSED' },
-                                  ]}
-                                  selectedFilter={selectedStatus}
-                                  setSelectedFilter={(value: any[]) => {
-                                    setSelectedStatus(value);
-                                  }}
-                                  placeholder="Select Status ..."
-                                  // disabled={selectedFilter?.length > 0}
-                                />
-                              </div>
-                            )}
-                          </div>
-
-                          <div className="flex flex-row gap-4 my-4 pt-6">
-                            <Button onClick={() => handleDownload('PDF')}>
-                              Export as PDF
-                            </Button>
-                            <Button onClick={() => handleDownload('CSV')}>
-                              Export as CSV
-                            </Button>
-                            <Button onClick={() => handleDownload('XLSX')}>
-                              Export as XLSX
-                            </Button>
-                          </div>
-                        </Modal>
+                  {/* Search Input Row */}
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
+                    <div className="relative">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="Search Banks..."
+                        className="pl-9 sm:w-64 rounded-[0.5rem]"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                      {searchQuery && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setSearchQuery('')}
+                        />
                       )}
+                    </div>
+                    <Menu>
                       <Menu.Button
                         as={Button}
                         variant="outline-secondary"
@@ -1819,30 +1765,6 @@ const BankAccount: React.FC = () => {
                         Reset
                       </Menu.Button>
                     </Menu>
-                  </div>
-
-                  {/* Search Input Row */}
-                  <div className="w-full">
-                    <div className="relative">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="Search Banks..."
-                        className="pl-9 sm:w-64 rounded-[0.5rem]"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                      {searchQuery && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setSearchQuery('')}
-                        />
-                      )}
-                    </div>
                   </div>
                 </div>
                 <Tab.Group

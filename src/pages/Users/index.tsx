@@ -753,19 +753,19 @@ const Users: React.FC = () => {
 
         <div className="flex flex-col gap-4 sm:gap-6 md:gap-8 mt-3.5">
           <div className="flex flex-col box box--stacked">
-            <div className="flex flex-col p-3 sm:p-4 md:p-5 gap-y-2">
+            <div className="flex flex-col py-5 gap-y-2 mx-3">
               {/* Action Buttons Row */}
-              <div className="flex flex-col sm:flex-row gap-x-2 sm:gap-x-3 gap-y-2 w-full sm:justify-end">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-end">
                 <Menu>
                   <Menu.Button
                     as={Button}
                     variant="outline-secondary"
-                    className="w-full sm:w-auto text-xs sm:text-sm border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
                     onClick={handleRefresh}
                   >
                     <Lucide
                       icon="RefreshCw"
-                      className="stroke-[1.3] w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2"
+                      className="stroke-[1.3] w-4 h-4 mr-2"
                     />
                     Refresh
                   </Menu.Button>
@@ -774,7 +774,7 @@ const Users: React.FC = () => {
                   <Menu.Button
                     as={Button}
                     variant="outline-secondary"
-                    className="w-full sm:w-auto text-xs sm:text-sm border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
                     onClick={() => {
                       if (
                         searchQuery ||

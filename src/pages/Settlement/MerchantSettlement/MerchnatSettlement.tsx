@@ -918,42 +918,18 @@ function MerchantSettlement({
       <div className="col-span-12">
         <div className="mt-3.5">
           <div className="flex flex-col">
-            <div className="flex flex-col p-5 gap-y-2">
-              {/* Action Buttons Row */}
-              <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 w-full sm:justify-end">
+            <div className="flex flex-col py-5 gap-y-2 mx-3">
+              {/* Title and Action Buttons Row */}
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-between">
+                <div className="flex justify-start">
+                  <div className="text-lg sm:text-xl md:text-2xl font-medium">Merchant Settlement</div>
+                </div>
+                <div className="flex justify-end">
                 <Menu>
                   <Menu.Button
                     as={Button}
                     variant="outline-secondary"
-                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                    onClick={handleRefresh}
-                  >
-                    <Lucide
-                      icon="RefreshCw"
-                      className="stroke-[1.3] w-4 h-4 mr-2"
-                    />
-                    Refresh
-                  </Menu.Button>
-                </Menu>
-                <Menu>
-                  <Menu.Button
-                    as={Button}
-                    variant="outline-secondary"
-                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                    onClick={handleReset}
-                  >
-                    <Lucide
-                      icon="RotateCcw"
-                      className="stroke-[1.3] w-4 h-4 mr-2"
-                    />
-                    Reset
-                  </Menu.Button>
-                </Menu>
-                <Menu>
-                  <Menu.Button
-                    as={Button}
-                    variant="outline-secondary"
-                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg mr-2"
                     onClick={() => setExportModalOpen(true)}
                   >
                     <Lucide
@@ -1187,10 +1163,11 @@ function MerchantSettlement({
                     </>
                   )}
                 </Popover>
+                </div>
               </div>
 
               {/* Search Input Row */}
-              <div className="w-full">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
                 <div className="relative">
                   <Lucide
                     icon="Search"
@@ -1211,6 +1188,34 @@ function MerchantSettlement({
                     />
                   )}
                 </div>
+                <Menu>
+                  <Menu.Button
+                    as={Button}
+                    variant="outline-secondary"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                    onClick={handleRefresh}
+                  >
+                    <Lucide
+                      icon="RefreshCw"
+                      className="stroke-[1.3] w-4 h-4 mr-2"
+                    />
+                    Refresh
+                  </Menu.Button>
+                </Menu>
+                <Menu>
+                  <Menu.Button
+                    as={Button}
+                    variant="outline-secondary"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                    onClick={handleReset}
+                  >
+                    <Lucide
+                      icon="RotateCcw"
+                      className="stroke-[1.3] w-4 h-4 mr-2"
+                    />
+                    Reset
+                  </Menu.Button>
+                </Menu>
               </div>
             </div>
             <div className="overflow-auto xl:overflow-visible">

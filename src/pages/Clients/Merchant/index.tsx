@@ -507,9 +507,9 @@ const handleSubmitRestrict = async (data:any) => {
         </div>
         <div className="flex flex-col gap-8 mt-3.5">
           <div className="flex flex-col">
-            <div className="flex flex-col p-5 gap-y-2">
+            <div className="flex flex-col py-5 gap-y-2 mx-3">
               {/* Action Buttons Row */}
-              <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 w-full sm:justify-end">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-end">
                 <Menu>
                   <Menu.Button
                     as={Button}

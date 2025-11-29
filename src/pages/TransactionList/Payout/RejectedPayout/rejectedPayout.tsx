@@ -467,44 +467,23 @@ const RejectedPayOut: React.FC<AllPayOutProps> = ({
         <div className="col-span-12">
           <div className="mt-3.5">
             <div className="flex flex-col overflow-x-hidden">
-              <div className="flex flex-col p-5 gap-y-2 mx-3">
+              <div className="flex flex-col py-5 gap-y-2 mx-3">
                 {/* Action Buttons Row */}
-                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-end">
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                      onClick={handleRefresh}
-                    >
-                      <Lucide
-                        icon="RefreshCw"
-                        className="stroke-[1.3] w-4 h-4 mr-2"
-                      />
-                      Refresh
-                    </Menu.Button>
-                  </Menu>
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                      onClick={handleReset}
-                    >
-                      <Lucide
-                        icon="RotateCcw"
-                        className="stroke-[1.3] w-4 h-4 mr-2"
-                      />
-                      Reset
-                    </Menu.Button>
-                  </Menu>
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                      onClick={setExportModal}
-                    >
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-between">
+                  <div className="flex justify-start">
+                    <div className="text-lg sm:text-xl md:text-2xl font-medium group-[.mode--light]:text-white">
+                      Rejected
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <Menu>
+                      <Menu.Button
+                        as={Button}
+                        variant="outline-secondary"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg mr-2"
+                        onClick={setExportModal}
+                      >
                       <Lucide
                         icon="Download"
                         className="stroke-[1.3] w-4 h-4 mr-2"
@@ -753,8 +732,9 @@ const RejectedPayOut: React.FC<AllPayOutProps> = ({
                           </form>
                         </Popover.Panel>
                       </>
-                    )}
-                  </Popover>
+                      )}
+                    </Popover>
+                  </div>
                 </div>
 
                 {/* Search Inputs Row */}
@@ -827,6 +807,34 @@ const RejectedPayOut: React.FC<AllPayOutProps> = ({
                       )}
                     </div>
                   )}
+                  <Menu>
+                    <Menu.Button
+                      as={Button}
+                      variant="outline-secondary"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                      onClick={handleRefresh}
+                    >
+                      <Lucide
+                        icon="RefreshCw"
+                        className="stroke-[1.3] w-4 h-4 mr-2"
+                      />
+                      Refresh
+                    </Menu.Button>
+                  </Menu>
+                  <Menu>
+                    <Menu.Button
+                      as={Button}
+                      variant="outline-secondary"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                      onClick={handleReset}
+                    >
+                      <Lucide
+                        icon="RotateCcw"
+                        className="stroke-[1.3] w-4 h-4 mr-2"
+                      />
+                      Reset
+                    </Menu.Button>
+                  </Menu>
                 </div>
               </div>
               {payOuts.loading && isLoad ? (

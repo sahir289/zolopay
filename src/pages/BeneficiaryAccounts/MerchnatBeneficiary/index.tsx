@@ -777,8 +777,69 @@ const BeneficiaryAccounts: React.FC = () => {
                   )}
                 </Tab.List> */}
                 <div className="flex flex-col border-l border-r border-t-4 border-t-gray-100 dark:border-t-darkmode-400 border-gray-100 dark:border-darkmode-400 p-5 gap-y-2">
-                  {/* Action Buttons Row */}
-                  <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 w-full sm:justify-end">
+                  {/* Title and Action Buttons Row */}
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-between">
+                    <div className="flex justify-start">
+                      <div className="text-lg sm:text-xl md:text-2xl font-medium">Beneficiary Accounts</div>
+                    </div>
+                    <div className="flex justify-end">
+                      <Menu>
+                        <Menu.Button
+                          as={Button}
+                          variant="outline-secondary"
+                          className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg mr-2"
+                        >
+                          <Lucide
+                            icon="Download"
+                            className="stroke-[1.3] w-4 h-4 mr-2"
+                          />
+                          Export
+                          <Lucide
+                            icon="ChevronDown"
+                            className="stroke-[1.3] w-4 h-4 ml-2"
+                          />
+                        </Menu.Button>
+                        {/* Export Modal logic here if needed */}
+                      </Menu>
+                      <Menu>
+                        <Menu.Button
+                          as={Button}
+                          variant="outline-secondary"
+                          className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                        >
+                          <Lucide
+                            icon="SlidersHorizontal"
+                            className="stroke-[1.3] w-4 h-4 mr-2"
+                          />
+                          Filter
+                        </Menu.Button>
+                        {/* Filter Popover logic here if needed */}
+                      </Menu>
+                    </div>
+                  </div>
+
+                  {/* Search Input Row */}
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
+                    <div className="relative">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="Search Beneficiary..."
+                        className="pl-9 sm:w-64 rounded-[0.5rem]"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                      {searchQuery && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setSearchQuery('')}
+                        />
+                      )}
+                    </div>
                     <Menu>
                       <Menu.Button
                         as={Button}
@@ -807,30 +868,6 @@ const BeneficiaryAccounts: React.FC = () => {
                         Reset
                       </Menu.Button>
                     </Menu>
-                  </div>
-
-                  {/* Search Input Row */}
-                  <div className="w-full">
-                    <div className="relative">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="Search Beneficiary..."
-                        className="pl-9 sm:w-64 rounded-[0.5rem]"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                      {searchQuery && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setSearchQuery('')}
-                        />
-                      )}
-                    </div>
                   </div>
                 </div>
               </Tab.Group>

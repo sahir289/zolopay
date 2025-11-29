@@ -159,6 +159,7 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
   const isFetching = useRef(false);
   const isLoad = useAppSelector(getIsloadingPayinEntries);
   const refreshPayIn = useAppSelector(getRefreshPayIn);
+  const title = 'Completed';
 
   // useEffect(() => {
   //   const fetchBankNames = async () => {
@@ -904,339 +905,326 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
             <div className="flex flex-col overflow-x-hidden">
               <div className="flex flex-col py-5 gap-y-2 mx-3">
                 {/* Action Buttons Row */}
-                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-end">
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                      onClick={handleRefresh}
-                    >
-                      <Lucide
-                        icon="RefreshCw"
-                        className="stroke-[1.3] w-4 h-4 mr-2"
-                      />
-                      Refresh
-                    </Menu.Button>
-                  </Menu>
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                      onClick={handleReset}
-                    >
-                      <Lucide
-                        icon="RotateCcw"
-                        className="stroke-[1.3] w-4 h-4 mr-2"
-                      />
-                      Reset
-                    </Menu.Button>
-                  </Menu>
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                      onClick={() => openExport()}
-                    >
-                      <Lucide
-                        icon="Download"
-                        className="stroke-[1.3] w-4 h-4 mr-2"
-                      />
-                      Export
-                      <Lucide
-                        icon="ChevronDown"
-                        className="stroke-[1.3] w-4 h-4 ml-2"
-                      />
-                    </Menu.Button>
-                    {exportModalOpen && (
-                      <Modal
-                        handleModal={() => {
-                          setExportModalOpen((prev) => !prev);
-                          setSelectedFilter([]);
-                          setSelectedFilterVendor([]);
-                        }}
-                        forOpen={exportModalOpen}
-                        title="Export Completed Deposits"
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-between">
+                  <div className="flex justify-start">
+                    <div className="text-lg sm:text-xl md:text-2xl font-medium group-[.mode--light]:text-white">
+                      {title}
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <Menu>
+                      <Menu.Button
+                        as={Button}
+                        variant="outline-secondary"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg mr-2"
+                        onClick={() => openExport()}
                       >
-                        <div className="py-2 my-2 mb-4">
-                          <Litepicker
-                            value={selectedFilterDates}
-                            onChange={(e) =>
-                              setSelectedFilterDates(e.target.value)
-                            }
-                            enforceRange={true}
-                            options={{
-                              autoApply: false,
-                              singleMode: false,
-                              numberOfMonths: 1,
-                              numberOfColumns: 1,
-                              showWeekNumbers: true,
-                              startDate: selectedFilterDates.split(' - ')[0],
-                              endDate: selectedFilterDates.split(' - ')[1],
-                              dropdowns: {
-                                minYear: 1990,
-                                maxYear: null,
-                                months: true,
-                                years: true,
-                              },
-                            }}
-                            placeholder="Select a date range"
-                            className="w-full pl-9 rounded-[0.5rem] group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200 group-[.mode--light]:!border-transparent dark:group-[.mode--light]:!bg-darkmode-900/30 dark:!box"
-                          />
-                        </div>
-                        {role === Role.ADMIN ? (
-                          <div className="my-2 py-2 flex flex-col justify-center">
-                            <div className="flex flex-row">
-                              <MultiSelect
-                                codes={merchantCodes}
-                                selectedFilter={selectedFilter}
-                                setSelectedFilter={(value: any[]) => {
-                                  setSelectedFilter(value);
-                                  if (value.length > 0)
-                                    setSelectedFilterVendor([]);
-                                }}
-                                placeholder="Select Payment Partner Codes ..."
-                                disabled={selectedFilterVendor?.length > 0}
-                              />
-                            </div>
-                            <div className="p-2 flex justify-center">OR</div>
-                            <div className="flex flex-row">
-                              <MultiSelect
-                                codes={vendorCodes}
-                                selectedFilter={selectedFilterVendor}
-                                setSelectedFilter={(value: any[]) => {
-                                  setSelectedFilterVendor(value);
-                                  if (value.length > 0) setSelectedFilter([]);
-                                }}
-                                placeholder="Select Banking Partner Codes ..."
-                                disabled={selectedFilter?.length > 0}
-                              />
-                            </div>
-                          </div>
-                        ) : role === Role.MERCHANT ? (
-                          <MultiSelect
-                            codes={merchantCodes}
-                            selectedFilter={selectedFilter}
-                            setSelectedFilter={setSelectedFilter}
-                            placeholder="Select Payment Partner Codes ..."
-                          />
-                        ) : (
-                          <MultiSelect
-                            codes={vendorCodes}
-                            selectedFilter={selectedFilterVendor}
-                            setSelectedFilter={setSelectedFilterVendor}
-                            placeholder="Select Banking Partner Codes ..."
-                          />
-                        )}
-                        <div className="flex flex-row gap-4 my-4 pt-6">
-                          <Button onClick={() => handleDownload('PDF')}>
-                            Export as PDF
-                          </Button>
-                          <Button onClick={() => handleDownload('CSV')}>
-                            Export as CSV
-                          </Button>
-                          <Button onClick={() => handleDownload('XLSX')}>
-                            Export as XLSX
-                          </Button>
-                        </div>
-                      </Modal>
-                    )}
-                  </Menu>
-                  <Popover className="inline-block">
-                    {({ close }: { close: () => void }) => (
-                      <>
-                        <Popover.Button
-                          as={Button}
-                          variant="outline-secondary"
-                          className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                          onClick={openFilter}
+                        <Lucide
+                          icon="Download"
+                          className="stroke-[1.3] w-4 h-4 mr-2"
+                        />
+                        Export
+                        <Lucide
+                          icon="ChevronDown"
+                          className="stroke-[1.3] w-4 h-4 ml-2"
+                        />
+                      </Menu.Button>
+                      {exportModalOpen && (
+                        <Modal
+                          handleModal={() => {
+                            setExportModalOpen((prev) => !prev);
+                            setSelectedFilter([]);
+                            setSelectedFilterVendor([]);
+                          }}
+                          forOpen={exportModalOpen}
+                          title="Export Completed Deposits"
                         >
-                          <Lucide
-                            icon="SlidersHorizontal"
-                            className="stroke-[1.3] w-4 h-4 mr-2"
-                          />
-                          Filter
-                        </Popover.Button>
-                        <Popover.Panel placement="bottom-end">
-                          <form
-                            onSubmit={(e) => {
-                              e.preventDefault();
-                              applyFilter();
-                              close();
-                            }}
+                          <div className="py-2 my-2 mb-4">
+                            <Litepicker
+                              value={selectedFilterDates}
+                              onChange={(e) =>
+                                setSelectedFilterDates(e.target.value)
+                              }
+                              enforceRange={true}
+                              options={{
+                                autoApply: false,
+                                singleMode: false,
+                                numberOfMonths: 1,
+                                numberOfColumns: 1,
+                                showWeekNumbers: true,
+                                startDate: selectedFilterDates.split(' - ')[0],
+                                endDate: selectedFilterDates.split(' - ')[1],
+                                dropdowns: {
+                                  minYear: 1990,
+                                  maxYear: null,
+                                  months: true,
+                                  years: true,
+                                },
+                              }}
+                              placeholder="Select a date range"
+                              className="w-full pl-9 rounded-[0.5rem] group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200 group-[.mode--light]:!border-transparent dark:group-[.mode--light]:!bg-darkmode-900/30 dark:!box"
+                            />
+                          </div>
+                          {role === Role.ADMIN ? (
+                            <div className="my-2 py-2 flex flex-col justify-center">
+                              <div className="flex flex-row">
+                                <MultiSelect
+                                  codes={merchantCodes}
+                                  selectedFilter={selectedFilter}
+                                  setSelectedFilter={(value: any[]) => {
+                                    setSelectedFilter(value);
+                                    if (value.length > 0)
+                                      setSelectedFilterVendor([]);
+                                  }}
+                                  placeholder="Select Payment Partner Codes ..."
+                                  disabled={selectedFilterVendor?.length > 0}
+                                />
+                              </div>
+                              <div className="p-2 flex justify-center">OR</div>
+                              <div className="flex flex-row">
+                                <MultiSelect
+                                  codes={vendorCodes}
+                                  selectedFilter={selectedFilterVendor}
+                                  setSelectedFilter={(value: any[]) => {
+                                    setSelectedFilterVendor(value);
+                                    if (value.length > 0) setSelectedFilter([]);
+                                  }}
+                                  placeholder="Select Banking Partner Codes ..."
+                                  disabled={selectedFilter?.length > 0}
+                                />
+                              </div>
+                            </div>
+                          ) : role === Role.MERCHANT ? (
+                            <MultiSelect
+                              codes={merchantCodes}
+                              selectedFilter={selectedFilter}
+                              setSelectedFilter={setSelectedFilter}
+                              placeholder="Select Payment Partner Codes ..."
+                            />
+                          ) : (
+                            <MultiSelect
+                              codes={vendorCodes}
+                              selectedFilter={selectedFilterVendor}
+                              setSelectedFilter={setSelectedFilterVendor}
+                              placeholder="Select Banking Partner Codes ..."
+                            />
+                          )}
+                          <div className="flex flex-row gap-4 my-4 pt-6">
+                            <Button onClick={() => handleDownload('PDF')}>
+                              Export as PDF
+                            </Button>
+                            <Button onClick={() => handleDownload('CSV')}>
+                              Export as CSV
+                            </Button>
+                            <Button onClick={() => handleDownload('XLSX')}>
+                              Export as XLSX
+                            </Button>
+                          </div>
+                        </Modal>
+                      )}
+                    </Menu>
+                    <Popover className="inline-block">
+                      {({ close }: { close: () => void }) => (
+                        <>
+                          <Popover.Button
+                            as={Button}
+                            variant="outline-secondary"
+                            className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                            onClick={openFilter}
                           >
-                            <div className="p-2">
-                              {role &&
-                                [Role.ADMIN, Role.MERCHANT_ADMIN].includes(
-                                  role,
-                                ) && (
+                            <Lucide
+                              icon="SlidersHorizontal"
+                              className="stroke-[1.3] w-4 h-4 mr-2"
+                            />
+                            Filter
+                          </Popover.Button>
+                          <Popover.Panel placement="bottom-end">
+                            <form
+                              onSubmit={(e) => {
+                                e.preventDefault();
+                                applyFilter();
+                                close();
+                              }}
+                            >
+                              <div className="p-2">
+                                {role &&
+                                  [Role.ADMIN, Role.MERCHANT_ADMIN].includes(
+                                    role,
+                                  ) && (
+                                    <div className="mt-3">
+                                      <div className="text-left text-slate-500 mb-2">
+                                        Merchant
+                                      </div>
+                                      <MultiSelect
+                                        codes={merchantCodesData}
+                                        selectedFilter={selectedFilter}
+                                        setSelectedFilter={setSelectedFilter}
+                                        placeholder="Select Merchant..."
+                                      />
+                                    </div>
+                                  )}
+                                {role && [Role.ADMIN].includes(role) && (
                                   <div className="mt-3">
                                     <div className="text-left text-slate-500 mb-2">
-                                      Merchant
+                                      Vendor
                                     </div>
                                     <MultiSelect
-                                      codes={merchantCodesData}
-                                      selectedFilter={selectedFilter}
-                                      setSelectedFilter={setSelectedFilter}
-                                      placeholder="Select Merchant..."
+                                      codes={vendorCodes}
+                                      selectedFilter={selectedVendor}
+                                      setSelectedFilter={setSelectedVendor}
+                                      placeholder="Select Vendor..."
                                     />
                                   </div>
-                                )}
-                              {role && [Role.ADMIN].includes(role) && (
-                                <div className="mt-3">
-                                  <div className="text-left text-slate-500 mb-2">
-                                    Vendor
-                                  </div>
-                                  <MultiSelect
-                                    codes={vendorCodes}
-                                    selectedFilter={selectedVendor}
-                                    setSelectedFilter={setSelectedVendor}
-                                    placeholder="Select Vendor..."
-                                  />
-                                </div>
                                 )}
                                 {designation &&
-                                                                  [Role.VENDOR_ADMIN].includes(designation) && (
-                                                                    <div className="mt-3">
-                                                                      <div className="text-left text-slate-500 mb-2">
-                                                                        Vendor
-                                                                      </div>
-                                                                      <MultiSelect
-                                                                        codes={vendorCodes}
-                                                                        selectedFilter={selectedVendor}
-                                                                        setSelectedFilter={setSelectedVendor}
-                                                                        placeholder="Select Vendor..."
-                                                                      />
-                                                                    </div>
-                                                                  )}
-                              <div className="mt-3">
-                                <div className="text-left text-slate-500">
-                                  Additional Filters
-                                </div>
-                                <FormSelect
-                                  className="flex-1 mt-2"
-                                  value={selectedColumn}
-                                  onChange={(e) => {
-                                    setSelectedColumn(e.target.value);
-                                    setFilterValue('');
-                                  }}
-                                >
-                                  <option value="">Select column...</option>
-                                  {[
-                                    ...(role &&
-                                    [
-                                      Role.MERCHANT,
-                                      Role.MERCHANT_ADMIN,
-                                      Role.SUB_MERCHANT,
-                                      Role.MERCHANT_OPERATIONS,
-                                    ].includes(role)
-                                      ? Columns.PAYIN_COMPLETED_MERCHANT(
-                                          isUpdate,
-                                        )
-                                      : role &&
-                                        [
-                                          Role.VENDOR,
-                                          Role.VENDOR_OPERATIONS,
-                                        ].includes(role)
-                                      ? Columns.PAYIN_COMPLETED_VENDOR(isUpdate)
-                                      : Columns.PAYIN_COMPLETED(isUpdate)),
-                                    { key: 'id', label: 'Payin ID' }, 
-                                  ]
-                                    .filter(
-                                      (col) =>
-                                        col &&
-                                        col.key !== 'merchant_details' &&
-                                        col.key !== 'bank_res_details' &&
-                                        col.key !== 'user_submitted_image' &&
-                                        col.key !== 'more_details' &&
-                                        col.key !== 'status' &&
-                                        col.key !== 'sno' &&
-                                        col.key !== 'vendor_code' &&
-                                        col.key !== 'actions' &&
-                                        col.key !== 'more_details',
-                                    )
-                                    .map(
-                                      (col) =>
-                                        col && (
-                                          <option key={col.key} value={col.key}>
-                                            {col.label}
-                                          </option>
-                                        ),
-                                    )}
-                                </FormSelect>
-                                {selectedColumn && (
-                                  <div className="mt-3">
-                                    <div className="text-left text-slate-500">
-                                      Value for{' '}
-                                      {
-                                        [
-                                          ...(role &&
-                                          [
-                                            Role.MERCHANT,
-                                            Role.MERCHANT_ADMIN,
-                                            Role.SUB_MERCHANT,
-                                            Role.MERCHANT_OPERATIONS,
-                                          ].includes(role)
-                                            ? Columns.PAYIN_COMPLETED_MERCHANT(
-                                                isUpdate,
-                                              )
-                                            : role &&
-                                              [
-                                                Role.VENDOR,
-                                                Role.VENDOR_OPERATIONS,
-                                              ].includes(role)
-                                            ? Columns.PAYIN_COMPLETED_VENDOR(
-                                                isUpdate,
-                                              )
-                                            : Columns.PAYIN_COMPLETED(isUpdate)),
-                                          { key: 'id', label: 'Payin ID' },
-                                        ].find(
-                                          (col) =>
-                                            col && col.key === selectedColumn,
-                                        )?.label
-                                      }
+                                  [Role.VENDOR_ADMIN].includes(designation) && (
+                                    <div className="mt-3">
+                                      <div className="text-left text-slate-500 mb-2">
+                                        Vendor
+                                      </div>
+                                      <MultiSelect
+                                        codes={vendorCodes}
+                                        selectedFilter={selectedVendor}
+                                        setSelectedFilter={setSelectedVendor}
+                                        placeholder="Select Vendor..."
+                                      />
                                     </div>
-                                    <FormInput
-                                      type="text"
-                                      className="mt-2"
-                                      value={filterValue}
-                                      onChange={(e) =>
-                                        setFilterValue(e.target.value)
-                                      }
-                                      placeholder={`Enter value for ${selectedColumn}`}
-                                    />
+                                  )}
+                                <div className="mt-3">
+                                  <div className="text-left text-slate-500">
+                                    Additional Filters
                                   </div>
-                                )}
+                                  <FormSelect
+                                    className="flex-1 mt-2"
+                                    value={selectedColumn}
+                                    onChange={(e) => {
+                                      setSelectedColumn(e.target.value);
+                                      setFilterValue('');
+                                    }}
+                                  >
+                                    <option value="">Select column...</option>
+                                    {[
+                                      ...(role &&
+                                      [
+                                        Role.MERCHANT,
+                                        Role.MERCHANT_ADMIN,
+                                        Role.SUB_MERCHANT,
+                                        Role.MERCHANT_OPERATIONS,
+                                      ].includes(role)
+                                        ? Columns.PAYIN_COMPLETED_MERCHANT(
+                                            isUpdate,
+                                          )
+                                        : role &&
+                                          [
+                                            Role.VENDOR,
+                                            Role.VENDOR_OPERATIONS,
+                                          ].includes(role)
+                                        ? Columns.PAYIN_COMPLETED_VENDOR(
+                                            isUpdate,
+                                          )
+                                        : Columns.PAYIN_COMPLETED(isUpdate)),
+                                      { key: 'id', label: 'Payin ID' },
+                                    ]
+                                      .filter(
+                                        (col) =>
+                                          col &&
+                                          col.key !== 'merchant_details' &&
+                                          col.key !== 'bank_res_details' &&
+                                          col.key !== 'user_submitted_image' &&
+                                          col.key !== 'more_details' &&
+                                          col.key !== 'status' &&
+                                          col.key !== 'sno' &&
+                                          col.key !== 'vendor_code' &&
+                                          col.key !== 'actions' &&
+                                          col.key !== 'more_details',
+                                      )
+                                      .map(
+                                        (col) =>
+                                          col && (
+                                            <option
+                                              key={col.key}
+                                              value={col.key}
+                                            >
+                                              {col.label}
+                                            </option>
+                                          ),
+                                      )}
+                                  </FormSelect>
+                                  {selectedColumn && (
+                                    <div className="mt-3">
+                                      <div className="text-left text-slate-500">
+                                        Value for{' '}
+                                        {
+                                          [
+                                            ...(role &&
+                                            [
+                                              Role.MERCHANT,
+                                              Role.MERCHANT_ADMIN,
+                                              Role.SUB_MERCHANT,
+                                              Role.MERCHANT_OPERATIONS,
+                                            ].includes(role)
+                                              ? Columns.PAYIN_COMPLETED_MERCHANT(
+                                                  isUpdate,
+                                                )
+                                              : role &&
+                                                [
+                                                  Role.VENDOR,
+                                                  Role.VENDOR_OPERATIONS,
+                                                ].includes(role)
+                                              ? Columns.PAYIN_COMPLETED_VENDOR(
+                                                  isUpdate,
+                                                )
+                                              : Columns.PAYIN_COMPLETED(
+                                                  isUpdate,
+                                                )),
+                                            { key: 'id', label: 'Payin ID' },
+                                          ].find(
+                                            (col) =>
+                                              col && col.key === selectedColumn,
+                                          )?.label
+                                        }
+                                      </div>
+                                      <FormInput
+                                        type="text"
+                                        className="mt-2"
+                                        value={filterValue}
+                                        onChange={(e) =>
+                                          setFilterValue(e.target.value)
+                                        }
+                                        placeholder={`Enter value for ${selectedColumn}`}
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="flex items-center mt-4">
+                                  <Button
+                                    type="button"
+                                    variant="secondary"
+                                    onClick={() => {
+                                      setSelectedColumn('');
+                                      setFilterValue('');
+                                      close();
+                                    }}
+                                    className="w-32 ml-auto"
+                                  >
+                                    Close
+                                  </Button>
+                                  <Button
+                                    variant="primary"
+                                    type="submit"
+                                    className="w-32 ml-2"
+                                  >
+                                    Apply
+                                  </Button>
+                                </div>
                               </div>
-                              <div className="flex items-center mt-4">
-                                <Button
-                                  type="button"
-                                  variant="secondary"
-                                  onClick={() => {
-                                    setSelectedColumn('');
-                                    setFilterValue('');
-                                    close();
-                                  }}
-                                  className="w-32 ml-auto"
-                                >
-                                  Close
-                                </Button>
-                                <Button
-                                  variant="primary"
-                                  type="submit"
-                                  className="w-32 ml-2"
-                                >
-                                  Apply
-                                </Button>
-                              </div>
-                            </div>
-                          </form>
-                        </Popover.Panel>
-                      </>
-                    )}
-                  </Popover>
+                            </form>
+                          </Popover.Panel>
+                        </>
+                      )}
+                    </Popover>
+                  </div>
                 </div>
 
                 {/* Search Inputs Row */}
@@ -1311,8 +1299,6 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                       )}
                     </div>
                   )}
-                
-                  <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto sm:ml-auto">
                   <Menu>
                     <Menu.Button
                       as={Button}
@@ -1341,316 +1327,6 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                       Reset
                     </Menu.Button>
                   </Menu>
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                      onClick={() => openExport()}
-                    >
-                      <Lucide
-                        icon="Download"
-                        className="stroke-[1.3] w-4 h-4 mr-2"
-                      />
-                      Export
-                      <Lucide
-                        icon="ChevronDown"
-                        className="stroke-[1.3] w-4 h-4 ml-2"
-                      />
-                    </Menu.Button>
-                    {exportModalOpen && (
-                      <Modal
-                        handleModal={() => {
-                          setExportModalOpen((prev) => !prev);
-                          setSelectedFilter([]);
-                          setSelectedFilterVendor([]);
-                        }}
-                        forOpen={exportModalOpen}
-                        title="Export Completed Deposits"
-                      >
-                        <div className="py-2 my-2 mb-4">
-                          <Litepicker
-                            value={selectedFilterDates}
-                            onChange={(e) =>
-                              setSelectedFilterDates(e.target.value)
-                            }
-                            enforceRange={true}
-                            options={{
-                              autoApply: false,
-                              singleMode: false,
-                              numberOfMonths: 1,
-                              numberOfColumns: 1,
-                              showWeekNumbers: true,
-                              startDate: selectedFilterDates.split(' - ')[0],
-                              endDate: selectedFilterDates.split(' - ')[1],
-                              dropdowns: {
-                                minYear: 1990,
-                                maxYear: null,
-                                months: true,
-                                years: true,
-                              },
-                            }}
-                            className="w-full pl-9 rounded-[0.5rem] group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200 group-[.mode--light]:!border-transparent dark:group-[.mode--light]:!bg-darkmode-900/30 dark:!box"
-                          />
-                        </div>
-                        {role === Role.ADMIN ? (
-                          <div className="my-2 py-2 flex flex-col justify-center">
-                            <div className="flex flex-row">
-                              {/* <div className="px-2 flex">
-                                Select Merchant :{' '}
-                              </div> */}
-                              <MultiSelect
-                                codes={merchantCodes}
-                                selectedFilter={selectedFilter}
-                                setSelectedFilter={(value: any[]) => {
-                                  setSelectedFilter(value);
-                                  if (value.length > 0)
-                                    setSelectedFilterVendor([]);
-                                }}
-                                placeholder="Select Payment Partner Codes ..."
-                                disabled={selectedFilterVendor?.length > 0}
-                              />
-                            </div>
-                            <div className="p-2 flex justify-center">OR</div>
-                            <div className="flex flex-row">
-                              {/* <div className="px-2 flex ">Select Vendor : </div> */}
-                              <MultiSelect
-                                codes={vendorCodes}
-                                selectedFilter={selectedFilterVendor}
-                                setSelectedFilter={(value: any[]) => {
-                                  setSelectedFilterVendor(value);
-                                  if (value.length > 0) setSelectedFilter([]);
-                                }}
-                                placeholder="Select Banking Partner Codes ..."
-                                disabled={selectedFilter?.length > 0}
-                              />
-                            </div>
-                          </div>
-                        ) : role === Role.MERCHANT ? (
-                          <MultiSelect
-                            codes={merchantCodes}
-                            selectedFilter={selectedFilter}
-                            setSelectedFilter={setSelectedFilter}
-                            placeholder="Select Payment Partner Codes ..."
-                          />
-                        ) : (
-                          <MultiSelect
-                            codes={vendorCodes}
-                            selectedFilter={selectedFilterVendor}
-                            setSelectedFilter={setSelectedFilterVendor}
-                            placeholder="Select Banking Partner Codes ..."
-                          />
-                        )}
-                        <div className="flex flex-row gap-4 my-4 pt-6">
-                          <Button onClick={() => handleDownload('PDF')}>
-                            Export as PDF
-                          </Button>
-                          <Button onClick={() => handleDownload('CSV')}>
-                            Export as CSV
-                          </Button>
-                          <Button onClick={() => handleDownload('XLSX')}>
-                            Export as XLSX
-                          </Button>
-                        </div>
-                      </Modal>
-                    )}
-                  </Menu>
-                  <Popover className="inline-block">
-                    {({ close }: { close: () => void }) => (
-                      <>
-                        <Popover.Button
-                          as={Button}
-                          variant="outline-secondary"
-                          className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                          onClick={openFilter}
-                        >
-                          <Lucide
-                            icon="SlidersHorizontal"
-                            className="stroke-[1.3] w-4 h-4 mr-2"
-                          />
-                          Filter
-                        </Popover.Button>
-                        <Popover.Panel placement="bottom-end">
-                          <form
-                            onSubmit={(e) => {
-                              e.preventDefault();
-                              applyFilter();
-                              close();
-                            }}
-                          >
-                            <div className="p-2">
-                              {role &&
-                                [Role.ADMIN, Role.MERCHANT_ADMIN].includes(
-                                  role,
-                                ) && (
-                                  <div className="mt-3">
-                                    <div className="text-left text-slate-500 mb-2">
-                                      Merchant
-                                    </div>
-                                    <MultiSelect
-                                      codes={merchantCodesData}
-                                      selectedFilter={selectedFilter}
-                                      setSelectedFilter={setSelectedFilter}
-                                      placeholder="Select Merchant..."
-                                    />
-                                  </div>
-                                )}
-                              {role && [Role.ADMIN].includes(role) && (
-                                <div className="mt-3">
-                                  <div className="text-left text-slate-500 mb-2">
-                                    Vendor
-                                  </div>
-                                  <MultiSelect
-                                    codes={vendorCodes}
-                                    selectedFilter={selectedVendor}
-                                    setSelectedFilter={setSelectedVendor}
-                                    placeholder="Select Vendor..."
-                                  />
-                                </div>
-                                )}
-                                {designation &&
-                                                                  [Role.VENDOR_ADMIN].includes(designation) && (
-                                                                    <div className="mt-3">
-                                                                      <div className="text-left text-slate-500 mb-2">
-                                                                        Vendor
-                                                                      </div>
-                                                                      <MultiSelect
-                                                                        codes={vendorCodes}
-                                                                        selectedFilter={selectedVendor}
-                                                                        setSelectedFilter={setSelectedVendor}
-                                                                        placeholder="Select Vendor..."
-                                                                      />
-                                                                    </div>
-                                                                  )}
-                              <div className="mt-3">
-                                <div className="text-left text-slate-500">
-                                  Additional Filters
-                                </div>
-                                <FormSelect
-                                  className="flex-1 mt-2"
-                                  value={selectedColumn}
-                                  onChange={(e) => {
-                                    setSelectedColumn(e.target.value);
-                                    setFilterValue('');
-                                  }}
-                                >
-                                  <option value="">Select column...</option>
-                                  {[
-                                    ...(role &&
-                                    [
-                                      Role.MERCHANT,
-                                      Role.MERCHANT_ADMIN,
-                                      Role.SUB_MERCHANT,
-                                      Role.MERCHANT_OPERATIONS,
-                                    ].includes(role)
-                                      ? Columns.PAYIN_COMPLETED_MERCHANT(
-                                          isUpdate,
-                                        )
-                                      : role &&
-                                        [
-                                          Role.VENDOR,
-                                          Role.VENDOR_OPERATIONS,
-                                        ].includes(role)
-                                      ? Columns.PAYIN_COMPLETED_VENDOR(isUpdate)
-                                      : Columns.PAYIN_COMPLETED(isUpdate)),
-                                    { key: 'id', label: 'Payin ID' }, 
-                                  ]
-                                    .filter(
-                                      (col) =>
-                                        col &&
-                                        col.key !== 'merchant_details' &&
-                                        col.key !== 'bank_res_details' &&
-                                        col.key !== 'user_submitted_image' &&
-                                        col.key !== 'more_details' &&
-                                        col.key !== 'status' &&
-                                        col.key !== 'sno' &&
-                                        col.key !== 'vendor_code' &&
-                                        col.key !== 'actions' &&
-                                        col.key !== 'more_details',
-                                    )
-                                    .map(
-                                      (col) =>
-                                        col && (
-                                          <option key={col.key} value={col.key}>
-                                            {col.label}
-                                          </option>
-                                        ),
-                                    )}
-                                </FormSelect>
-                                {selectedColumn && (
-                                  <div className="mt-3">
-                                    <div className="text-left text-slate-500">
-                                      Value for{' '}
-                                      {
-                                        [
-                                          ...(role &&
-                                          [
-                                            Role.MERCHANT,
-                                            Role.MERCHANT_ADMIN,
-                                            Role.SUB_MERCHANT,
-                                            Role.MERCHANT_OPERATIONS,
-                                          ].includes(role)
-                                            ? Columns.PAYIN_COMPLETED_MERCHANT(
-                                                isUpdate,
-                                              )
-                                            : role &&
-                                              [
-                                                Role.VENDOR,
-                                                Role.VENDOR_OPERATIONS,
-                                              ].includes(role)
-                                            ? Columns.PAYIN_COMPLETED_VENDOR(
-                                                isUpdate,
-                                              )
-                                            : Columns.PAYIN_COMPLETED(
-                                                isUpdate,
-                                              )),
-                                          { key: 'id', label: 'Payin ID' }, 
-                                        ].find(
-                                          (col) =>
-                                            col && col.key === selectedColumn,
-                                        )?.label
-                                      }
-                                    </div>
-                                    <FormInput
-                                      type="text"
-                                      className="mt-2"
-                                      value={filterValue}
-                                      onChange={(e) =>
-                                        setFilterValue(e.target.value)
-                                      }
-                                      placeholder={`Enter value for ${selectedColumn}`}
-                                    />
-                                  </div>
-                                )}
-                              </div>
-                              <div className="flex items-center mt-4">
-                                <Button
-                                  type="button"
-                                  variant="secondary"
-                                  onClick={() => {
-                                    setSelectedColumn('');
-                                    setFilterValue('');
-                                    close();
-                                  }}
-                                  className="w-32 ml-auto"
-                                >
-                                  Close
-                                </Button>
-                                <Button
-                                  variant="outline-secondary"
-                                  type="submit"
-                                  className="w-32 ml-2"
-                                >
-                                  Apply
-                                </Button>
-                              </div>
-                            </div>
-                          </form>
-                        </Popover.Panel>
-                      </>
-                    )}
-                  </Popover>
-                </div>
                 </div>
               </div>
               <div className="mb-4 border-b border-slate-200/60 dark:border-darkmode-400">
@@ -1721,7 +1397,12 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                     actionMenuItems={(row: PayInData) => {
                       const items: {
                         label?: string;
-                        icon: 'BellRing' | 'RotateCcw' | 'Pencil' | 'RefreshCw' | 'PencilLine';
+                        icon:
+                          | 'BellRing'
+                          | 'RotateCcw'
+                          | 'Pencil'
+                          | 'RefreshCw'
+                          | 'PencilLine';
                         onClick: (row: PayInData) => void;
                       }[] = [
                         {

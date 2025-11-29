@@ -371,7 +371,10 @@ function ChargeBack() {
     const isVendorSelected = selectedFilterVendorExport.length > 0;
     const hasDateRange = !!selectedFilterDates;
 
-    if ((!(isMerchantSelected || isVendorSelected) || !hasDateRange) && role === Role.ADMIN) {
+    if (
+      (!(isMerchantSelected || isVendorSelected) || !hasDateRange) &&
+      role === Role.ADMIN
+    ) {
       dispatch(
         addAllNotification({
           status: Status.ERROR,
@@ -380,8 +383,10 @@ function ChargeBack() {
         }),
       );
       return;
-    }
-    else if ((!(isMerchantSelected || isVendorSelected) || !hasDateRange) && [Role.MERCHANT, Role.VENDOR].includes(role || '')) {
+    } else if (
+      (!(isMerchantSelected || isVendorSelected) || !hasDateRange) &&
+      [Role.MERCHANT, Role.VENDOR].includes(role || '')
+    ) {
       dispatch(
         addAllNotification({
           status: Status.ERROR,
@@ -641,37 +646,9 @@ function ChargeBack() {
         </div>
         <div className="mt-3.5">
           <div className="flex flex-col box box--stacked">
-            <div className="flex flex-col p-5 gap-y-2">
+            <div className="flex flex-col py-5 gap-y-2 mx-3">
               {/* Action Buttons Row */}
-              <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 w-full sm:justify-end">
-                <Menu>
-                  <Menu.Button
-                    as={Button}
-                    variant="outline-secondary"
-                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                    onClick={handleRefresh}
-                  >
-                    <Lucide
-                      icon="RefreshCw"
-                      className="stroke-[1.3] w-4 h-4 mr-2"
-                    />
-                    Refresh
-                  </Menu.Button>
-                </Menu>
-                <Menu>
-                  <Menu.Button
-                    as={Button}
-                    variant="outline-secondary"
-                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                    onClick={handleReset}
-                  >
-                    <Lucide
-                      icon="RotateCcw"
-                      className="stroke-[1.3] w-4 h-4 mr-2"
-                    />
-                    Reset
-                  </Menu.Button>
-                </Menu>
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-end">
                 <Menu>
                   <Menu.Button
                     as={Button}
@@ -916,7 +893,7 @@ function ChargeBack() {
               </div>
 
               {/* Search Input Row */}
-              <div className="w-full">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
                 <div className="relative">
                   <Lucide
                     icon="Search"
@@ -937,6 +914,34 @@ function ChargeBack() {
                     />
                   )}
                 </div>
+                <Menu>
+                  <Menu.Button
+                    as={Button}
+                    variant="outline-secondary"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                    onClick={handleRefresh}
+                  >
+                    <Lucide
+                      icon="RefreshCw"
+                      className="stroke-[1.3] w-4 h-4 mr-2"
+                    />
+                    Refresh
+                  </Menu.Button>
+                </Menu>
+                <Menu>
+                  <Menu.Button
+                    as={Button}
+                    variant="outline-secondary"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                    onClick={handleReset}
+                  >
+                    <Lucide
+                      icon="RotateCcw"
+                      className="stroke-[1.3] w-4 h-4 mr-2"
+                    />
+                    Reset
+                  </Menu.Button>
+                </Menu>
               </div>
             </div>
             <div className="overflow-auto xl:overflow-visible">

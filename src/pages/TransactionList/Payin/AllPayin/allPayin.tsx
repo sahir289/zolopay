@@ -868,58 +868,37 @@ const AllPayIn: React.FC<AllPayInProps> = ({
         <div className="col-span-12">
           <div className="mt-3.5">
             <div className="flex flex-col overflow-x-hidden">
-              <div className="flex flex-col py-2 sm:py-5 gap-y-2 px-2 sm:px-3">
+              <div className="flex flex-col py-5 gap-y-2 mx-3">
                 {/* Action Buttons Row */}
-                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-end">
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                      onClick={handleRefresh}
-                    >
-                      <Lucide
-                        icon="RefreshCw"
-                        className="stroke-[1.3] w-4 h-4 mr-2"
-                      />
-                      Refresh
-                    </Menu.Button>
-                  </Menu>
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                      onClick={handleReset}
-                    >
-                      <Lucide
-                        icon="RotateCcw"
-                        className="stroke-[1.3] w-4 h-4 mr-2"
-                      />
-                      Reset
-                    </Menu.Button>
-                  </Menu>
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                      onClick={checkPendingPayins}
-                    >
-                      <Lucide
-                        icon="Clock"
-                        className="stroke-[1.3] w-4 h-4 mr-2"
-                      />
-                      Pending
-                    </Menu.Button>
-                  </Menu>
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
-                      onClick={() => openExport()}
-                    >
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-between">
+                  <div className="flex justify-start">
+                    <div className="text-lg sm:text-xl md:text-2xl font-medium group-[.mode--light]:text-white">
+                      All Deposits
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <Menu>
+                      <Menu.Button
+                        as={Button}
+                        variant="outline-secondary"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg mr-2"
+                        onClick={checkPendingPayins}
+                      >
+                        <Lucide
+                          icon="Clock"
+                          className="stroke-[1.3] w-4 h-4 mr-2"
+                        />
+                        Pending
+                      </Menu.Button>
+                    </Menu>
+                    <Menu>
+                      <Menu.Button
+                        as={Button}
+                        variant="outline-secondary"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg mr-2"
+                        onClick={() => openExport()}
+                      >
                       <Lucide
                         icon="Download"
                         className="stroke-[1.3] w-4 h-4 mr-2"
@@ -1253,6 +1232,7 @@ const AllPayIn: React.FC<AllPayInProps> = ({
                       </>
                     )}
                   </Popover>
+                  </div>
                 </div>
 
                 {/* Search Inputs Row */}
@@ -1330,6 +1310,34 @@ const AllPayIn: React.FC<AllPayInProps> = ({
                       )}
                     </div>
                   )}
+                  <Menu>
+                    <Menu.Button
+                      as={Button}
+                      variant="outline-secondary"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                      onClick={handleRefresh}
+                    >
+                      <Lucide
+                        icon="RefreshCw"
+                        className="stroke-[1.3] w-4 h-4 mr-2"
+                      />
+                      Refresh
+                    </Menu.Button>
+                  </Menu>
+                  <Menu>
+                    <Menu.Button
+                      as={Button}
+                      variant="outline-secondary"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                      onClick={handleReset}
+                    >
+                      <Lucide
+                        icon="RotateCcw"
+                        className="stroke-[1.3] w-4 h-4 mr-2"
+                      />
+                      Reset
+                    </Menu.Button>
+                  </Menu>
                 </div>
               </div>
               <div className="overflow-auto xl:overflow-visible">
