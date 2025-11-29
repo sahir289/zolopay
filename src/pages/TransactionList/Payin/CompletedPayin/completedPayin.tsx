@@ -917,7 +917,7 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                       <Menu.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg mr-2"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1 mr-2 p-1"
                         onClick={() => openExport()}
                       >
                         <Lucide
@@ -1030,7 +1030,7 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                           <Popover.Button
                             as={Button}
                             variant="outline-secondary"
-                            className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                            className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                             onClick={openFilter}
                           >
                             <Lucide
@@ -1303,7 +1303,7 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                     <Menu.Button
                       as={Button}
                       variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                       onClick={handleRefresh}
                     >
                       <Lucide
@@ -1317,7 +1317,7 @@ const CompletedPayIn: React.FC<AllPayInProps> = ({
                     <Menu.Button
                       as={Button}
                       variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                       onClick={handleReset}
                     >
                       <Lucide

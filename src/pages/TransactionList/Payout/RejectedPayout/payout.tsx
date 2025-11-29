@@ -85,11 +85,11 @@ const PayOut: React.FC = () => {
   }, [callMerchant,callVendor]);
   return (
     <div className="flex flex-col p-3 sm:p-5">
-        <div>
+        {/* <div>
       <h2 className="font-semibold text-lg mr-auto text-gray-800 dark:text-white pb-2">Rejected Payouts</h2>
-      </div>
+      </div> */}
       <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
-        <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400">
+        {/* <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400"> */}
           {/* <Tab.Panel className="py-3 sm:py-5 leading-relaxed"> */}
             <RejectedPayOut
               vendorCodes={vendorCodes}
@@ -99,7 +99,7 @@ const PayOut: React.FC = () => {
               setCallVendor={setCallVendor}
             />
           {/* </Tab.Panel> */}
-        </Tab.Panels>
+        {/* </Tab.Panels> */}
       </Tab.Group>
     </div>
   );

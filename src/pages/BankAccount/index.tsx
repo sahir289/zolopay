@@ -1744,7 +1744,7 @@ const BankAccount: React.FC = () => {
                       <Menu.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                         onClick={() => {
                           setSelectedVendorExport(true);
                           setSelectedFilterVendorExport('');
@@ -1859,7 +1859,7 @@ const BankAccount: React.FC = () => {
                       <Menu.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                         onClick={handleRefresh}
                       >
                         <Lucide
@@ -1873,7 +1873,7 @@ const BankAccount: React.FC = () => {
                       <Menu.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                         onClick={handleReset}
                       >
                         <Lucide

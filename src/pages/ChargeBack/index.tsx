@@ -653,7 +653,7 @@ function ChargeBack() {
                   <Menu.Button
                     as={Button}
                     variant="outline-secondary"
-                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                     onClick={() => {
                       setExportModalOpen(true);
                       setSelectedFilterExport([]);
@@ -776,7 +776,7 @@ function ChargeBack() {
                       <Popover.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                       >
                         <Lucide
                           icon="SlidersHorizontal"
@@ -918,7 +918,7 @@ function ChargeBack() {
                   <Menu.Button
                     as={Button}
                     variant="outline-secondary"
-                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                     onClick={handleRefresh}
                   >
                     <Lucide
@@ -932,7 +932,7 @@ function ChargeBack() {
                   <Menu.Button
                     as={Button}
                     variant="outline-secondary"
-                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                     onClick={handleReset}
                   >
                     <Lucide

@@ -1207,7 +1207,7 @@ const AllPayOut: React.FC<AllPayOutProps> = ({
                       <Menu.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg mr-2"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1 mr-2 p-1"
                         onClick={() => setExportModal()}
                       >
                       <Lucide
@@ -1346,11 +1346,11 @@ const AllPayOut: React.FC<AllPayOutProps> = ({
                           <Popover.Button
                             as={Button}
                             variant="outline-secondary"
-                            className="w-full sm:w-auto"
-                            onClick={() => openfilter()}
+                            className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
+                            onClick={openfilter}
                           >
                             <Lucide
-                              icon="ArrowDownWideNarrow"
+                              icon="SlidersHorizontal"
                               className="stroke-[1.3] w-4 h-4 mr-2"
                             />
                             Filter
@@ -1596,7 +1596,7 @@ const AllPayOut: React.FC<AllPayOutProps> = ({
                     <Menu.Button
                       as={Button}
                       variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                       onClick={handleRefresh}
                     >
                       <Lucide
@@ -1610,7 +1610,7 @@ const AllPayOut: React.FC<AllPayOutProps> = ({
                     <Menu.Button
                       as={Button}
                       variant="outline-secondary"
-                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                       onClick={handleReset}
                     >
                       <Lucide
