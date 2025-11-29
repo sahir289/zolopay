@@ -985,7 +985,7 @@ dispatch(
               {/* Title and Action Buttons Row */}
               <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-between">
                 <div className="flex justify-start">
-                  <div className="text-lg sm:text-xl md:text-2xl font-medium">Vendor Settlement</div>
+                  <div className="text-lg sm:text-xl md:text-2xl font-medium">Banking Partner Settlement</div>
                 </div>
                 <div className="flex justify-end">
                 <Menu>
