@@ -266,7 +266,7 @@ function Router(): React.ReactElement | null {
                   element: <DroppedPayIn />
                 },
                 {
-                  path: 'in-progress',
+                  path: 'progress',
                   element: <InProgressPayIn />
                 },
                 {
@@ -287,7 +287,7 @@ function Router(): React.ReactElement | null {
                   element: <CompletedPayOut />
                 },
                 {
-                  path: 'in-progress',
+                  path: 'progress',
                   element: <InProgressPayOut />
                 },
                 {

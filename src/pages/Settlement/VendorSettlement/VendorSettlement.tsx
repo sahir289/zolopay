@@ -981,63 +981,18 @@ dispatch(
       <div className="col-span-12">
         <div className="mt-3.5">
           <div className="flex flex-col">
-            <div className="flex flex-col p-5 sm:items-center sm:flex-row gap-y-2">
-              <div>
-                <div className="relative">
-                  <Lucide
-                    icon="Search"
-                    className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                  />
-                  <FormInput
-                    type="text"
-                    placeholder="Search transactions..."
-                    className="pl-9 sm:w-64 rounded-[0.5rem]"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  {searchQuery && (
-                    <Lucide
-                      icon="X"
-                      className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                      onClick={() => setSearchQuery('')}
-                    />
-                  )}
+            <div className="flex flex-col py-5 gap-y-2 mx-3">
+              {/* Title and Action Buttons Row */}
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-between">
+                <div className="flex justify-start">
+                  <div className="text-lg sm:text-xl md:text-2xl font-medium">Banking Partner Settlement</div>
                 </div>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 sm:ml-auto">
+                <div className="flex justify-end">
                 <Menu>
                   <Menu.Button
                     as={Button}
                     variant="outline-secondary"
-                    className="w-full sm:w-auto"
-                    onClick={handleRefresh}
-                  >
-                    <Lucide
-                      icon="RefreshCw"
-                      className="stroke-[1.3] w-4 h-4 mr-2"
-                    />
-                    Refresh
-                  </Menu.Button>
-                </Menu>
-                <Menu>
-                  <Menu.Button
-                    as={Button}
-                    variant="outline-secondary"
-                    className="w-full sm:w-auto"
-                    onClick={handleReset}
-                  >
-                    <Lucide
-                      icon="RefreshCw"
-                      className="stroke-[1.3] w-4 h-4 mr-2"
-                    />
-                    Reset
-                  </Menu.Button>
-                </Menu>
-                <Menu>
-                  <Menu.Button
-                    as={Button}
-                    variant="outline-secondary"
-                    className="w-full sm:w-auto"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1 mr-2 p-1"
                     onClick={() => setExportModalOpen(true)}
                   >
                     <Lucide
@@ -1150,10 +1105,10 @@ dispatch(
                       <Popover.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                       >
                         <Lucide
-                          icon="ArrowDownWideNarrow"
+                          icon="SlidersHorizontal"
                           className="stroke-[1.3] w-4 h-4 mr-2"
                         />
                         Filter
@@ -1273,7 +1228,7 @@ dispatch(
                                 Close
                               </Button>
                               <Button
-                                variant="primary"
+                                variant="outline-secondary"
                                 type="submit"
                                 className="w-32 ml-2"
                               >
@@ -1286,6 +1241,59 @@ dispatch(
                     </>
                   )}
                 </Popover>
+                </div>
+              </div>
+
+              {/* Search Input Row */}
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
+                <div className="relative">
+                  <Lucide
+                    icon="Search"
+                    className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                  />
+                  <FormInput
+                    type="text"
+                    placeholder="Search transactions..."
+                    className="pl-9 sm:w-64 rounded-[0.5rem]"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  {searchQuery && (
+                    <Lucide
+                      icon="X"
+                      className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                      onClick={() => setSearchQuery('')}
+                    />
+                  )}
+                </div>
+                <Menu>
+                  <Menu.Button
+                    as={Button}
+                    variant="outline-secondary"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
+                    onClick={handleRefresh}
+                  >
+                    <Lucide
+                      icon="RefreshCw"
+                      className="stroke-[1.3] w-4 h-4 mr-2"
+                    />
+                    Refresh
+                  </Menu.Button>
+                </Menu>
+                <Menu>
+                  <Menu.Button
+                    as={Button}
+                    variant="outline-secondary"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
+                    onClick={handleReset}
+                  >
+                    <Lucide
+                      icon="RotateCcw"
+                      className="stroke-[1.3] w-4 h-4 mr-2"
+                    />
+                    Reset
+                  </Menu.Button>
+                </Menu>
               </div>
             </div>
             <div className="overflow-auto xl:overflow-visible">

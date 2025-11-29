@@ -1524,7 +1524,7 @@ const BankAccount: React.FC = () => {
             <Modal
               handleModal={bankModal}
               forOpen={newUserModal}
-              buttonTitle={`${bankToEdit ? 'Edit ' : 'Add '} Bank Details`}
+              buttonTitle={`${bankToEdit ? 'Edit ' : 'Create '} Bank Details`}
             >
               <DynamicForm
                 sections={BankDetailsFormFields(
@@ -1737,35 +1737,14 @@ const BankAccount: React.FC = () => {
                     )}
                   </Tab>
                 </Tab.List>
-                <div className="flex flex-col border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400 p-5 sm:items-center sm:flex-row gap-y-2">
-                  <div>
-                    <div className="relative">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="Search Banks..."
-                        className="pl-9 sm:w-64 rounded-[0.5rem]"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                      {searchQuery && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setSearchQuery('')}
-                        />
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 sm:ml-auto">
+                <div className="flex flex-col border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400 p-5 gap-y-2">
+                  {/* Action Buttons Row */}
+                  <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 w-full sm:justify-end">
                     <Menu>
                       <Menu.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto mx-3"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                         onClick={() => {
                           setSelectedVendorExport(true);
                           setSelectedFilterVendorExport('');
@@ -1880,7 +1859,7 @@ const BankAccount: React.FC = () => {
                       <Menu.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                         onClick={handleRefresh}
                       >
                         <Lucide
@@ -1894,16 +1873,40 @@ const BankAccount: React.FC = () => {
                       <Menu.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                         onClick={handleReset}
                       >
                         <Lucide
-                          icon="RefreshCw"
+                          icon="RotateCcw"
                           className="stroke-[1.3] w-4 h-4 mr-2"
                         />
                         Reset
                       </Menu.Button>
                     </Menu>
+                  </div>
+
+                  {/* Search Input Row */}
+                  <div className="w-full">
+                    <div className="relative">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="Search Banks..."
+                        className="pl-9 sm:w-64 rounded-[0.5rem]"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                      {searchQuery && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setSearchQuery('')}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
                 <Tab.Group

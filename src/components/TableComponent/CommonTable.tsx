@@ -156,26 +156,80 @@ const CommonTable: React.FC<CommonTableProps> = ({
   setImgUtr,
   setTotalPayoutAmount,
 }) => {
- const getStatusStyles = (status: string) => {
-  const statusStyles: Record<
-    string,
-    { color: string; icon: keyof typeof icons; background?: string }
-  > = {
-    IMG_PENDING: { color: 'text-yellow-800', icon: 'Clock', background: 'bg-yellow-100' },
-    PENDING: { color: 'text-white', icon: 'Clock', background: 'bg-yellow-500' },
-    FAILED: { color: 'text-white', icon: 'XOctagon', background: 'bg-red-500' },
-    DROPPED: { color: 'text-white', icon: 'XOctagon', background: 'bg-red-600' },
-    REJECTED: { color: 'text-white', icon: 'XOctagon', background: 'bg-red-700' },
-    REVERSED: { color: 'text-white', icon: 'RotateCcw', background: 'bg-orange-500' },
-    BANK_MISMATCH: { color: 'text-white', icon: 'AlertCircle', background: 'bg-orange-400' },
-    DUPLICATE: { color: 'text-white', icon: 'AlertCircle', background: 'bg-orange-300' },
-    DISPUTE: { color: 'text-white', icon: 'AlertCircle', background: 'bg-amber-500' },
-    ASSIGNED: { color: 'text-white', icon: 'UserCheck', background: 'bg-blue-500' },
-    SUCCESS: { color: 'text-white', icon: 'CheckCircle2', background: 'bg-green-500' },
-    APPROVED: { color: 'text-white', icon: 'CheckCircle', background: 'bg-green-600' },
+  const getStatusStyles = (status: string) => {
+    const statusStyles: Record<
+      string,
+      { color: string; icon: keyof typeof icons; background?: string }
+    > = {
+      IMG_PENDING: {
+        color: 'text-yellow-800',
+        icon: 'Clock',
+        background: 'bg-yellow-100',
+      },
+      PENDING: {
+        color: 'text-white',
+        icon: 'Clock',
+        background: 'bg-yellow-500',
+      },
+      FAILED: {
+        color: 'text-white',
+        icon: 'XOctagon',
+        background: 'bg-red-500',
+      },
+      DROPPED: {
+        color: 'text-white',
+        icon: 'XOctagon',
+        background: 'bg-red-600',
+      },
+      REJECTED: {
+        color: 'text-white',
+        icon: 'XOctagon',
+        background: 'bg-red-700',
+      },
+      REVERSED: {
+        color: 'text-white',
+        icon: 'RotateCcw',
+        background: 'bg-orange-500',
+      },
+      BANK_MISMATCH: {
+        color: 'text-white',
+        icon: 'AlertCircle',
+        background: 'bg-orange-400',
+      },
+      DUPLICATE: {
+        color: 'text-white',
+        icon: 'AlertCircle',
+        background: 'bg-orange-300',
+      },
+      DISPUTE: {
+        color: 'text-white',
+        icon: 'AlertCircle',
+        background: 'bg-amber-500',
+      },
+      ASSIGNED: {
+        color: 'text-white',
+        icon: 'UserCheck',
+        background: 'bg-blue-500',
+      },
+      SUCCESS: {
+        color: 'text-white',
+        icon: 'CheckCircle2',
+        background: 'bg-green-500',
+      },
+      APPROVED: {
+        color: 'text-white',
+        icon: 'CheckCircle',
+        background: 'bg-green-600',
+      },
+    };
+    return (
+      statusStyles[status] || {
+        color: 'text-gray-700',
+        icon: 'HelpCircle',
+        background: 'bg-gray-200',
+      }
+    );
   };
-  return statusStyles[status] || { color: 'text-gray-700', icon: 'HelpCircle', background: 'bg-gray-200' };
-};
   const roleData = localStorage.getItem('userData');
   let user_name = '';
   if (roleData) {
@@ -183,12 +237,12 @@ const CommonTable: React.FC<CommonTableProps> = ({
     user_name = parsedData.name || '';
   }
 
-  const [,setHoveredAction] = useState<{
+  const [, setHoveredAction] = useState<{
     rowIndex: number | null;
     actionIndex: number | null;
     type?: 'menu' | 'button';
   }>({ rowIndex: null, actionIndex: null });
-const [openActionMenu, setOpenActionMenu] = useState<number | null>(null);
+  const [openActionMenu, setOpenActionMenu] = useState<number | null>(null);
   const [showAllDataModal, setShowAllDataModal] = useState<boolean>(false);
   const [showAllData, setShowAllData] = useState<{ [key: string]: any }>({});
   const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
@@ -202,54 +256,60 @@ const [openActionMenu, setOpenActionMenu] = useState<number | null>(null);
     colKey: string | null;
     value: string;
   }>({ rowIndex: null, colKey: null, value: '' });
-const [sortConfig, setSortConfig] = useState<{
-  key: string;
-  direction: 'asc' | 'desc';
-} | null>(null);
-const handleSort = (key: string) => {
-  let direction: 'asc' | 'desc' = 'asc';
-  
-  if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
-    direction = 'desc';
-  }
-  
-  setSortConfig({ key, direction });
-};
+  const [sortConfig, setSortConfig] = useState<{
+    key: string;
+    direction: 'asc' | 'desc';
+  } | null>(null);
+  const handleSort = (key: string) => {
+    let direction: 'asc' | 'desc' = 'asc';
 
-const getSortedData = () => {
-  if (!sortConfig) return tableData;
-  
-  const sorted = [...tableData].sort((a, b) => {
-    let aValue = a[sortConfig.key];
-    let bValue = b[sortConfig.key];
-    
-    // Handle nested object values
-    if (sortConfig.key.includes('.')) {
-      const keys = sortConfig.key.split('.');
-      aValue = keys.reduce((obj, key) => obj?.[key], a);
-      bValue = keys.reduce((obj, key) => obj?.[key], b);
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === 'asc'
+    ) {
+      direction = 'desc';
     }
-    
-    // Handle null/undefined values
-    if (aValue == null) return 1;
-    if (bValue == null) return -1;
-    
-    // Handle different data types
-    if (typeof aValue === 'number' && typeof bValue === 'number') {
-      return sortConfig.direction === 'asc' ? aValue - bValue : bValue - aValue;
-    }
-    
-    if (typeof aValue === 'string' && typeof bValue === 'string') {
-      return sortConfig.direction === 'asc' 
-        ? aValue.localeCompare(bValue)
-        : bValue.localeCompare(aValue);
-    }
-    
-    return 0;
-  });
-  
-  return sorted;
-};
+
+    setSortConfig({ key, direction });
+  };
+
+  const getSortedData = () => {
+    if (!sortConfig) return tableData;
+
+    const sorted = [...tableData].sort((a, b) => {
+      let aValue = a[sortConfig.key];
+      let bValue = b[sortConfig.key];
+
+      // Handle nested object values
+      if (sortConfig.key.includes('.')) {
+        const keys = sortConfig.key.split('.');
+        aValue = keys.reduce((obj, key) => obj?.[key], a);
+        bValue = keys.reduce((obj, key) => obj?.[key], b);
+      }
+
+      // Handle null/undefined values
+      if (aValue == null) return 1;
+      if (bValue == null) return -1;
+
+      // Handle different data types
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return sortConfig.direction === 'asc'
+          ? aValue - bValue
+          : bValue - aValue;
+      }
+
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        return sortConfig.direction === 'asc'
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      }
+
+      return 0;
+    });
+
+    return sorted;
+  };
   const debouncedSetHoveredAction = useCallback(
     debounce(
       (newState: {
@@ -263,17 +323,16 @@ const getSortedData = () => {
     ),
     [],
   );
-useEffect(() => {
-  const handleClickOutside = () => {
-    if (openActionMenu !== null) {
-      setOpenActionMenu(null);
-    }
-  };
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (openActionMenu !== null) {
+        setOpenActionMenu(null);
+      }
+    };
 
-
-  document.addEventListener('click', handleClickOutside);
-  return () => document.removeEventListener('click', handleClickOutside);
-}, [openActionMenu]);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [openActionMenu]);
   useEffect(() => {
     if (notifications.length > 0) {
       const latestNotification = notifications[notifications.length - 1];
@@ -696,63 +755,66 @@ useEffect(() => {
           </Modal> */}
         </div>
         <Table className="border-b border-slate-200/60 w-full min-w-full table-mobile-friendly">
-     <Table.Thead>
-  <Table.Tr>
-    {columns?.map((col, index) => (
-      <Table.Td
-        key={index}
-        className={`py-3 px-2 sm:px-3 font-medium border-t bg-slate-50 text-slate-500 dark:bg-darkmode-400 whitespace-nowrap ${
-          col.type === 'checkbox'
-            ? 'w-8 sm:w-10'
-            : col.type === 'more_details'
-            ? 'w-8 sm:w-10'
-            : ''
-        }`}
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            {col.label ? (
-              col.label
-            ) : (
-              <FormCheck.Input
-                type="checkbox"
-                checked={!!selectedRows.length}
-                onChange={handleSelectAll}
-              />
-            )}
-          </div>
+          <Table.Thead>
+            <Table.Tr>
+              {columns?.map((col, index) => (
+                <Table.Td
+                  key={index}
+                  className={`py-3 px-2 sm:px-3 font-medium border-t bg-slate-50 text-slate-500 dark:bg-darkmode-400 whitespace-nowrap ${
+                    col.type === 'checkbox'
+                      ? 'w-8 sm:w-10'
+                      : col.type === 'more_details'
+                      ? 'w-8 sm:w-10'
+                      : ''
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      {col.label ? (
+                        col.label
+                      ) : (
+                        <FormCheck.Input
+                          type="checkbox"
+                          checked={!!selectedRows.length}
+                          onChange={handleSelectAll}
+                        />
+                      )}
+                    </div>
 
-          {/* Add sorting icon for sortable columns */}
-          {col.type !== 'actions' &&
-            col.type !== 'checkbox' &&
-            col.type !== 'button' &&
-            col.type !== 'more_details' &&
-            col.type !== 'image' &&
-            col.type !== 'toggle' &&
-            col.label && (
-              <button
-                onClick={() => handleSort(col.key)}
-                className="ml-2 focus:outline-none hover:text-slate-700 dark:hover:text-slate-300"
-              >
-                {sortConfig?.key === col.key ? (
-                  sortConfig.direction === 'asc' ? (
-                    <Lucide icon="ChevronUp" className="w-4 h-4" />
-                  ) : (
-                    <Lucide icon="ChevronDown" className="w-4 h-4" />
-                  )
-                ) : (
-                  <Lucide icon="ChevronsUpDown" className="w-4 h-4 text-gray-400" />
-                )}
-              </button>
-            )}
-        </div>
-      </Table.Td>
-    ))}
-  </Table.Tr>
-</Table.Thead>
+                    {/* Add sorting icon for sortable columns */}
+                    {col.type !== 'actions' &&
+                      col.type !== 'checkbox' &&
+                      col.type !== 'button' &&
+                      col.type !== 'more_details' &&
+                      col.type !== 'image' &&
+                      col.type !== 'toggle' &&
+                      col.label && (
+                        <button
+                          onClick={() => handleSort(col.key)}
+                          className="ml-2 focus:outline-none hover:text-slate-700 dark:hover:text-slate-300"
+                        >
+                          {sortConfig?.key === col.key ? (
+                            sortConfig.direction === 'asc' ? (
+                              <Lucide icon="ChevronUp" className="w-4 h-4" />
+                            ) : (
+                              <Lucide icon="ChevronDown" className="w-4 h-4" />
+                            )
+                          ) : (
+                            <Lucide
+                              icon="ChevronsUpDown"
+                              className="w-4 h-4 text-gray-400"
+                            />
+                          )}
+                        </button>
+                      )}
+                  </div>
+                </Table.Td>
+              ))}
+            </Table.Tr>
+          </Table.Thead>
           <Table.Tbody>
-       {getSortedData()?.length > 0 ? (
-  getSortedData()?.map((row, rowIndex) => (
+            {getSortedData()?.length > 0 ? (
+              getSortedData()?.map((row, rowIndex) => (
                 <React.Fragment key={row.id || rowIndex}>
                   <Table.Tr
                     className={`[&_td]:last:border-b-0 ${
@@ -790,27 +852,30 @@ useEffect(() => {
                             : 'min-w-[80px] sm:min-w-[100px] md:min-w-[120px]'
                         }`}
                       >
-                       {col.type === 'more_details' ? (
-  <div
-    className="flex items-center justify-center"
-    onClick={(e) => e.stopPropagation()}
-  >
-    <CustomTooltip
-      content="View Details"
-      trigger={['hover']}
-    >
-      <button
-        onClick={() => handleShowAllDataInternal(row)}
-        className="flex items-center justify-center rounded-full w-8 h-8 transition-all duration-200 bg-slate-800 hover:bg-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800"
-      >
-        <Lucide
-          icon="ArrowUpRight"
-          className="w-4 h-4 text-white"
-          style={{ stroke: 'currentColor', strokeWidth: 2.1 }}
-        />
-      </button>
-    </CustomTooltip>
-  </div>
+                        {col.type === 'more_details' ? (
+                          <div
+                            className="flex items-center justify-center"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <CustomTooltip
+                              content="View Details"
+                              trigger={['hover']}
+                            >
+                              <button
+                                onClick={() => handleShowAllDataInternal(row)}
+                                className="flex items-center justify-center rounded-full w-8 h-8 transition-all duration-200 bg-slate-800 hover:bg-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800"
+                              >
+                                <Lucide
+                                  icon="ArrowUpRight"
+                                  className="w-4 h-4 text-white"
+                                  style={{
+                                    stroke: 'currentColor',
+                                    strokeWidth: 2.1,
+                                  }}
+                                />
+                              </button>
+                            </CustomTooltip>
+                          </div>
                         ) : col.type === 'number' ? (
                           editingNumber.rowIndex === rowIndex &&
                           editingNumber.colKey === col.key ? (
@@ -1301,47 +1366,50 @@ useEffect(() => {
                             </Tippy>
                           </div>
                         ) : col.type === 'status' ? (
-                        <div
- className={`flex items-center rounded w-full px-3 py-2  ${getStatusStyles(row[col.key]).color} ${getStatusStyles(row[col.key]).background || ''}`}
-
->
-  {['FAILED', 'PENDING', 'REJECTED'].includes(
-    row[col.key],
-  ) ? (
-    <CustomTooltip
-      content={
-        row[col.key] === 'FAILED'
-          ? !row.user_submitted_utr
-            ? 'Failed due Expired URL'
-            : 'Failed Due to Dispute'
-          : row[col.key] === 'PENDING'
-          ? 'Pending from the Portal'
-          : row[col.key] === 'REJECTED'
-          ? row.rejected_reason ||
-            row?.payout_details?.rejected_reason ||
-            row?.config?.rejected_reason ||
-            'No reason provided'
-          : row[col.key]
-      }
-    >
-      <div className="flex items-center">
-        <Lucide
-          icon={getStatusStyles(row[col.key]).icon}
-          className="w-5 h-5 ml-px stroke-[2.5] mr-2"
-        />
-        {row[col.key]}
-      </div>
-    </CustomTooltip>
-  ) : (
-    <div className="flex items-center">
-      <Lucide
-        icon={getStatusStyles(row[col.key]).icon}
-        className="w-5 h-5 ml-px stroke-[2.5] mr-2"
-      />
-      {row[col.key]}
-    </div>
-  )}
-</div>
+                          <div
+                            className={`flex items-center rounded w-full px-[0.5em] py-[0.5em]  ${
+                              getStatusStyles(row[col.key]).color
+                            } ${
+                              getStatusStyles(row[col.key]).background || ''
+                            }`}
+                          >
+                            {['FAILED', 'PENDING', 'REJECTED'].includes(
+                              row[col.key],
+                            ) ? (
+                              <CustomTooltip
+                                content={
+                                  row[col.key] === 'FAILED'
+                                    ? !row.user_submitted_utr
+                                      ? 'Failed due Expired URL'
+                                      : 'Failed Due to Dispute'
+                                    : row[col.key] === 'PENDING'
+                                    ? 'Pending from the Portal'
+                                    : row[col.key] === 'REJECTED'
+                                    ? row.rejected_reason ||
+                                      row?.payout_details?.rejected_reason ||
+                                      row?.config?.rejected_reason ||
+                                      'No reason provided'
+                                    : row[col.key]
+                                }
+                              >
+                                <div className="flex items-center text-xs">
+                                  <Lucide
+                                    icon={getStatusStyles(row[col.key]).icon}
+                                    className="w-4 h-4 ml-px stroke-[2.5] mr-2"
+                                  />
+                                  {row[col.key]}
+                                </div>
+                              </CustomTooltip>
+                            ) : (
+                              <div className="flex items-center text-xs">
+                                <Lucide
+                                  icon={getStatusStyles(row[col.key]).icon}
+                                  className="w-4 h-4 ml-px stroke-[2.5] mr-2"
+                                />
+                                {row[col.key]}
+                              </div>
+                            )}
+                          </div>
                         ) : col.type === 'amount_hover' ? (
                           row.config?.previousAmount ? (
                             <div className="flex items-center">
@@ -1382,7 +1450,6 @@ useEffect(() => {
                               </span>
                             </div>
                           )
-                          
                         ) : col.type === 'utr_hover' ? (
                           row.config?.previousUTR ? (
                             <div className="flex items-center">
@@ -1482,23 +1549,25 @@ useEffect(() => {
                             className="flex items-center justify-start gap-2"
                             onClick={(e) => e.stopPropagation()}
                           >
-                             {(() => {
-      const actions = actionMenuItems ? actionMenuItems(row) : [];
-      const otherActions = actions;
-
-                              
-                  
+                            {(() => {
+                              const actions = actionMenuItems
+                                ? actionMenuItems(row)
+                                : [];
+                              const otherActions = actions;
 
                               return (
                                 <>
-      
                                   {/* 3-dot menu for other actions */}
                                   {otherActions.length > 0 && (
                                     <div className="relative">
                                       <button
                                         onClick={(e) => {
                                           e.stopPropagation();
-                                          setOpenActionMenu(openActionMenu === rowIndex ? null : rowIndex);
+                                          setOpenActionMenu(
+                                            openActionMenu === rowIndex
+                                              ? null
+                                              : rowIndex,
+                                          );
                                         }}
                                         className="flex items-center justify-center rounded-full w-8 h-8 transition-all duration-200 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
                                       >
@@ -1510,7 +1579,7 @@ useEffect(() => {
 
                                       {/* Dropdown menu */}
                                       {openActionMenu === rowIndex && (
-                                        <div 
+                                        <div
                                           className="absolute right-0 mt-2 w-48 bg-white dark:bg-darkmode-600 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 py-1"
                                           onClick={(e) => e.stopPropagation()}
                                         >
@@ -1519,7 +1588,10 @@ useEffect(() => {
                                               key={index}
                                               onClick={(e) => {
                                                 e.stopPropagation();
-                                                if (!action.hover && action.onClick) {
+                                                if (
+                                                  !action.hover &&
+                                                  action.onClick
+                                                ) {
                                                   action.onClick(row);
                                                   setOpenActionMenu(null);
                                                 }
@@ -1532,15 +1604,18 @@ useEffect(() => {
                                                     type: 'menu',
                                                   });
                                                 }
-                                                if (action.onMouseEnter) action.onMouseEnter(row);
+                                                if (action.onMouseEnter)
+                                                  action.onMouseEnter(row);
                                               }}
                                               disabled={
-                                                (row.disabled === true || row.is_obsolete) &&
+                                                (row.disabled === true ||
+                                                  row.is_obsolete) &&
                                                 action.icon !== 'Download' &&
                                                 action.icon !== 'Trash2'
                                               }
                                               className={`w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-darkmode-500 transition-colors ${
-                                                (row.disabled === true || row.is_obsolete) &&
+                                                (row.disabled === true ||
+                                                  row.is_obsolete) &&
                                                 action.icon !== 'Download' &&
                                                 action.icon !== 'Trash2'
                                                   ? 'opacity-50 cursor-not-allowed'

@@ -10,7 +10,7 @@ const AllPayOut: React.FC = () => {
 
   return (
     <>
-      <TransactionPageHeader title='PayOuts' />
+      <TransactionPageHeader title='Withdrawals' />
       <Payouts status='all'/>
     </>
   );

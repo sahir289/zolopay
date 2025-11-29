@@ -10,8 +10,8 @@ const InProgressPayOut: React.FC = () => {
   
   return (
     <>
-      <TransactionPageHeader title='PayOuts' />
-      <Payouts status='in-progress'/>
+      <TransactionPageHeader title='Withdrawals' />
+      <Payouts status='progress'/>
     </>
   );
 };

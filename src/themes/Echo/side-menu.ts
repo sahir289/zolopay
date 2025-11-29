@@ -125,7 +125,7 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
               },
               {
                 title: "Progress",
-                pathname: "/auth/transaction-list/payins/in-progress",
+                pathname: "/auth/transaction-list/payins/progress",
                 icon: "ArrowUpCircle" as const,
               },
               {
@@ -156,7 +156,7 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
               },
               {
                 title: "Progress",
-                pathname: "/auth/transaction-list/payouts/in-progress",
+                pathname: "/auth/transaction-list/payouts/progress",
                 icon: "ArrowUpCircle" as const,
               },
               {

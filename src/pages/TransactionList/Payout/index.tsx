@@ -267,7 +267,7 @@ function Main() {
   return (
     <>
       <div className="flex flex-col min-h-10 w-full px-2 sm:px-4">
-        <div className="flex justify-between items-center gap-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-2 mb-4">
           <div className="text-lg sm:text-xl md:text-2xl font-medium group-[.mode--light]:text-white">
             {title}
           </div>
@@ -275,7 +275,7 @@ function Main() {
             <Modal
               handleModal={transactionModal}
               forOpen={newTransactionModal}
-              buttonTitle={`Add ${title}`}
+              buttonTitle={`Create ${title}`}
             >
               <DynamicForm
                 sections={

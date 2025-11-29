@@ -228,7 +228,7 @@ export default function TransactionPageHeader ({ title = 'Deposits'}: PayinsHead
             <Modal
               handleModal={transactionModal}
               forOpen={newTransactionModal}
-              buttonTitle={`Add ${title}`}
+              buttonTitle={`Create ${title}`}
             >
               <DynamicForm
                 sections={getTransactionFormFields(merchantCodes.map((merchant) => ({

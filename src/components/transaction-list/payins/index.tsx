@@ -62,7 +62,7 @@ interface ImgUtrState {
 }
 
 type PayinsProps = {
-    status: 'all' | 'completed' | 'dropped' | 'in-progress' | 'review'
+    status: 'all' | 'completed' | 'dropped' | 'progress' | 'review'
 }
 
 export default function Payins ({status}: PayinsProps) {
@@ -125,7 +125,7 @@ export default function Payins ({status}: PayinsProps) {
             : {
                 status: status === 'completed' ? Status.SUCCESS
                         : status === 'dropped' ? [Status.DROPPED, Status.FAILED].join(",")
-                        : status === 'in-progress' ? [Status.ASSIGNED, Status.INITIATED].join(",")
+                        : status === 'progress' ? [Status.ASSIGNED, Status.INITIATED].join(",")
                         : status === 'review' ? [Status.BANK_MISMATCH, Status.DISPUTE, Status.IMAGE_PENDING, Status.DUPLICATE, Status.PENDING].join(",")
                         : ""
             }
@@ -240,7 +240,7 @@ export default function Payins ({status}: PayinsProps) {
               ...(status === 'all' ? {} : {
                 status: (status === 'completed' ? Status.SUCCESS
                         : status === 'dropped' ? [Status.DROPPED, Status.FAILED].join(",")
-                        : status === 'in-progress' ? [Status.ASSIGNED, Status.INITIATED].join(",")
+                        : status === 'progress' ? [Status.ASSIGNED, Status.INITIATED].join(",")
                         : status === 'review' ? [Status.BANK_MISMATCH, Status.DISPUTE, Status.IMAGE_PENDING, Status.DUPLICATE, Status.PENDING].join(",")
                         : "")
               })
@@ -896,7 +896,7 @@ export default function Payins ({status}: PayinsProps) {
                 return Columns.PAYIN_COMPLETED_MERCHANT(isUpdate);
             case 'dropped':
                 return Columns.PAYIN_DROPPED_MERCHANT;
-            case 'in-progress':
+            case 'progress':
                 return Columns.PAYIN_PROGRESS_MERCHANT;
             case 'review':
                 return Columns.PAYIN_PROGRESS_MERCHANT;
@@ -912,7 +912,7 @@ export default function Payins ({status}: PayinsProps) {
                 return Columns.PAYIN_COMPLETED_VENDOR(isUpdate);
             case 'dropped':
                 return Columns.PAYIN_DROPPED_VENDOR;
-            case 'in-progress':
+            case 'progress':
                 return Columns.PAYIN_PROGRESS_VENDOR;
             case 'review':
                 return Columns.PAYIN_PROGRESS_VENDOR;
@@ -928,7 +928,7 @@ export default function Payins ({status}: PayinsProps) {
                 return Columns.PAYIN_COMPLETED(isUpdate);
             case 'dropped':
                 return Columns.PAYIN;
-            case 'in-progress':
+            case 'progress':
                 return Columns.PAYIN;
             case 'review':
                 return Columns.PAYIN;
@@ -945,101 +945,10 @@ export default function Payins ({status}: PayinsProps) {
                     <div className="flex flex-col overflow-x-hidden">
                         <div className="flex flex-col py-2 sm:py-5 gap-y-2 px-2 sm:px-3">
                             <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
-                                {/* Merchant Order ID - Shown for ADMIN and MERCHANT */}
-                                {(role === Role.ADMIN || role === Role.MERCHANT) && (
-                                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                                        <Search
-                                            className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                                        />
-                                        <FormInput
-                                            type="text"
-                                            placeholder="Order ID..."
-                                            className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                                            value={merchantOrderId}
-                                            onChange={(e) => setMerchantOrderId(e.target.value)}
-                                        />
-                                        {merchantOrderId && (
-                                            <X
-                                                className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                                                onClick={() => setMerchantOrderId('')}
-                                            />
-                                        )}
-                                    </div>
-                                )}
-            
-                                {/* User Submitted UTR - Shown for all roles (ADMIN, MERCHANT, VENDOR) */}
-                                {(role === Role.ADMIN ||
-                                role === Role.MERCHANT ||
-                                role === Role.VENDOR) && (
-                                <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                                    <Search
-                                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                                    />
-                                    <FormInput
-                                        type="text"
-                                        placeholder="UTR..."
-                                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                                        value={userSubmittedUtr}
-                                        onChange={(e) => setUserSubmittedUtr(e.target.value)}
-                                    />
-                                    {userSubmittedUtr && (
-                                        <X
-                                            className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                                            onClick={() => setUserSubmittedUtr('')}
-                                        />
-                                    )}
-                                </div>
-                                )}
-            
-                                {/* Bank Name - Shown for ADMIN and VENDOR */}
-                                {(role === Role.ADMIN || role === Role.VENDOR) && (
-                                <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                                    <Search
-                                    className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                                    />
-                                    <FormInput
-                                        type="text"
-                                        placeholder="Bank..."
-                                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                                        value={bankName}
-                                        onChange={(e) => setBankName(e.target.value)}
-                                    />
-                                    {bankName && (
-                                        <X
-                                            className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                                            onClick={() => setBankName('')}
-                                        />
-                                    )}
-                                </div>
-                                )}
-            
+                              <div className="flex flex-col sm:flex-row justify-between w-full">
+                                <h2 className="capitalize text-2xl">{status}</h2>
+
                                 <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto sm:ml-auto">
-                                    <Menu>
-                                        <Menu.Button
-                                            as={Button}
-                                            variant="outline-secondary"
-                                            className="w-full sm:w-auto"
-                                            onClick={handleRefresh}
-                                        >
-                                        <RefreshCw
-                                            className="stroke-[1.3] w-4 h-4 mr-2"
-                                        />
-                                            Refresh
-                                        </Menu.Button>
-                                    </Menu>
-                                    <Menu>
-                                        <Menu.Button
-                                            as={Button}
-                                            variant="outline-secondary"
-                                            className="w-full sm:w-auto"
-                                            onClick={handleReset}
-                                        >
-                                        <RefreshCw
-                                            className="stroke-[1.3] w-4 h-4 mr-2"
-                                        />
-                                            Reset
-                                        </Menu.Button>
-                                    </Menu>
                                     {(status === 'all' || status === 'review') && (
                                         <Menu>
                                             <Menu.Button
@@ -1398,6 +1307,103 @@ export default function Payins ({status}: PayinsProps) {
                                         )}
                                     </Popover>
                                 </div>
+                              </div>
+                              <div className="flex flex-col sm:flex-row items-center flex-wrap gap-2">
+                                {/* Merchant Order ID - Shown for ADMIN and MERCHANT */}
+                                {(role === Role.ADMIN || role === Role.MERCHANT) && (
+                                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                                        <Search
+                                            className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                                        />
+                                        <FormInput
+                                            type="text"
+                                            placeholder="Order ID..."
+                                            className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                                            value={merchantOrderId}
+                                            onChange={(e) => setMerchantOrderId(e.target.value)}
+                                        />
+                                        {merchantOrderId && (
+                                            <X
+                                                className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                                                onClick={() => setMerchantOrderId('')}
+                                            />
+                                        )}
+                                    </div>
+                                )}
+            
+                                {/* User Submitted UTR - Shown for all roles (ADMIN, MERCHANT, VENDOR) */}
+                                {(role === Role.ADMIN ||
+                                role === Role.MERCHANT ||
+                                role === Role.VENDOR) && (
+                                <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                                    <Search
+                                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                                    />
+                                    <FormInput
+                                        type="text"
+                                        placeholder="UTR..."
+                                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                                        value={userSubmittedUtr}
+                                        onChange={(e) => setUserSubmittedUtr(e.target.value)}
+                                    />
+                                    {userSubmittedUtr && (
+                                        <X
+                                            className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                                            onClick={() => setUserSubmittedUtr('')}
+                                        />
+                                    )}
+                                </div>
+                                )}
+            
+                                {/* Bank Name - Shown for ADMIN and VENDOR */}
+                                {(role === Role.ADMIN || role === Role.VENDOR) && (
+                                <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                                    <Search
+                                    className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                                    />
+                                    <FormInput
+                                        type="text"
+                                        placeholder="Bank..."
+                                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                                        value={bankName}
+                                        onChange={(e) => setBankName(e.target.value)}
+                                    />
+                                    {bankName && (
+                                        <X
+                                            className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                                            onClick={() => setBankName('')}
+                                        />
+                                    )}
+                                </div>
+                                )}
+
+                                <Menu>
+                                  <Menu.Button
+                                      as={Button}
+                                      variant="outline-secondary"
+                                      className="w-full sm:w-auto"
+                                      onClick={handleRefresh}
+                                  >
+                                  <RefreshCw
+                                      className="stroke-[1.3] w-4 h-4 mr-2"
+                                  />
+                                      Refresh
+                                  </Menu.Button>
+                              </Menu>
+                              <Menu>
+                                  <Menu.Button
+                                      as={Button}
+                                      variant="outline-secondary"
+                                      className="w-full sm:w-auto"
+                                      onClick={handleReset}
+                                  >
+                                  <RefreshCw
+                                      className="stroke-[1.3] w-4 h-4 mr-2"
+                                  />
+                                      Reset
+                                  </Menu.Button>
+                              </Menu>
+                              </div>
                             </div>
                         </div>
                         {status === 'completed' && (

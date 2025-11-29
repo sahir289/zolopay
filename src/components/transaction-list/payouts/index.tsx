@@ -89,7 +89,7 @@ interface PayOutData {
 }
 
 type PayoutsProps = {
-    status?: 'all' | 'completed' | 'in-progress' | 'rejected'
+    status?: 'all' | 'completed' | 'progress' | 'rejected'
 }
 
 export default function Payouts ({status = 'all'}: PayoutsProps) {
@@ -253,7 +253,7 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
                 ...filters,
                 status: filters?.status || (
                     status === 'completed' ? Status.APPROVED
-                    : status === 'in-progress' ? Status.INITIATED
+                    : status === 'progress' ? Status.INITIATED
                     : status === 'rejected' ? [Status.REJECTED, Status.REVERSED]
                     : ""
                 ) 
@@ -1176,7 +1176,7 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
         switch(status) {
             case 'completed':
                 return Columns.PAYOUT_COMPLETED_VENDOR
-            case 'in-progress':
+            case 'progress':
                 return Columns.PAYOUT_PROGRESS_VENDOR
             case 'rejected':
                 return Columns.PAYOUT_DROPPED_VENDOR
@@ -1188,7 +1188,7 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
         switch(status) {
             case 'completed':
                 return Columns.PAYOUT_COMPLETED;
-            case 'in-progress':
+            case 'progress':
                 return Columns.PAYOUT;
             case 'rejected':
                 return Columns.PAYOUT_REJECTED;
@@ -1205,443 +1205,449 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
                 <div className="flex flex-col overflow-x-hidden">
                 <div className="flex flex-col py-2 sm:py-5 gap-y-2 px-2 sm:px-3">
                     <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
-                    {/* Merchant Order ID - Shown for ADMIN and MERCHANT */}
-                    {(role === Role.ADMIN || role === Role.MERCHANT) && (
-                        <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                        <Lucide
-                            icon="Search"
-                            className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                        />
-                        <FormInput
-                            type="text"
-                            placeholder="Order ID..."
-                            className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                            value={merchantOrderId}
-                            onChange={(e) => setMerchantOrderId(e.target.value)}
-                        />
-                        {merchantOrderId && (
-                            <Lucide
-                            icon="X"
-                            className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                            onClick={() => setMerchantOrderId('')}
-                            />
-                        )}
-                        </div>
-                    )}
-                    {/* UTR ID - Shown for all roles (ADMIN, MERCHANT, VENDOR) */}
-                    {(role === Role.ADMIN ||
-                        role === Role.MERCHANT ||
-                        role === Role.VENDOR) && (status !== 'in-progress') && (
-                        <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                        <Lucide
-                            icon="Search"
-                            className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                        />
-                        <FormInput
-                            type="text"
-                            placeholder="UTR..."
-                            className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                            value={utrId}
-                            onChange={(e) => setUtrId(e.target.value)}
-                        />
-                        {utrId && (
-                            <Lucide
-                            icon="X"
-                            className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                            onClick={() => setUtrId('')}
-                            />
-                        )}
-                        </div>
-                    )}
-                    {/* Nick Name - Shown for ADMIN and VENDOR */}
-                    {(role === Role.ADMIN || role === Role.MERCHANT) && (
-                        <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                        <Lucide
-                            icon="Search"
-                            className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                        />
-                        <FormInput
-                            type="text"
-                            placeholder="User ID..."
-                            className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                            value={nickName}
-                            onChange={(e) => setNickName(e.target.value)}
-                        />
-                        {nickName && (
-                            <Lucide
-                            icon="X"
-                            className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                            onClick={() => setNickName('')}
-                            />
-                        )}
-                        </div>
-                    )}
+                        <div className="flex flex-col sm:flex-row justify-between w-full">
+                            <h2 className="capitalize text-2xl">{status}</h2>
 
-                    <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto sm:ml-auto">
-                        {(role === Role.ADMIN ||
-                            role === Role.OPERATIONS ||
-                            role === Role.TRANSACTIONS) && (status === 'in-progress') && (
-                            <div className="w-full sm:w-auto bg-white dark:bg-darkmode-800 border border-dashed border-slate-300 dark:border-darkmode-600 rounded-lg shadow-md px-3 py-2 flex items-center justify-center h-10">
-                            <span className="text-slate-700 dark:text-slate-200 font-medium">
-                                InProcess Total :
-                            </span>
-                            <span
-                                className={`font-medium ml-1 ${
-                                pendingAmount > 0
-                                    ? 'text-red-600 dark:text-red-400'
-                                    : 'text-green-600 dark:text-green-400'
-                                }`}
-                            >
-                                ₹{pendingAmount}
-                            </span>
-                            </div>
-                        )}
-                        <Menu>
-                        <Menu.Button
-                            as={Button}
-                            variant="outline-secondary"
-                            className="w-full sm:w-auto"
-                            onClick={handleRefresh}
-                        >
-                            <Lucide
-                            icon="RefreshCw"
-                            className="stroke-[1.3] w-4 h-4 mr-2"
-                            />
-                            Refresh
-                        </Menu.Button>
-                        </Menu>
-                        <Menu>
-                        <Menu.Button
-                            as={Button}
-                            variant="outline-secondary"
-                            className="w-full sm:w-auto"
-                            onClick={handleReset}
-                        >
-                            <Lucide
-                            icon="RefreshCw"
-                            className="stroke-[1.3] w-4 h-4 mr-2"
-                            />
-                            Reset
-                        </Menu.Button>
-                        </Menu>
-                        <Menu>
-                        <Menu.Button
-                            as={Button}
-                            variant="outline-secondary"
-                            className="w-full sm:w-auto"
-                            onClick={() => setExportModal()}
-                        >
-                            <Lucide
-                            icon="Download"
-                            className="stroke-[1.3] w-4 h-4 mr-2"
-                            />
-                            Export
-                            <Lucide
-                            icon="ChevronDown"
-                            className="stroke-[1.3] w-4 h-4 ml-2"
-                            />
-                        </Menu.Button>
-                        {exportModalOpen && (
-                            <Modal
-                            handleModal={() => {
-                                setExportModalOpen((prev) => !prev);
-                                setSelectedFilter([]);
-                                setSelectedFilterVendor([]);
-                            }}
-                            forOpen={exportModalOpen}
-                            title="Export PayOuts"
-                            >
-                            <div className="py-2 my-2 mb-4">
-                                <Litepicker
-                                value={selectedFilterDates || ''}
-                                onChange={(e) =>
-                                    setSelectedFilterDates(e.target.value)
-                                }
-                                enforceRange={true}
-                                options={{
-                                    autoApply: false,
-                                    singleMode: false,
-                                    numberOfColumns: 1,
-                                    numberOfMonths: 1,
-                                    startDate: selectedFilterDates.split(' - ')[0],
-                                    endDate: selectedFilterDates.split(' - ')[1],
-                                    showWeekNumbers: true,
-                                    dropdowns: {
-                                    minYear: 1990,
-                                    maxYear: null,
-                                    months: true,
-                                    years: true,
-                                    },
-                                }}
-                                className="w-full pl-9 rounded-[0.5rem] group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200 group-[.mode--light]:!border-transparent dark:group-[.mode--light]:!bg-darkmode-900/30 dark:!box"
-                                />
-                            </div>
-                            {role === Role.ADMIN ? (
-                                <div className="my-2 py-2 flex flex-col justify-center">
-                                <div className="flex flex-row">
-                                    {/* <div className="px-2 flex">
-                                    Select Merchant :{' '}
-                                </div> */}
-                                    <MultiSelect
-                                    codes={merchantCodes}
-                                    selectedFilter={selectedFilter}
-                                    setSelectedFilter={(value: any[]) => {
-                                        setSelectedFilter(value);
-                                        if (value.length > 0)
+                            <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto sm:ml-auto">
+                                {(role === Role.ADMIN ||
+                                    role === Role.OPERATIONS ||
+                                    role === Role.TRANSACTIONS) && (status === 'progress') && (
+                                    <div className="w-full sm:w-auto bg-white dark:bg-darkmode-800 border border-dashed border-slate-300 dark:border-darkmode-600 rounded-lg shadow-md px-3 py-2 flex items-center justify-center h-10">
+                                    <span className="text-slate-700 dark:text-slate-200 font-medium">
+                                        InProcess Total :
+                                    </span>
+                                    <span
+                                        className={`font-medium ml-1 ${
+                                        pendingAmount > 0
+                                            ? 'text-red-600 dark:text-red-400'
+                                            : 'text-green-600 dark:text-green-400'
+                                        }`}
+                                    >
+                                        ₹{pendingAmount}
+                                    </span>
+                                    </div>
+                                )}
+                                
+                                <Menu>
+                                <Menu.Button
+                                    as={Button}
+                                    variant="outline-secondary"
+                                    className="w-full sm:w-auto"
+                                    onClick={() => setExportModal()}
+                                >
+                                    <Lucide
+                                    icon="Download"
+                                    className="stroke-[1.3] w-4 h-4 mr-2"
+                                    />
+                                    Export
+                                    <Lucide
+                                    icon="ChevronDown"
+                                    className="stroke-[1.3] w-4 h-4 ml-2"
+                                    />
+                                </Menu.Button>
+                                {exportModalOpen && (
+                                    <Modal
+                                    handleModal={() => {
+                                        setExportModalOpen((prev) => !prev);
+                                        setSelectedFilter([]);
                                         setSelectedFilterVendor([]);
                                     }}
-                                    placeholder="Select Merchant..."
-                                    disabled={selectedFilterVendor?.length > 0}
-                                    />
-                                </div>
-                                <div className="p-2 flex justify-center">OR</div>
-                                <div className="flex flex-row">
-                                    {/* <div className="px-2 flex ">Select Vendor : </div> */}
-                                    <MultiSelect
-                                    codes={vendorCodes}
-                                    selectedFilter={selectedFilterVendor}
-                                    setSelectedFilter={(value: any[]) => {
-                                        setSelectedFilterVendor(value);
-                                        if (value.length > 0) setSelectedFilter([]);
-                                    }}
-                                    placeholder="Select Vendor..."
-                                    disabled={selectedFilter?.length > 0}
-                                    />
-                                </div>
-                                </div>
-                            ) : role === Role.MERCHANT ? (
-                                <MultiSelect
-                                codes={merchantCodes}
-                                selectedFilter={selectedFilter}
-                                setSelectedFilter={setSelectedFilter}
-                                placeholder="Select Merchant..."
-                                />
-                            ) : (
-                                <MultiSelect
-                                codes={vendorCodes}
-                                selectedFilter={selectedFilterVendor}
-                                setSelectedFilter={setSelectedFilterVendor}
-                                placeholder="Select Vendor..."
-                                />
-                            )}
-                            {status === 'all' && (
-                                <div className="mt-3">
-                                    <div className="text-left text-slate-500">
-                                    Status
-                                    </div>
-                                    <FormSelect
-                                    className="flex-1 mt-2"
-                                    value={selectedStatus}
-                                    //filters not getting set in state : fixed
-                                    onChange={(e) => {
-                                        const newValue = e.target.value;
-                                        setSelectedStatus(newValue);
-                                    }}
+                                    forOpen={exportModalOpen}
+                                    title="Export PayOuts"
                                     >
-                                    <option value="">Select status...</option>
-                                    {Object.entries(PayOutStatusOptions).map(
-                                        ([key, value]) => (
-                                        <option key={key} value={value.value}>
-                                            {value.label}
-                                        </option>
-                                        ),
-                                    )}
-                                    </FormSelect>
-                                </div>
-                            )}
-                            <div className="flex flex-row gap-4 my-4 pt-6">
-                                <Button onClick={() => handleDownload('PDF')}>
-                                Export as PDF
-                                </Button>
-                                <Button onClick={() => handleDownload('CSV')}>
-                                Export as CSV
-                                </Button>
-                                <Button onClick={() => handleDownload('XLSX')}>
-                                Export as XLSX
-                                </Button>
-                            </div>
-                            </Modal>
-                        )}
-                        </Menu>
-                        <Popover className="inline-block">
-                        {({ close }: { close: () => void }) => (
-                            <>
-                            <Popover.Button
-                                as={Button}
-                                variant="outline-secondary"
-                                className="w-full sm:w-auto"
-                                onClick={() => openfilter()}
-                            >
-                                <Lucide
-                                icon="ArrowDownWideNarrow"
-                                className="stroke-[1.3] w-4 h-4 mr-2"
-                                />
-                                Filter
-                            </Popover.Button>
-                            <Popover.Panel placement="bottom-end">
-                                <form
-                                onSubmit={(e) => {
-                                    e.preventDefault();
-                                    applyFilter();
-                                    close();
-                                }}
-                                >
-                                <div className="p-2">
-                                    {role &&
-                                    [Role.ADMIN, Role.MERCHANT_ADMIN].includes(
-                                        role,
-                                    ) && (
-                                        <div className="mt-3">
-                                        <div className="text-left text-slate-500 mb-2">
-                                            Merchant
-                                        </div>
-                                        <MultiSelect
-                                            codes={merchantCodesData}
-                                            selectedFilter={selectedFilter}
-                                            setSelectedFilter={setSelectedFilter}
+                                    <div className="py-2 my-2 mb-4">
+                                        <Litepicker
+                                        value={selectedFilterDates || ''}
+                                        onChange={(e) =>
+                                            setSelectedFilterDates(e.target.value)
+                                        }
+                                        enforceRange={true}
+                                        options={{
+                                            autoApply: false,
+                                            singleMode: false,
+                                            numberOfColumns: 1,
+                                            numberOfMonths: 1,
+                                            startDate: selectedFilterDates.split(' - ')[0],
+                                            endDate: selectedFilterDates.split(' - ')[1],
+                                            showWeekNumbers: true,
+                                            dropdowns: {
+                                            minYear: 1990,
+                                            maxYear: null,
+                                            months: true,
+                                            years: true,
+                                            },
+                                        }}
+                                        className="w-full pl-9 rounded-[0.5rem] group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200 group-[.mode--light]:!border-transparent dark:group-[.mode--light]:!bg-darkmode-900/30 dark:!box"
                                         />
+                                    </div>
+                                    {role === Role.ADMIN ? (
+                                        <div className="my-2 py-2 flex flex-col justify-center">
+                                        <div className="flex flex-row">
+                                            {/* <div className="px-2 flex">
+                                            Select Merchant :{' '}
+                                        </div> */}
+                                            <MultiSelect
+                                            codes={merchantCodes}
+                                            selectedFilter={selectedFilter}
+                                            setSelectedFilter={(value: any[]) => {
+                                                setSelectedFilter(value);
+                                                if (value.length > 0)
+                                                setSelectedFilterVendor([]);
+                                            }}
+                                            placeholder="Select Merchant..."
+                                            disabled={selectedFilterVendor?.length > 0}
+                                            />
                                         </div>
+                                        <div className="p-2 flex justify-center">OR</div>
+                                        <div className="flex flex-row">
+                                            {/* <div className="px-2 flex ">Select Vendor : </div> */}
+                                            <MultiSelect
+                                            codes={vendorCodes}
+                                            selectedFilter={selectedFilterVendor}
+                                            setSelectedFilter={(value: any[]) => {
+                                                setSelectedFilterVendor(value);
+                                                if (value.length > 0) setSelectedFilter([]);
+                                            }}
+                                            placeholder="Select Vendor..."
+                                            disabled={selectedFilter?.length > 0}
+                                            />
+                                        </div>
+                                        </div>
+                                    ) : role === Role.MERCHANT ? (
+                                        <MultiSelect
+                                        codes={merchantCodes}
+                                        selectedFilter={selectedFilter}
+                                        setSelectedFilter={setSelectedFilter}
+                                        placeholder="Select Merchant..."
+                                        />
+                                    ) : (
+                                        <MultiSelect
+                                        codes={vendorCodes}
+                                        selectedFilter={selectedFilterVendor}
+                                        setSelectedFilter={setSelectedFilterVendor}
+                                        placeholder="Select Vendor..."
+                                        />
                                     )}
                                     {status === 'all' && (
                                         <div className="mt-3">
-                                        <div className="text-left text-slate-500">
+                                            <div className="text-left text-slate-500">
                                             Status
-                                        </div>
-                                        <FormSelect
+                                            </div>
+                                            <FormSelect
                                             className="flex-1 mt-2"
                                             value={selectedStatus}
-                                            onChange={(e) =>
                                             //filters not getting set in state : fixed
-                                            {
+                                            onChange={(e) => {
                                                 const newValue = e.target.value;
                                                 setSelectedStatus(newValue);
-                                            }
-                                            }
-                                        >
-                                            <option value="">Select a status</option>
+                                            }}
+                                            >
+                                            <option value="">Select status...</option>
                                             {Object.entries(PayOutStatusOptions).map(
-                                            ([key, value]) => (
+                                                ([key, value]) => (
                                                 <option key={key} value={value.value}>
-                                                {value.label}
+                                                    {value.label}
                                                 </option>
-                                            ),
+                                                ),
                                             )}
-                                        </FormSelect>
+                                            </FormSelect>
                                         </div>
                                     )}
-                                    <div className="mt-3">
-                                    <div className="text-left text-slate-500">
-                                        Additional Filters
+                                    <div className="flex flex-row gap-4 my-4 pt-6">
+                                        <Button onClick={() => handleDownload('PDF')}>
+                                        Export as PDF
+                                        </Button>
+                                        <Button onClick={() => handleDownload('CSV')}>
+                                        Export as CSV
+                                        </Button>
+                                        <Button onClick={() => handleDownload('XLSX')}>
+                                        Export as XLSX
+                                        </Button>
                                     </div>
-                                    <FormSelect
-                                        className="flex-1 mt-2"
-                                        value={selectedColumn}
-                                        onChange={(e) => {
-                                        setSelectedColumn(e.target.value);
-                                        setFilterValue('');
-                                        }}
+                                    </Modal>
+                                )}
+                                </Menu>
+                                <Popover className="inline-block">
+                                {({ close }: { close: () => void }) => (
+                                    <>
+                                    <Popover.Button
+                                        as={Button}
+                                        variant="outline-secondary"
+                                        className="w-full sm:w-auto"
+                                        onClick={() => openfilter()}
                                     >
-                                        <option value="">Select a column</option>
-                                        {[
-                                        ...(role &&
-                                        [
-                                            Role.MERCHANT,
-                                            Role.MERCHANT_ADMIN,
-                                            Role.SUB_MERCHANT,
-                                            Role.MERCHANT_OPERATIONS,
-                                        ].includes(role)
-                                            ? Columns.PAYOUT_MERCHANT
-                                            : role &&
-                                            [
-                                                Role.VENDOR,
-                                                Role.VENDOR_OPERATIONS,
-                                            ].includes(role)
-                                            ? getPayout_Vender_Columns()
-                                            : getPayout_Columns()),
-                                        { key: 'id', label: 'Payout ID' },
-                                        { key: 'txnid', label: 'Txn ID' },
-                                        ]
-                                        .filter(
-                                            (col) =>
-                                            col.key !== 'merchant_details' &&
-                                            col.key !== 'more_details' &&
-                                            col.key !== 'status' &&
-                                            col.key !== 'sno' &&
-                                            // col.key !== 'user_bank_details' &&
-                                            col.key !== '' &&
-                                            col.key !== 'actions',
-                                        )
-                                        .map((col) => (
-                                            <option key={col.key} value={col.key}>
-                                            {col.label}
-                                            </option>
-                                        ))}
-                                    </FormSelect>
-                                    {selectedColumn && (
-                                        <div className="mt-3">
-                                        <div className="text-left text-slate-500">
-                                            Value for{' '}
-                                            {
-                                            (role &&
-                                            [
-                                                Role.MERCHANT,
-                                                Role.MERCHANT_ADMIN,
-                                                Role.SUB_MERCHANT,
-                                                Role.MERCHANT_OPERATIONS,
-                                            ].includes(role)
-                                                ? Columns.PAYOUT_MERCHANT
-                                                : role &&
-                                                [
-                                                    Role.VENDOR,
-                                                    Role.VENDOR_OPERATIONS,
-                                                ].includes(role)
-                                                ? getPayout_Vender_Columns()
-                                                : getPayout_Columns()
-                                            ).find(
-                                                (col) => col.key === selectedColumn,
-                                            )?.label
-                                            }
-                                        </div>
-                                        <FormInput
-                                            type="text"
-                                            className="mt-2"
-                                            value={filterValue}
-                                            onChange={(e) =>
-                                            setFilterValue(e.target.value)
-                                            }
-                                            placeholder={`Enter value for ${selectedColumn}`}
+                                        <Lucide
+                                        icon="ArrowDownWideNarrow"
+                                        className="stroke-[1.3] w-4 h-4 mr-2"
                                         />
-                                        </div>
-                                    )}
-                                    </div>
-                                    <div className="flex items-center mt-4">
-                                    <Button
-                                        variant="secondary"
-                                        type="button"
-                                        onClick={() => {
-                                        setSelectedColumn('');
-                                        setFilterValue('');
-                                        close();
+                                        Filter
+                                    </Popover.Button>
+                                    <Popover.Panel placement="bottom-end">
+                                        <form
+                                        onSubmit={(e) => {
+                                            e.preventDefault();
+                                            applyFilter();
+                                            close();
                                         }}
-                                        className="w-32 ml-auto"
-                                    >
-                                        Close
-                                    </Button>
-                                    <Button
-                                        variant="primary"
-                                        type="submit"
-                                        className="w-32 ml-2"
-                                    >
-                                        Apply
-                                    </Button>
-                                    </div>
+                                        >
+                                        <div className="p-2">
+                                            {role &&
+                                            [Role.ADMIN, Role.MERCHANT_ADMIN].includes(
+                                                role,
+                                            ) && (
+                                                <div className="mt-3">
+                                                <div className="text-left text-slate-500 mb-2">
+                                                    Merchant
+                                                </div>
+                                                <MultiSelect
+                                                    codes={merchantCodesData}
+                                                    selectedFilter={selectedFilter}
+                                                    setSelectedFilter={setSelectedFilter}
+                                                />
+                                                </div>
+                                            )}
+                                            {status === 'all' && (
+                                                <div className="mt-3">
+                                                <div className="text-left text-slate-500">
+                                                    Status
+                                                </div>
+                                                <FormSelect
+                                                    className="flex-1 mt-2"
+                                                    value={selectedStatus}
+                                                    onChange={(e) =>
+                                                    //filters not getting set in state : fixed
+                                                    {
+                                                        const newValue = e.target.value;
+                                                        setSelectedStatus(newValue);
+                                                    }
+                                                    }
+                                                >
+                                                    <option value="">Select a status</option>
+                                                    {Object.entries(PayOutStatusOptions).map(
+                                                    ([key, value]) => (
+                                                        <option key={key} value={value.value}>
+                                                        {value.label}
+                                                        </option>
+                                                    ),
+                                                    )}
+                                                </FormSelect>
+                                                </div>
+                                            )}
+                                            <div className="mt-3">
+                                            <div className="text-left text-slate-500">
+                                                Additional Filters
+                                            </div>
+                                            <FormSelect
+                                                className="flex-1 mt-2"
+                                                value={selectedColumn}
+                                                onChange={(e) => {
+                                                setSelectedColumn(e.target.value);
+                                                setFilterValue('');
+                                                }}
+                                            >
+                                                <option value="">Select a column</option>
+                                                {[
+                                                ...(role &&
+                                                [
+                                                    Role.MERCHANT,
+                                                    Role.MERCHANT_ADMIN,
+                                                    Role.SUB_MERCHANT,
+                                                    Role.MERCHANT_OPERATIONS,
+                                                ].includes(role)
+                                                    ? Columns.PAYOUT_MERCHANT
+                                                    : role &&
+                                                    [
+                                                        Role.VENDOR,
+                                                        Role.VENDOR_OPERATIONS,
+                                                    ].includes(role)
+                                                    ? getPayout_Vender_Columns()
+                                                    : getPayout_Columns()),
+                                                { key: 'id', label: 'Payout ID' },
+                                                { key: 'txnid', label: 'Txn ID' },
+                                                ]
+                                                .filter(
+                                                    (col) =>
+                                                    col.key !== 'merchant_details' &&
+                                                    col.key !== 'more_details' &&
+                                                    col.key !== 'status' &&
+                                                    col.key !== 'sno' &&
+                                                    // col.key !== 'user_bank_details' &&
+                                                    col.key !== '' &&
+                                                    col.key !== 'actions',
+                                                )
+                                                .map((col) => (
+                                                    <option key={col.key} value={col.key}>
+                                                    {col.label}
+                                                    </option>
+                                                ))}
+                                            </FormSelect>
+                                            {selectedColumn && (
+                                                <div className="mt-3">
+                                                <div className="text-left text-slate-500">
+                                                    Value for{' '}
+                                                    {
+                                                    (role &&
+                                                    [
+                                                        Role.MERCHANT,
+                                                        Role.MERCHANT_ADMIN,
+                                                        Role.SUB_MERCHANT,
+                                                        Role.MERCHANT_OPERATIONS,
+                                                    ].includes(role)
+                                                        ? Columns.PAYOUT_MERCHANT
+                                                        : role &&
+                                                        [
+                                                            Role.VENDOR,
+                                                            Role.VENDOR_OPERATIONS,
+                                                        ].includes(role)
+                                                        ? getPayout_Vender_Columns()
+                                                        : getPayout_Columns()
+                                                    ).find(
+                                                        (col) => col.key === selectedColumn,
+                                                    )?.label
+                                                    }
+                                                </div>
+                                                <FormInput
+                                                    type="text"
+                                                    className="mt-2"
+                                                    value={filterValue}
+                                                    onChange={(e) =>
+                                                    setFilterValue(e.target.value)
+                                                    }
+                                                    placeholder={`Enter value for ${selectedColumn}`}
+                                                />
+                                                </div>
+                                            )}
+                                            </div>
+                                            <div className="flex items-center mt-4">
+                                            <Button
+                                                variant="secondary"
+                                                type="button"
+                                                onClick={() => {
+                                                setSelectedColumn('');
+                                                setFilterValue('');
+                                                close();
+                                                }}
+                                                className="w-32 ml-auto"
+                                            >
+                                                Close
+                                            </Button>
+                                            <Button
+                                                variant="primary"
+                                                type="submit"
+                                                className="w-32 ml-2"
+                                            >
+                                                Apply
+                                            </Button>
+                                            </div>
+                                        </div>
+                                        </form>
+                                    </Popover.Panel>
+                                    </>
+                                )}
+                                </Popover>
+                            </div>
+                        </div>
+                        <div className="flex flex-col sm:flex-row items-center flex-wrap gap-2">
+                            {/* Merchant Order ID - Shown for ADMIN and MERCHANT */}
+                            {(role === Role.ADMIN || role === Role.MERCHANT) && (
+                                <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                                <Lucide
+                                    icon="Search"
+                                    className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                                />
+                                <FormInput
+                                    type="text"
+                                    placeholder="Order ID..."
+                                    className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                                    value={merchantOrderId}
+                                    onChange={(e) => setMerchantOrderId(e.target.value)}
+                                />
+                                {merchantOrderId && (
+                                    <Lucide
+                                    icon="X"
+                                    className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                                    onClick={() => setMerchantOrderId('')}
+                                    />
+                                )}
                                 </div>
-                                </form>
-                            </Popover.Panel>
-                            </>
-                        )}
-                        </Popover>
-                    </div>
+                            )}
+                            {/* UTR ID - Shown for all roles (ADMIN, MERCHANT, VENDOR) */}
+                            {(role === Role.ADMIN ||
+                                role === Role.MERCHANT ||
+                                role === Role.VENDOR) && (status !== 'progress') && (
+                                <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                                <Lucide
+                                    icon="Search"
+                                    className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                                />
+                                <FormInput
+                                    type="text"
+                                    placeholder="UTR..."
+                                    className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                                    value={utrId}
+                                    onChange={(e) => setUtrId(e.target.value)}
+                                />
+                                {utrId && (
+                                    <Lucide
+                                    icon="X"
+                                    className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                                    onClick={() => setUtrId('')}
+                                    />
+                                )}
+                                </div>
+                            )}
+                            {/* Nick Name - Shown for ADMIN and VENDOR */}
+                            {(role === Role.ADMIN || role === Role.MERCHANT) && (
+                                <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                                <Lucide
+                                    icon="Search"
+                                    className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                                />
+                                <FormInput
+                                    type="text"
+                                    placeholder="User ID..."
+                                    className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                                    value={nickName}
+                                    onChange={(e) => setNickName(e.target.value)}
+                                />
+                                {nickName && (
+                                    <Lucide
+                                    icon="X"
+                                    className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                                    onClick={() => setNickName('')}
+                                    />
+                                )}
+                                </div>
+                            )}
+                            <Menu>
+                            <Menu.Button
+                                as={Button}
+                                variant="outline-secondary"
+                                className="w-full sm:w-auto"
+                                onClick={handleRefresh}
+                            >
+                                <Lucide
+                                icon="RefreshCw"
+                                className="stroke-[1.3] w-4 h-4 mr-2"
+                                />
+                                Refresh
+                            </Menu.Button>
+                            </Menu>
+                            <Menu>
+                            <Menu.Button
+                                as={Button}
+                                variant="outline-secondary"
+                                className="w-full sm:w-auto"
+                                onClick={handleReset}
+                            >
+                                <Lucide
+                                icon="RefreshCw"
+                                className="stroke-[1.3] w-4 h-4 mr-2"
+                                />
+                                Reset
+                            </Menu.Button>
+                            </Menu>
+                        </div>
                     </div>
                 </div>
                 <div className="overflow-auto xl:overflow-visible">
@@ -1688,11 +1694,11 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
                         source="Payout"
                         // role={role || undefined}
                         handleEditModal={status === 'completed' ? handleEditModal : undefined}
-                        handleRowClick={(status === 'all' || status === 'in-progress') ? handleRowSelect : undefined}
-                        handleSelectAll={(status === 'all' || status === 'in-progress') ? handleSelectAll : undefined}
-                        selectedRows={(status === 'all' || status === 'in-progress') ? selectedRows : undefined}
-                        setTotalPayoutAmount={(status === 'all' || status === 'in-progress') ? setTotalPayoutAmount : undefined}
-                        handleRetrieve={(status === 'all' || status === 'in-progress') ? handleRetrieve : undefined}
+                        handleRowClick={(status === 'all' || status === 'progress') ? handleRowSelect : undefined}
+                        handleSelectAll={(status === 'all' || status === 'progress') ? handleSelectAll : undefined}
+                        selectedRows={(status === 'all' || status === 'progress') ? selectedRows : undefined}
+                        setTotalPayoutAmount={(status === 'all' || status === 'progress') ? setTotalPayoutAmount : undefined}
+                        handleRetrieve={(status === 'all' || status === 'progress') ? handleRetrieve : undefined}
                         actionMenuItems={(row: PayOutData) => {
                         const items: {
                             label?: string;
@@ -1707,7 +1713,7 @@ export default function Payouts ({status = 'all'}: PayoutsProps) {
                             designation !== Role.ADMIN && row?.vendor_id;
                             if (
                             (!isAdminWithVendor ||
-                            row?.status === Status.PENDING) && (status === 'all' || status === 'in-progress')
+                            row?.status === Status.PENDING) && (status === 'all' || status === 'progress')
                             ) {
                             items.push({
                                 label: 'Approve',
