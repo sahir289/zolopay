@@ -12,7 +12,7 @@ interface ModalProps {
   forOpen: boolean;
   children: React.ReactNode;
 }
-
+ 
 const Modal: React.FC<ModalProps> = ({
   handleModal,
   // sendButtonRef,
