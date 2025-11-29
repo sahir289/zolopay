@@ -59,7 +59,7 @@ function Main() {
         <div className="col-span-12">
           {role === Role.ADMIN && (
             <div className="relative flex flex-col col-span-12 lg:col-span-12 xl:col-span-12 gap-y-7">
-              <div className="flex flex-col p-3 sm:p-4 md:p-5 box box--stacked">
+              <div className="flex flex-col py-5 mx-3 box box--stacked">
                 <Tab.Group
                   selectedIndex={parentTab}
                   onChange={handleParentTabChange}
@@ -130,14 +130,14 @@ function Main() {
           )}
           {role === Role.MERCHANT && (
             <div className="relative flex flex-col col-span-12 lg:col-span-12 xl:col-span-12 gap-y-4 sm:gap-y-7">
-              <div className="flex flex-col p-3 sm:p-4 md:p-5 box box--stacked">
+              <div className="flex flex-col py-5 mx-3 box box--stacked">
                 <AccountReports role={role} name={name} />
               </div>
             </div>
           )}
           {role === Role.VENDOR && (
             <div className="relative flex flex-col col-span-12 lg:col-span-12 xl:col-span-12 gap-y-4 sm:gap-y-7">
-              <div className="flex flex-col p-3 sm:p-4 md:p-5 box box--stacked">
+              <div className="flex flex-col py-5 mx-3 box box--stacked">
                 <VendorAccountReports role={role} name={name} />
               </div>
             </div>

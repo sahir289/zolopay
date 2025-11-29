@@ -615,7 +615,7 @@ const Users: React.FC = () => {
             <Modal
               handleModal={userModal}
               forOpen={newUserModal}
-              buttonTitle="Add User"
+              buttonTitle="Create User"
             >
               <DynamicForm
                 sections={{
@@ -753,40 +753,19 @@ const Users: React.FC = () => {
 
         <div className="flex flex-col gap-4 sm:gap-6 md:gap-8 mt-3.5">
           <div className="flex flex-col box box--stacked">
-            <div className="flex flex-col p-3 sm:p-4 md:p-5 sm:items-center sm:flex-row gap-y-2">
-              <div className="w-full sm:w-auto">
-                <div className="relative">
-                  <Lucide
-                    icon="Search"
-                    className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                  />
-                  <FormInput
-                    type="text"
-                    placeholder="Search users..."
-                    className="pl-9 w-full sm:w-64 rounded-[0.5rem] text-sm sm:text-base"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  {searchQuery && (
-                    <Lucide
-                      icon="X"
-                      className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                      onClick={() => setSearchQuery('')}
-                    />
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-x-2 sm:gap-x-3 gap-y-2 sm:ml-auto">
+            <div className="flex flex-col py-5 gap-y-2 mx-3">
+              {/* Action Buttons Row */}
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-end">
                 <Menu>
                   <Menu.Button
                     as={Button}
                     variant="outline-secondary"
-                    className="w-full sm:w-auto text-xs sm:text-sm"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                     onClick={handleRefresh}
                   >
                     <Lucide
                       icon="RefreshCw"
-                      className="stroke-[1.3] w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2"
+                      className="stroke-[1.3] w-4 h-4 mr-2"
                     />
                     Refresh
                   </Menu.Button>
@@ -795,7 +774,7 @@ const Users: React.FC = () => {
                   <Menu.Button
                     as={Button}
                     variant="outline-secondary"
-                    className="w-full sm:w-auto text-xs sm:text-sm"
+                    className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                     onClick={() => {
                       if (
                         searchQuery ||
@@ -807,12 +786,36 @@ const Users: React.FC = () => {
                     }}
                   >
                     <Lucide
-                      icon="RefreshCw"
+                      icon="RotateCcw"
                       className="stroke-[1.3] w-4 h-4 mr-2"
                     />
                     Reset
                   </Menu.Button>
                 </Menu>
+              </div>
+
+              {/* Search Input Row */}
+              <div className="w-full">
+                <div className="relative">
+                  <Lucide
+                    icon="Search"
+                    className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                  />
+                  <FormInput
+                    type="text"
+                    placeholder="Search users..."
+                    className="pl-9 sm:w-64 rounded-[0.5rem]"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  {searchQuery && (
+                    <Lucide
+                      icon="X"
+                      className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                      onClick={() => setSearchQuery('')}
+                    />
+                  )}
+                </div>
               </div>
             </div>
             <div className="overflow-auto xl:overflow-visible">

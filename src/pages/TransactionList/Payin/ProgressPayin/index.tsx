@@ -275,7 +275,7 @@ function Main() {
             <Modal
               handleModal={transactionModal}
               forOpen={newTransactionModal}
-              buttonTitle={`Add ${title}`}
+              buttonTitle={`Create ${title}`}
             >
               <DynamicForm
                 sections={getTransactionFormFields(merchantOptions, role ?? '', oneTime, handleOneTimeChange).PAYIN}
@@ -337,9 +337,9 @@ function Main() {
                 </Tab>
               </Tab.List> */}
               <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400">
-                <Tab.Panel className="p-2 sm:p-4 md:p-5">
+                {/* <Tab.Panel className="p-2 sm:p-4 md:p-5"> */}
                   <PayInComponent />
-                </Tab.Panel>
+                {/* </Tab.Panel> */}
               </Tab.Panels>
             </Tab.Group>
           </div>

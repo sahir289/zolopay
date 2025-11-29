@@ -29,21 +29,9 @@ function Main() {
         </div>
         <div className="mt-3.5">
           <div className="flex flex-col box box--stacked">
-            <div className="flex flex-col p-5 sm:items-center sm:flex-row gap-y-2">
-              <div>
-                <div className="relative">
-                  <Lucide
-                    icon="Search"
-                    className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                  />
-                  <FormInput
-                    type="text"
-                    placeholder="Search categories..."
-                    className="pl-9 sm:w-64 rounded-[0.5rem]"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 sm:ml-auto">
+            <div className="flex flex-col p-5 gap-y-2">
+              {/* Action Buttons Row */}
+              <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 w-full sm:justify-end">
                 <Menu>
                   <Menu.Button
                     as={Button}
@@ -128,6 +116,21 @@ function Main() {
                     </>
                   )}
                 </Popover>
+              </div>
+
+              {/* Search Input Row */}
+              <div className="w-full">
+                <div className="relative">
+                  <Lucide
+                    icon="Search"
+                    className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                  />
+                  <FormInput
+                    type="text"
+                    placeholder="Search categories..."
+                    className="pl-9 sm:w-64 rounded-[0.5rem]"
+                  />
+                </div>
               </div>
             </div>
             <div className="overflow-auto xl:overflow-visible">

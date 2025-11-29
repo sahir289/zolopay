@@ -61,8 +61,9 @@ interface AllPayOutProps {
   vendorCodes: { label: string; value: string }[];
   merchantCodes: { label: string; value: string }[];
   merchantCodesData: { label: string; value: string }[];
-setCallMerchant: React.Dispatch<React.SetStateAction<boolean>>;
-  setCallVendor: React.Dispatch<React.SetStateAction<boolean>>;}
+  setCallMerchant: React.Dispatch<React.SetStateAction<boolean>>;
+  setCallVendor: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 const CompletedPayOut: React.FC<AllPayOutProps> = ({
   vendorCodes,
@@ -256,7 +257,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
       }),
     );
   }, [dispatch, getPayOutData, selectedFilterData]);
-  
+
   const handleReset = useCallback(async () => {
     dispatch(onload());
     setSelectedFilter([]);
@@ -522,14 +523,12 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
               : '';
           if (includeVendors) {
             result[fieldMappings.vendor_code] = item.vendor_code || '';
-            (result[fieldMappings.nick_name] = item.nick_name || '');
+            result[fieldMappings.nick_name] = item.nick_name || '';
           }
-            (result[fieldMappings.updated_at] = result[
-              fieldMappings.created_at
-            ] =
-              dayjs(item.created_at)
-                .tz('Asia/Kolkata')
-                .format('DD-MM-YYYY h:mm:ss A'));
+          result[fieldMappings.updated_at] = result[fieldMappings.created_at] =
+            dayjs(item.created_at)
+              .tz('Asia/Kolkata')
+              .format('DD-MM-YYYY h:mm:ss A');
           result[fieldMappings.updated_at] = dayjs(item.updated_at)
             .tz('Asia/Kolkata')
             .format('DD-MM-YYYY h:mm:ss A');
@@ -603,12 +602,285 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
   };
 
   return (
-    <>
+    <div>
       <div className="grid grid-cols-12 gap-y-10 gap-x-6">
         <div className="col-span-12">
           <div className="mt-3.5">
             <div className="flex flex-col overflow-x-hidden">
-              <div className="flex flex-col p-5 gap-y-2 mx-3">
+              <div className="flex flex-col py-5 gap-y-2 mx-3">
+                {/* Action Buttons Row */}
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-between">
+                  <div className="flex justify-start">
+                    <div className="text-lg sm:text-xl md:text-2xl font-medium group-[.mode--light]:text-white">
+                      Completed
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <Menu>
+                      <Menu.Button
+                        as={Button}
+                        variant="outline-secondary"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1 mr-2 p-1"
+                        onClick={setExportModal}
+                      >
+                        <Lucide
+                          icon="Download"
+                          className="stroke-[1.3] w-4 h-4 mr-2"
+                        />
+                        Export
+                        <Lucide
+                          icon="ChevronDown"
+                          className="stroke-[1.3] w-4 h-4 ml-2"
+                        />
+                      </Menu.Button>
+                      {exportModalOpen && (
+                        <Modal
+                          handleModal={() => {
+                            setExportModalOpen((prev) => !prev);
+                            setSelectedFilter([]);
+                            setSelectedFilterVendor([]);
+                          }}
+                          forOpen={exportModalOpen}
+                          title="Export Withdrawals"
+                        >
+                          <div className="py-2 my-2 mb-4">
+                            <Litepicker
+                              value={selectedFilterDates || ''}
+                              onChange={(e) => {
+                                setSelectedFilterDates(e.target.value);
+                              }}
+                              enforceRange={true}
+                              options={{
+                                autoApply: false,
+                                singleMode: false,
+                                numberOfMonths: 1,
+                                numberOfColumns: 1,
+                                startDate: selectedFilterDates.split(' - ')[0],
+                                endDate: selectedFilterDates.split(' - ')[1],
+                                showWeekNumbers: true,
+                                dropdowns: {
+                                  minYear: 1990,
+                                  maxYear: null,
+                                  months: true,
+                                  years: true,
+                                },
+                              }}
+                              className="w-full pl-9 rounded-[0.5rem] group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200 group-[.mode--light]:!border-transparent dark:group-[.mode--light]:!bg-darkmode-900/30 dark:!box"
+                            />
+                          </div>
+                          {role === Role.ADMIN ? (
+                            <div className="my-2 py-2 flex flex-col justify-center">
+                              <div className="flex flex-row">
+                                <MultiSelect
+                                  codes={merchantCodes}
+                                  selectedFilter={selectedFilter}
+                                  setSelectedFilter={(value: any[]) => {
+                                    setSelectedFilter(value);
+                                    if (value.length > 0)
+                                      setSelectedFilterVendor([]);
+                                  }}
+                                  placeholder="Select Payment Partner Codes ..."
+                                  disabled={selectedFilterVendor?.length > 0}
+                                />
+                              </div>
+                              <div className="p-2 flex justify-center">OR</div>
+                              <div className="flex flex-row">
+                                {/* <div className="px-2 flex ">Select Vendor : </div> */}
+                                <MultiSelect
+                                  codes={vendorCodes}
+                                  setSelectedFilter={(value: any[]) => {
+                                    setSelectedFilterVendor(value);
+                                    if (value.length > 0) setSelectedFilter([]);
+                                  }}
+                                  placeholder="Select Banking Partner Codes ..."
+                                  disabled={selectedFilter?.length > 0}
+                                />
+                              </div>
+                            </div>
+                          ) : role === Role.MERCHANT ? (
+                            <MultiSelect
+                              codes={merchantCodes}
+                              selectedFilter={selectedFilter}
+                              setSelectedFilter={setSelectedFilter}
+                              placeholder="Select Payment Partner Codes ..."
+                            />
+                          ) : (
+                            <MultiSelect
+                              codes={vendorCodes}
+                              selectedFilter={selectedFilterVendor}
+                              setSelectedFilter={setSelectedFilterVendor}
+                              placeholder="Select Banking Partner Codes ..."
+                            />
+                          )}
+
+                          <div className="flex flex-row gap-4 my-4 pt-6">
+                            <Button onClick={() => handleDownload('PDF')}>
+                              Export as PDF
+                            </Button>
+                            <Button onClick={() => handleDownload('CSV')}>
+                              Export as CSV
+                            </Button>
+                            <Button onClick={() => handleDownload('XLSX')}>
+                              Export as XLSX
+                            </Button>
+                          </div>
+                        </Modal>
+                      )}
+                    </Menu>
+                    <Popover className="inline-block">
+                      {({ close }: { close: () => void }) => (
+                        <>
+                          <Popover.Button
+                            as={Button}
+                            variant="outline-secondary"
+                            className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
+                            onClick={openfilter}
+                          >
+                            <Lucide
+                              icon="SlidersHorizontal"
+                              className="stroke-[1.3] w-4 h-4 mr-2"
+                            />
+                            Filter
+                          </Popover.Button>
+                          <Popover.Panel placement="bottom-end">
+                            <form
+                              onSubmit={(e) => {
+                                e.preventDefault();
+                                applyFilter();
+                                close();
+                              }}
+                            >
+                              <div className="p-2">
+                                {role &&
+                                  [Role.ADMIN, Role.MERCHANT_ADMIN].includes(
+                                    role,
+                                  ) && (
+                                    <div className="mt-3">
+                                      <div className="text-left text-slate-500 mb-2">
+                                        Merchant
+                                      </div>
+                                      <MultiSelect
+                                        codes={merchantCodesData}
+                                        selectedFilter={selectedFilter}
+                                        setSelectedFilter={setSelectedFilter}
+                                      />
+                                    </div>
+                                  )}
+                                <div className="mt-3">
+                                  <div className="text-left text-slate-500">
+                                    Additional Filters
+                                  </div>
+                                  <FormSelect
+                                    className="flex-1 mt-2"
+                                    value={selectedColumn}
+                                    onChange={(e) => {
+                                      setSelectedColumn(e.target.value);
+                                      setFilterValue('');
+                                    }}
+                                  >
+                                    <option value="">Select a column</option>
+                                    {[
+                                      ...(role &&
+                                      [
+                                        Role.MERCHANT,
+                                        Role.MERCHANT_ADMIN,
+                                        Role.SUB_MERCHANT,
+                                        Role.MERCHANT_OPERATIONS,
+                                      ].includes(role)
+                                        ? Columns.PAYOUT_MERCHANT
+                                        : role &&
+                                          [
+                                            Role.VENDOR,
+                                            Role.VENDOR_OPERATIONS,
+                                          ].includes(role)
+                                        ? Columns.PAYOUT_COMPLETED_VENDOR
+                                        : Columns.PAYOUT_COMPLETED),
+                                      { key: 'id', label: 'Payout ID' },
+                                    ]
+                                      .filter(
+                                        (col) =>
+                                          col.key !== 'merchant_details' &&
+                                          col.key !== 'more_details' &&
+                                          col.key !== 'status' &&
+                                          col.key !== 'sno' &&
+                                          // col.key !== 'user_bank_details' &&
+                                          col.key !== 'actions',
+                                      )
+                                      .map((col) => (
+                                        <option key={col.key} value={col.key}>
+                                          {col.label}
+                                        </option>
+                                      ))}
+                                  </FormSelect>
+                                  {selectedColumn && (
+                                    <div className="mt-3">
+                                      <div className="text-left text-slate-500">
+                                        Value for{' '}
+                                        {
+                                          (role &&
+                                          [
+                                            Role.MERCHANT,
+                                            Role.MERCHANT_ADMIN,
+                                            Role.SUB_MERCHANT,
+                                            Role.MERCHANT_OPERATIONS,
+                                          ].includes(role)
+                                            ? Columns.PAYOUT_MERCHANT
+                                            : role &&
+                                              [
+                                                Role.VENDOR,
+                                                Role.VENDOR_OPERATIONS,
+                                              ].includes(role)
+                                            ? Columns.PAYOUT_COMPLETED_VENDOR
+                                            : Columns.PAYOUT_COMPLETED
+                                          ).find(
+                                            (col) => col.key === selectedColumn,
+                                          )?.label
+                                        }
+                                      </div>
+                                      <FormInput
+                                        type="text"
+                                        className="mt-2"
+                                        value={filterValue}
+                                        onChange={(e) =>
+                                          setFilterValue(e.target.value)
+                                        }
+                                        placeholder={`Enter value for ${selectedColumn}`}
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="flex items-center mt-4">
+                                  <Button
+                                    type="button"
+                                    variant="secondary"
+                                    onClick={() => {
+                                      setSelectedColumn('');
+                                      setFilterValue('');
+                                      close();
+                                    }}
+                                    className="w-32 ml-auto"
+                                  >
+                                    Close
+                                  </Button>
+                                  <Button
+                                    variant="outline-secondary"
+                                    type="submit"
+                                    className="w-32 ml-2"
+                                  >
+                                    Apply
+                                  </Button>
+                                </div>
+                              </div>
+                            </form>
+                          </Popover.Panel>
+                        </>
+                      )}
+                    </Popover>
+                  </div>
+                </div>
+
+                {/* Search Inputs Row */}
                 <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
                   {(role === Role.ADMIN || role === Role.MERCHANT) && (
                     <div className="relative w-full sm:w-auto sm:flex-shrink-0">
@@ -678,13 +950,11 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                       )}
                     </div>
                   )}
-                
-                  <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto sm:ml-auto">
                   <Menu>
                     <Menu.Button
                       as={Button}
                       variant="outline-secondary"
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                       onClick={handleRefresh}
                     >
                       <Lucide
@@ -698,277 +968,16 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                     <Menu.Button
                       as={Button}
                       variant="outline-secondary"
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                       onClick={handleReset}
                     >
                       <Lucide
-                        icon="RefreshCw"
+                        icon="RotateCcw"
                         className="stroke-[1.3] w-4 h-4 mr-2"
                       />
                       Reset
                     </Menu.Button>
                   </Menu>
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto"
-                      onClick={setExportModal}
-                    >
-                      <Lucide
-                        icon="Download"
-                        className="stroke-[1.3] w-4 h-4 mr-2"
-                      />
-                      Export
-                      <Lucide
-                        icon="ChevronDown"
-                        className="stroke-[1.3] w-4 h-4 ml-2"
-                      />
-                    </Menu.Button>
-                    {exportModalOpen && (
-                      <Modal
-                        handleModal={() => {
-                          setExportModalOpen((prev) => !prev);
-                          setSelectedFilter([]);
-                          setSelectedFilterVendor([]);
-                        }}
-                        forOpen={exportModalOpen}
-                        title="Export Withdrawals"
-                      >
-                        <div className="py-2 my-2 mb-4">
-                          <Litepicker
-                            value={selectedFilterDates || ''}
-                            onChange={(e) => {
-                              setSelectedFilterDates(e.target.value);
-                            }}
-                            enforceRange={true}
-                            options={{
-                              autoApply: false,
-                              singleMode: false,
-                              numberOfMonths: 1,
-                              numberOfColumns: 1,
-                              startDate: selectedFilterDates.split(' - ')[0],
-                              endDate: selectedFilterDates.split(' - ')[1],
-                              showWeekNumbers: true,
-                              dropdowns: {
-                                minYear: 1990,
-                                maxYear: null,
-                                months: true,
-                                years: true,
-                              },
-                            }}
-                            className="w-full pl-9 rounded-[0.5rem] group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200 group-[.mode--light]:!border-transparent dark:group-[.mode--light]:!bg-darkmode-900/30 dark:!box"
-                          />
-                        </div>
-                        {role === Role.ADMIN ? (
-                          <div className="my-2 py-2 flex flex-col justify-center">
-                            <div className="flex flex-row">
-                              <MultiSelect
-                                codes={merchantCodes}
-                                selectedFilter={selectedFilter}
-                                setSelectedFilter={(value: any[]) => {
-                                  setSelectedFilter(value);
-                                  if (value.length > 0)
-                                    setSelectedFilterVendor([]);
-                                }}
-                                placeholder="Select Payment Partner Codes ..."
-                                disabled={selectedFilterVendor?.length > 0}
-                              />
-                            </div>
-                            <div className="p-2 flex justify-center">OR</div>
-                            <div className="flex flex-row">
-                              {/* <div className="px-2 flex ">Select Vendor : </div> */}
-                              <MultiSelect
-                                codes={vendorCodes}
-                                setSelectedFilter={(value: any[]) => {
-                                  setSelectedFilterVendor(value);
-                                  if (value.length > 0) setSelectedFilter([]);
-                                }}
-                                placeholder="Select Banking Partner Codes ..."
-                                disabled={selectedFilter?.length > 0}
-                              />
-                            </div>
-                          </div>
-                        ) : role === Role.MERCHANT ? (
-                          <MultiSelect
-                            codes={merchantCodes}
-                            selectedFilter={selectedFilter}
-                            setSelectedFilter={setSelectedFilter}
-                            placeholder="Select Payment Partner Codes ..."
-                          />
-                        ) : (
-                          <MultiSelect
-                            codes={vendorCodes}
-                            selectedFilter={selectedFilterVendor}
-                            setSelectedFilter={setSelectedFilterVendor}
-                            placeholder="Select Banking Partner Codes ..."
-                          />
-                        )}
-
-                        <div className="flex flex-row gap-4 my-4 pt-6">
-                          <Button onClick={() => handleDownload('PDF')}>
-                            Export as PDF
-                          </Button>
-                          <Button onClick={() => handleDownload('CSV')}>
-                            Export as CSV
-                          </Button>
-                          <Button onClick={() => handleDownload('XLSX')}>
-                            Export as XLSX
-                          </Button>
-                        </div>
-                      </Modal>
-                    )}
-                  </Menu>
-                  <Popover className="inline-block">
-                    {({ close }: { close: () => void }) => (
-                      <>
-                        <Popover.Button
-                          as={Button}
-                          variant="outline-secondary"
-                          className="w-full sm:w-auto"
-                          onClick={openfilter}
-                        >
-                          <Lucide
-                            icon="ArrowDownWideNarrow"
-                            className="stroke-[1.3] w-4 h-4 mr-2"
-                          />
-                          Filter
-                        </Popover.Button>
-                        <Popover.Panel placement="bottom-end">
-                          <form
-                            onSubmit={(e) => {
-                              e.preventDefault();
-                              applyFilter();
-                              close();
-                            }}
-                          >
-                            <div className="p-2">
-                              {role &&
-                                [Role.ADMIN, Role.MERCHANT_ADMIN].includes(
-                                  role,
-                                ) && (
-                                  <div className="mt-3">
-                                    <div className="text-left text-slate-500 mb-2">
-                                      Merchant
-                                    </div>
-                                    <MultiSelect
-                                      codes={merchantCodesData}
-                                      selectedFilter={selectedFilter}
-                                      setSelectedFilter={setSelectedFilter}
-                                    />
-                                  </div>
-                                )}
-                              <div className="mt-3">
-                                <div className="text-left text-slate-500">
-                                  Additional Filters
-                                </div>
-                                <FormSelect
-                                  className="flex-1 mt-2"
-                                  value={selectedColumn}
-                                  onChange={(e) => {
-                                    setSelectedColumn(e.target.value);
-                                    setFilterValue('');
-                                  }}
-                                >
-                                  <option value="">Select a column</option>
-                                  {[
-                                    ...(role &&
-                                    [
-                                      Role.MERCHANT,
-                                      Role.MERCHANT_ADMIN,
-                                      Role.SUB_MERCHANT,
-                                      Role.MERCHANT_OPERATIONS,
-                                    ].includes(role)
-                                      ? Columns.PAYOUT_MERCHANT
-                                      : role &&
-                                        [
-                                          Role.VENDOR,
-                                          Role.VENDOR_OPERATIONS,
-                                        ].includes(role)
-                                      ? Columns.PAYOUT_COMPLETED_VENDOR
-                                      : Columns.PAYOUT_COMPLETED),
-                                    { key: 'id', label: 'Payout ID' },
-                                  ]
-                                    .filter(
-                                      (col) =>
-                                        col.key !== 'merchant_details' &&
-                                        col.key !== 'more_details' &&
-                                        col.key !== 'status' &&
-                                        col.key !== 'sno' &&
-                                        // col.key !== 'user_bank_details' &&
-                                        col.key !== 'actions',
-                                    )
-                                    .map((col) => (
-                                      <option key={col.key} value={col.key}>
-                                        {col.label}
-                                      </option>
-                                    ))}
-                                </FormSelect>
-                                {selectedColumn && (
-                                  <div className="mt-3">
-                                    <div className="text-left text-slate-500">
-                                      Value for{' '}
-                                      {
-                                        (role &&
-                                        [
-                                          Role.MERCHANT,
-                                          Role.MERCHANT_ADMIN,
-                                          Role.SUB_MERCHANT,
-                                          Role.MERCHANT_OPERATIONS,
-                                        ].includes(role)
-                                          ? Columns.PAYOUT_MERCHANT
-                                          : role &&
-                                            [
-                                              Role.VENDOR,
-                                              Role.VENDOR_OPERATIONS,
-                                            ].includes(role)
-                                          ? Columns.PAYOUT_COMPLETED_VENDOR
-                                          : Columns.PAYOUT_COMPLETED
-                                        ).find(
-                                          (col) => col.key === selectedColumn,
-                                        )?.label
-                                      }
-                                    </div>
-                                    <FormInput
-                                      type="text"
-                                      className="mt-2"
-                                      value={filterValue}
-                                      onChange={(e) =>
-                                        setFilterValue(e.target.value)
-                                      }
-                                      placeholder={`Enter value for ${selectedColumn}`}
-                                    />
-                                  </div>
-                                )}
-                              </div>
-                              <div className="flex items-center mt-4">
-                                <Button
-                                  type="button"
-                                  variant="secondary"
-                                  onClick={() => {
-                                    setSelectedColumn('');
-                                    setFilterValue('');
-                                    close();
-                                  }}
-                                  className="w-32 ml-auto"
-                                >
-                                  Close
-                                </Button>
-                                <Button
-                                  variant="primary"
-                                  type="submit"
-                                  className="w-32 ml-2"
-                                >
-                                  Apply
-                                </Button>
-                              </div>
-                            </div>
-                          </form>
-                        </Popover.Panel>
-                      </>
-                    )}
-                  </Popover>
-                </div>
                 </div>
               </div>
               {payOuts.loading && isLoad ? (
@@ -1012,7 +1021,11 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
                     // Restrict Reset action for vendor logins
                     if (
                       role &&
-                      ![Role.VENDOR, Role.SUB_VENDOR, Role.VENDOR_OPERATIONS].includes(role)
+                      ![
+                        Role.VENDOR,
+                        Role.SUB_VENDOR,
+                        Role.VENDOR_OPERATIONS,
+                      ].includes(role)
                     ) {
                       items.push({
                         label: 'Reset',
@@ -1061,7 +1074,7 @@ const CompletedPayOut: React.FC<AllPayOutProps> = ({
           isLoading={isLoading}
         />
       </Modal>
-    </>
+    </div>
   );
 };
 

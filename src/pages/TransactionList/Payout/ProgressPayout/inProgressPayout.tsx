@@ -1156,88 +1156,28 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
   };
 
   return (
-    <>
+    <div>
       <div className="grid grid-cols-12 gap-y-10 gap-x-6">
         <div className="col-span-12">
           <div className="mt-3.5">
             <div className="flex flex-col overflow-x-hidden">
-              <div className="flex flex-col p-5 gap-y-2 mx-3">
-                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
-                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
-                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="Order ID..."
-                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                        value={merchantOrderId}
-                        onChange={(e) => setMerchantOrderId(e.target.value)}
-                      />
-                      {merchantOrderId && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setMerchantOrderId('')}
-                        />
-                      )}
+              <div className="flex flex-col py-5 gap-y-2 mx-3">
+                {/* Action Buttons Row */}
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-between">
+                  <div className="flex justify-start">
+                    <div className="text-lg sm:text-xl md:text-2xl font-medium group-[.mode--light]:text-white">
+                      In Progress
                     </div>
-                  )}
-                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
-                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="User ID..."
-                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                        value={utrId}
-                        onChange={(e) => setUtrId(e.target.value)}
-                      />
-                      {utrId && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setUtrId('')}
-                        />
-                      )}
-                    </div>
-                  )}
-                  {/* {(role === Role.ADMIN || role === Role.VENDOR) && (
-                    <div className="relative flex-1">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="From Bank..."
-                        className="pl-9 sm:w-64 rounded-[0.5rem]"
-                        value={nickName}
-                        onChange={(e) => setNickName(e.target.value)}
-                      />
-                      {nickName && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setNickName('')}
-                        />
-                      )}
-                    </div>
-                  )} */}
+                  </div>
 
-                  <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto sm:ml-auto">
+                  <div className="flex justify-end">
                     {/* {(role === Role.ADMIN ||
-                      role === Role.OPERATIONS ||
-                      role === Role.TRANSACTIONS) && (
-                      <div className="w-full sm:w-auto bg-white dark:bg-darkmode-800 border border-dashed border-slate-300 dark:border-darkmode-600 rounded-lg shadow-md px-3 py-2 flex items-center justify-center h-10">
-                        <span className="text-slate-700 dark:text-slate-200 font-medium">
-                          InProcess Total :
-                        </span>
+                    role === Role.OPERATIONS ||
+                    role === Role.TRANSACTIONS) && (
+                    <div className="w-full sm:w-auto bg-white dark:bg-darkmode-800 border border-dashed border-slate-300 dark:border-darkmode-600 rounded-lg shadow-md px-3 py-2 flex items-center justify-center h-10">
+                      <span className="text-slate-700 dark:text-slate-200 font-medium">
+                        InProcess Total :
+                      </span>
                         <span
                           className={`font-medium ml-1 ${
                             pendingAmount > 0
@@ -1254,36 +1194,8 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                       <Menu.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto"
-                        onClick={handleRefresh}
-                      >
-                        <Lucide
-                          icon="RefreshCw"
-                          className="stroke-[1.3] w-4 h-4 mr-2"
-                        />
-                        Refresh
-                      </Menu.Button>
-                    </Menu>
-                    <Menu>
-                      <Menu.Button
-                        as={Button}
-                        variant="outline-secondary"
-                        className="w-full sm:w-auto"
-                        onClick={handleReset}
-                      >
-                        <Lucide
-                          icon="RefreshCw"
-                          className="stroke-[1.3] w-4 h-4 mr-2"
-                        />
-                        Reset
-                      </Menu.Button>
-                    </Menu>
-                    <Menu>
-                      <Menu.Button
-                        as={Button}
-                        variant="outline-secondary"
-                        className="w-full sm:w-auto"
-                        onClick={() => setExportModal()}
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1 mr-2 p-1"
+                        onClick={setExportModal}
                       >
                         <Lucide
                           icon="Download"
@@ -1399,11 +1311,11 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                           <Popover.Button
                             as={Button}
                             variant="outline-secondary"
-                            className="w-full sm:w-auto"
+                            className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                             onClick={() => openfilter()}
                           >
                             <Lucide
-                              icon="ArrowDownWideNarrow"
+                              icon="SlidersHorizontal"
                               className="stroke-[1.3] w-4 h-4 mr-2"
                             />
                             Filter
@@ -1527,7 +1439,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                                     Close
                                   </Button>
                                   <Button
-                                    variant="primary"
+                                    variant="outline-secondary"
                                     type="submit"
                                     className="w-32 ml-2"
                                   >
@@ -1541,6 +1453,104 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                       )}
                     </Popover>
                   </div>
+                </div>
+
+                {/* Search Inputs Row */}
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
+                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
+                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="Order ID..."
+                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                        value={merchantOrderId}
+                        onChange={(e) => setMerchantOrderId(e.target.value)}
+                      />
+                      {merchantOrderId && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setMerchantOrderId('')}
+                        />
+                      )}
+                    </div>
+                  )}
+                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
+                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="User ID..."
+                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                        value={utrId}
+                        onChange={(e) => setUtrId(e.target.value)}
+                      />
+                      {utrId && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setUtrId('')}
+                        />
+                      )}
+                    </div>
+                  )}
+                  {/* {(role === Role.ADMIN || role === Role.VENDOR) && (
+                    <div className="relative flex-1">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-4 h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="From Bank..."
+                        className="pl-9 sm:w-64 rounded-[0.5rem]"
+                        value={nickName}
+                        onChange={(e) => setNickName(e.target.value)}
+                      />
+                      {nickName && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setNickName('')}
+                        />
+                      )}
+                    </div>
+                  )} */}
+                  <Menu>
+                    <Menu.Button
+                      as={Button}
+                      variant="outline-secondary"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
+                      onClick={handleRefresh}
+                    >
+                      <Lucide
+                        icon="RefreshCw"
+                        className="stroke-[1.3] w-4 h-4 mr-2"
+                      />
+                      Refresh
+                    </Menu.Button>
+                  </Menu>
+                  <Menu>
+                    <Menu.Button
+                      as={Button}
+                      variant="outline-secondary"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
+                      onClick={handleReset}
+                    >
+                      <Lucide
+                        icon="RotateCcw"
+                        className="stroke-[1.3] w-4 h-4 mr-2"
+                      />
+                      Reset
+                    </Menu.Button>
+                  </Menu>
                 </div>
               </div>
               <div className="mb-4 border-b border-slate-200/60 dark:border-darkmode-400">
@@ -1601,7 +1611,13 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                   actionMenuItems={(row: any) => {
                     const items: {
                       label?: string;
-                      icon: 'BellRing' | 'RotateCcw' | 'CheckSquare' | 'XSquare' | 'RefreshCw' | 'XOctagon';
+                      icon:
+                        | 'BellRing'
+                        | 'RotateCcw'
+                        | 'CheckSquare'
+                        | 'XSquare'
+                        | 'RefreshCw'
+                        | 'XOctagon';
                       onClick: (row: any) => void;
                     }[] = [];
                     if (
@@ -1764,7 +1780,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
             </div>
             <Button
               className="my-4 ml-20"
-              variant="primary"
+              variant="outline-secondary"
               onClick={() => VendorAssignedModal()}
             >
               Add Vendor
@@ -1775,7 +1791,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
               ) && (
                 <Button
                   className="my-4 ml-5"
-                  variant="primary"
+                  variant="outline-secondary"
                   onClick={() => toggleBatchWithdrawal()}
                 >
                   Batch Withdrawal
@@ -1784,7 +1800,7 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
           </div>
         </Drawer>
       )}
-    </>
+    </div>
   );
 };
 

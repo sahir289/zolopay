@@ -671,7 +671,7 @@ const BeneficiaryAccounts: React.FC = () => {
             <Modal
               handleModal={beneficiaryModal}
               forOpen={newUserModal}
-              buttonTitle={`Add Payee`}
+              buttonTitle={`Create Payee`}
             >
               <DynamicForm
                 sections={
@@ -787,8 +787,50 @@ const BeneficiaryAccounts: React.FC = () => {
                     </Tab>
                   )}
                 </Tab.List> */}
-                <div className="flex flex-col border-l border-r border-t-4 border-t-gray-100 dark:border-t-darkmode-400 border-gray-100 dark:border-darkmode-400 p-5 sm:items-center sm:flex-row gap-y-2">
-                  <div>
+                <div className="flex flex-col border-l border-r border-t-4 border-t-gray-100 dark:border-t-darkmode-400 border-gray-100 dark:border-darkmode-400 p-5 gap-y-2">
+                  {/* Title and Action Buttons Row */}
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-between">
+                    <div className="flex justify-start">
+                      <div className="text-lg sm:text-xl md:text-2xl font-medium">Vendor Beneficiary Accounts</div>
+                    </div>
+                    <div className="flex justify-end">
+                      <Menu>
+                        <Menu.Button
+                          as={Button}
+                          variant="outline-secondary"
+                          className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1 mr-2 p-1"
+                        >
+                          <Lucide
+                            icon="Download"
+                            className="stroke-[1.3] w-4 h-4 mr-2"
+                          />
+                          Export
+                          <Lucide
+                            icon="ChevronDown"
+                            className="stroke-[1.3] w-4 h-4 ml-2"
+                          />
+                        </Menu.Button>
+                        {/* Export Modal logic here if needed */}
+                      </Menu>
+                      <Menu>
+                        <Menu.Button
+                          as={Button}
+                          variant="outline-secondary"
+                          className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
+                        >
+                          <Lucide
+                            icon="SlidersHorizontal"
+                            className="stroke-[1.3] w-4 h-4 mr-2"
+                          />
+                          Filter
+                        </Menu.Button>
+                        {/* Filter Popover logic here if needed */}
+                      </Menu>
+                    </div>
+                  </div>
+
+                  {/* Search Input Row */}
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
                     <div className="relative">
                       <Lucide
                         icon="Search"
@@ -809,13 +851,11 @@ const BeneficiaryAccounts: React.FC = () => {
                         />
                       )}
                     </div>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-x-3 gap-y-2 sm:ml-auto">
                     <Menu>
                       <Menu.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                         onClick={handleRefresh}
                       >
                         <Lucide
@@ -829,11 +869,11 @@ const BeneficiaryAccounts: React.FC = () => {
                       <Menu.Button
                         as={Button}
                         variant="outline-secondary"
-                        className="w-full sm:w-auto"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
                         onClick={handleReset}
                       >
                         <Lucide
-                          icon="RefreshCw"
+                          icon="RotateCcw"
                           className="stroke-[1.3] w-4 h-4 mr-2"
                         />
                         Reset
