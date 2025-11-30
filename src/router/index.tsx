@@ -31,15 +31,15 @@ import MerchantSettlement from '@/pages/Settlement/MerchantSettlement';
 import VendorSettlement from '@/pages/Settlement/VendorSettlement';
 import VendorAccountReports from '@/pages/Reports/VendorAccountReports';
 import AccountReports from '@/pages/Reports/AccountReports';
-import AllPayIn from '@/pages/TransactionList/Payin/AllPayin/allPayin';
-import CompletedPayIn from '@/pages/TransactionList/Payin/CompletedPayin/completedPayin';
-import DroppedPayIn from '@/pages/TransactionList/Payin/DroppedPayin/droppedPayin';
-import InProgressPayIn from '@/pages/TransactionList/Payin/ProgressPayin/inProgressPayin';
-import InReviewPayIn from '@/pages/TransactionList/Payin/Review/review';
-import AllPayOut from '@/pages/TransactionList/Payout/AllPayout/allPayout';
-import CompletedPayOut from '@/pages/TransactionList/Payout/CompletedPayout/completedPayout';
-import InProgressPayOut from '@/pages/TransactionList/Payout/ProgressPayout/inProgressPayout';
-import RejectedPayOut from '@/pages/TransactionList/Payout/RejectedPayout/rejectedPayout';
+import AllPayIn from '@/pages/TransactionList/Payin/allPayin';
+import CompletedPayIn from '@/pages/TransactionList/Payin/completedPayin';
+import DroppedPayIn from '@/pages/TransactionList/Payin/droppedPayin';
+import InProgressPayIn from '@/pages/TransactionList/Payin/inProgressPayin';
+import InReviewPayIn from '@/pages/TransactionList/Payin/review';
+import AllPayOut from '@/pages/TransactionList/Payout/allPayout';
+import CompletedPayOut from '@/pages/TransactionList/Payout/completedPayout';
+import InProgressPayOut from '@/pages/TransactionList/Payout/inProgressPayout';
+import RejectedPayOut from '@/pages/TransactionList/Payout/rejectedPayout';
 
 function Router(): React.ReactElement | null {
   const routes = [
