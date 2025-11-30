@@ -384,7 +384,7 @@ const PayInComponent: React.FC = () => {
               </Tab.Button>
             )}
           </Tab>
-          {role && role !== Role.MERCHANT && (
+          {role && ![Role.MERCHANT, Role.SUB_MERCHANT, Role.MERCHANT_OPERATIONS].includes(role) && (
             <Tab className="relative flex-1">
               {({ selected }) => (
                 <Tab.Button
