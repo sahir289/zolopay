@@ -875,7 +875,7 @@ function MerchantSettlement({
 
   return (
     <div className="grid grid-cols-12 gap-y-10 gap-x-6">
-      <Modal
+      {role && ![Role.MERCHANT, Role.SUB_MERCHANT, Role.MERCHANT_OPERATIONS].includes(role) && <Modal
         handleModal={settlementModal}
         forOpen={newSettlementModal}
         title={''}
@@ -888,7 +888,7 @@ function MerchantSettlement({
           handleCancel={settlementModal}
           isLoading={isLoading}
         />
-      </Modal>
+      </Modal>}
 
       <Modal handleModal={deleteModal} forOpen={newdeleteModal} title="">
         <DynamicForm
