@@ -97,8 +97,8 @@ const PayOut: React.FC = () => {
       <h2 className="font-semibold text-lg mr-auto text-gray-800 dark:text-white pb-2">Progress Withdrawals</h2>
       </div>
       <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
-        <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400">
-          <Tab.Panel className="py-3 sm:py-5 leading-relaxed">
+        {/* <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400"> */}
+          {/* <Tab.Panel className="py-3 sm:py-5 leading-relaxed"> */}
             <InProgressPayOut
               vendorCodes={vendorCodes}
               merchantCodes={merchantCodes}
@@ -107,8 +107,8 @@ const PayOut: React.FC = () => {
               setCallMerchant={setCallMerchant}
               setCallVendor={setCallVendor}
             />
-          </Tab.Panel>
-        </Tab.Panels>
+          {/* </Tab.Panel> */}
+        {/* </Tab.Panels> */}
       </Tab.Group>
     </div>
   );

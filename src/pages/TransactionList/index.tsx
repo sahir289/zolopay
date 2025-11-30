@@ -286,7 +286,7 @@
 //             <Modal
 //               handleModal={transactionModal}
 //               forOpen={newTransactionModal}
-//               buttonTitle={`Add ${title}`}
+//               buttonTitle={`Create ${title}`}
 //             >
 //               <DynamicForm
 //                 sections={

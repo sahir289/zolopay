@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -653,116 +652,22 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
           <div className="mt-3.5">
             <div className="flex flex-col overflow-x-hidden">
               <div className="flex flex-col py-5 gap-y-2 mx-3">
-                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
-                  {/* Merchant Order ID - Shown for ADMIN and MERCHANT */}
-                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
-                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="Order ID..."
-                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                        value={merchantOrderId}
-                        onChange={(e) => setMerchantOrderId(e.target.value)}
-                      />
-                      {merchantOrderId && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setMerchantOrderId('')}
-                        />
-                      )}
+                {/* Action Buttons Row */}
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:justify-between">
+                  <div className="flex justify-start">
+                    <div className="text-lg sm:text-xl md:text-2xl font-medium group-[.mode--light]:text-white">
+                      Dropped
                     </div>
-                  )}
-                  {/* User Submitted UTR - Shown for all roles (ADMIN, MERCHANT, VENDOR) */}
-                  {(role === Role.ADMIN ||
-                    role === Role.MERCHANT ||
-                    role === Role.VENDOR) && (
-                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="UTR..."
-                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                        value={userSubmittedUtr}
-                        onChange={(e) => setUserSubmittedUtr(e.target.value)}
-                      />
-                      {userSubmittedUtr && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setUserSubmittedUtr('')}
-                        />
-                      )}
-                    </div>
-                  )}
+                  </div>
 
-                  {/* Bank Name - Shown for ADMIN and VENDOR */}
-                  {(role === Role.ADMIN || role === Role.VENDOR) && (
-                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
-                      <Lucide
-                        icon="Search"
-                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
-                      />
-                      <FormInput
-                        type="text"
-                        placeholder="Bank..."
-                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
-                        value={bankName}
-                        onChange={(e) => setBankName(e.target.value)}
-                      />
-                      {bankName && (
-                        <Lucide
-                          icon="X"
-                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
-                          onClick={() => setBankName('')}
-                        />
-                      )}
-                    </div>
-                  )}
-                
-                  <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto sm:ml-auto">
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto"
-                      onClick={handleRefresh}
-                    >
-                      <Lucide
-                        icon="RefreshCw"
-                        className="stroke-[1.3] w-4 h-4 mr-2"
-                      />
-                      Refresh
-                    </Menu.Button>
-                  </Menu>
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto"
-                      onClick={handleReset}
-                    >
-                      <Lucide
-                        icon="RefreshCw"
-                        className="stroke-[1.3] w-4 h-4 mr-2"
-                      />
-                      Reset
-                    </Menu.Button>
-                  </Menu>
-                  <Menu>
-                    <Menu.Button
-                      as={Button}
-                      variant="outline-secondary"
-                      className="w-full sm:w-auto"
-                      onClick={openExport}
-                    >
+                  <div className="flex justify-end">
+                    <Menu>
+                      <Menu.Button
+                        as={Button}
+                        variant="outline-secondary"
+                        className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1 mr-2 p-1"
+                        onClick={openExport}
+                      >
                       <Lucide
                         icon="Download"
                         className="stroke-[1.3] w-4 h-4 mr-2"
@@ -866,21 +771,21 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                       </Modal>
                     )}
                   </Menu>
-                  <Popover className="inline-block">
-                    {({ close }: { close: () => void }) => (
-                      <>
-                        <Popover.Button
-                          as={Button}
-                          variant="outline-secondary"
-                          className="w-full sm:w-auto"
-                          onClick={openFilter}
-                        >
-                          <Lucide
-                            icon="ArrowDownWideNarrow"
-                            className="stroke-[1.3] w-4 h-4 mr-2"
-                          />
-                          Filter
-                        </Popover.Button>
+                    <Popover className="inline-block">
+                      {({ close }: { close: () => void }) => (
+                        <>
+                          <Popover.Button
+                            as={Button}
+                            variant="outline-secondary"
+                            className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
+                            onClick={openFilter}
+                          >
+                            <Lucide
+                              icon="SlidersHorizontal"
+                              className="stroke-[1.3] w-4 h-4 mr-2"
+                            />
+                            Filter
+                          </Popover.Button>
                         <Popover.Panel placement="bottom-end">
                           <form
                             onSubmit={(e) => {
@@ -1054,7 +959,111 @@ const DroppedPayIn: React.FC<AllPayInProps> = ({
                       </>
                     )}
                   </Popover>
+                  </div>
                 </div>
+
+                {/* Search Inputs Row */}
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
+                  {/* Merchant Order ID - Shown for ADMIN and MERCHANT */}
+                  {(role === Role.ADMIN || role === Role.MERCHANT) && (
+                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="Order ID..."
+                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                        value={merchantOrderId}
+                        onChange={(e) => setMerchantOrderId(e.target.value)}
+                      />
+                      {merchantOrderId && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-4 h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setMerchantOrderId('')}
+                        />
+                      )}
+                    </div>
+                  )}
+                  {/* User Submitted UTR - Shown for all roles (ADMIN, MERCHANT, VENDOR) */}
+                  {(role === Role.ADMIN ||
+                    role === Role.MERCHANT ||
+                    role === Role.VENDOR) && (
+                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="UTR..."
+                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                        value={userSubmittedUtr}
+                        onChange={(e) => setUserSubmittedUtr(e.target.value)}
+                      />
+                      {userSubmittedUtr && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setUserSubmittedUtr('')}
+                        />
+                      )}
+                    </div>
+                  )}
+
+                  {/* Bank Name - Shown for ADMIN and VENDOR */}
+                  {(role === Role.ADMIN || role === Role.VENDOR) && (
+                    <div className="relative w-full sm:w-auto sm:flex-shrink-0">
+                      <Lucide
+                        icon="Search"
+                        className="absolute inset-y-0 left-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto ml-3 stroke-[1.3] text-slate-500"
+                      />
+                      <FormInput
+                        type="text"
+                        placeholder="Bank..."
+                        className="w-full pl-9 pr-9 sm:w-40 lg:w-48 rounded-[0.5rem] text-xs sm:text-sm"
+                        value={bankName}
+                        onChange={(e) => setBankName(e.target.value)}
+                      />
+                      {bankName && (
+                        <Lucide
+                          icon="X"
+                          className="absolute inset-y-0 right-0 z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 my-auto mr-3 stroke-[1.3] text-slate-500 cursor-pointer"
+                          onClick={() => setBankName('')}
+                        />
+                      )}
+                    </div>
+                  )}
+                  <Menu>
+                    <Menu.Button
+                      as={Button}
+                      variant="outline-secondary"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
+                      onClick={handleRefresh}
+                    >
+                      <Lucide
+                        icon="RefreshCw"
+                        className="stroke-[1.3] w-4 h-4 mr-2"
+                      />
+                      Refresh
+                    </Menu.Button>
+                  </Menu>
+                  <Menu>
+                    <Menu.Button
+                      as={Button}
+                      variant="outline-secondary"
+                      className="w-full sm:w-auto border border-slate-600/60 hover:bg-slate-700/50 rounded-lg p-1"
+                      onClick={handleReset}
+                    >
+                      <Lucide
+                        icon="RotateCcw"
+                        className="stroke-[1.3] w-4 h-4 mr-2"
+                      />
+                      Reset
+                    </Menu.Button>
+                  </Menu>
                 </div>
               </div>
               <div className="overflow-auto xl:overflow-visible">
