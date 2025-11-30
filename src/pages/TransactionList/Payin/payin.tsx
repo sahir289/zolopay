@@ -39,14 +39,12 @@ interface ConsolidatedStatus {
   statuses: PayInSummary[];
 }
 
-
-
 const PayInComponent: React.FC = () => {
   const dispatch = useAppDispatch();
   useAppSelector(selectDarkMode); // Subscribe to dark mode to trigger re-render
   const activeTab = useAppSelector(getTabs);
   // const getSumPayin = useAppSelector(getSumPayIn);
-  
+
   const [data, setData] = useState<PayInSummary[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoadingSum, setIsLoadingSum] = useState(false);
@@ -61,7 +59,7 @@ const PayInComponent: React.FC = () => {
   const handleTabChange = (index: number) => {
     // Don't do anything if clicking the same tab
     if (index === activeTab) return;
-    
+
     dispatch(setActiveTab(index));
     dispatch(onload());
   };
@@ -78,7 +76,7 @@ const PayInComponent: React.FC = () => {
       setIsLoadingSum(true); // Set loading true before API call
       const response = await getAllPayInsSum();
       setData(response.results);
-    // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line no-unused-vars
     } catch (err) {
       setError('Failed to fetch pay-in data');
     } finally {
@@ -99,7 +97,7 @@ const PayInComponent: React.FC = () => {
   const fetchBankNames = async () => {
     let bankNamesList;
     if (bankNames.length == 0) {
-       bankNamesList = await getAllBankNames('PayIn');
+      bankNamesList = await getAllBankNames('PayIn');
     }
     if (bankNamesList) {
       dispatch(getBankNames(bankNamesList.bankNames));
@@ -107,56 +105,52 @@ const PayInComponent: React.FC = () => {
   };
 
   const handleGetAllVendorCodes = async () => {
-      if (
-        role !== Role.MERCHANT && vendorCodes.length == 0
-      ) {
-        const res = await getAllVendorCodes();
-        setVendorCodes(
-          res.map((el: any) => ({
-            label: el.label,
-            value: el.value,
-          })),
-        );
-      }
-    };
-  
-    useEffect(() => {
-      if (role !== Role.MERCHANT && callVendor)  {
-        handleGetAllVendorCodes();
-        setCallVendor(false);
-      }
-    }, [callVendor]);
-    useEffect(() => {
-      if (role !== Role.MERCHANT && callBank) {
-        fetchBankNames();
-        setCallBank(false);
-      }
-    }, [callBank]);
+    if (role !== Role.MERCHANT && vendorCodes.length == 0) {
+      const res = await getAllVendorCodes();
+      setVendorCodes(
+        res.map((el: any) => ({
+          label: el.label,
+          value: el.value,
+        })),
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (role !== Role.MERCHANT && callVendor) {
+      handleGetAllVendorCodes();
+      setCallVendor(false);
+    }
+  }, [callVendor]);
+  useEffect(() => {
+    if (role !== Role.MERCHANT && callBank) {
+      fetchBankNames();
+      setCallBank(false);
+    }
+  }, [callBank]);
   const handleGetAllMerchantCodes = async () => {
-      if (
-        role !== Role.VENDOR && merchantCodes.length == 0
-      ) {
-        const res = await getAllMerchantCodes();
-        setMerchantCodes(
-          res.map((el: any) => ({
-            label: el.label,
-            value: el.value,
-          })),
-        );
-        setMerchantCodesData(
-          res.map((el: any) => ({
-            label: el.label,
-            value: el.merchant_id,
-          })),
-        );
-      }
-    };
-    useEffect(() => {
-      if (role !== Role.VENDOR && callMerchant) {
-        handleGetAllMerchantCodes();
-        setCallMerchant(false);
-      }
-    }, [callMerchant]);
+    if (role !== Role.VENDOR && merchantCodes.length == 0) {
+      const res = await getAllMerchantCodes();
+      setMerchantCodes(
+        res.map((el: any) => ({
+          label: el.label,
+          value: el.value,
+        })),
+      );
+      setMerchantCodesData(
+        res.map((el: any) => ({
+          label: el.label,
+          value: el.merchant_id,
+        })),
+      );
+    }
+  };
+  useEffect(() => {
+    if (role !== Role.VENDOR && callMerchant) {
+      handleGetAllMerchantCodes();
+      setCallMerchant(false);
+    }
+  }, [callMerchant]);
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Success':
@@ -210,7 +204,9 @@ const PayInComponent: React.FC = () => {
         <div className="flex flex-col p-1 sm:p-2">
           {/* Add Refresh button for getSum */}
           {error ? (
-            <div className="text-red-600 text-xs sm:text-sm">Error loading data</div>
+            <div className="text-red-600 text-xs sm:text-sm">
+              Error loading data
+            </div>
           ) : data.length === 0 ? (
             <div></div>
           ) : (
@@ -221,7 +217,9 @@ const PayInComponent: React.FC = () => {
                   className="w-[calc(50%-0.25rem)] sm:w-1/4 p-1.5 sm:p-2 border border-dashed rounded-md border-slate-300/80 shadow-sm"
                 >
                   <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 justify-around">
-                    <div className="text-[10px] sm:text-xs font-medium">{item.totalCount}</div>
+                    <div className="text-[10px] sm:text-xs font-medium">
+                      {item.totalCount}
+                    </div>
                     <div
                       className={`text-[10px] sm:text-xs font-medium truncate ${getStatusColor(
                         item.name,
@@ -261,9 +259,15 @@ const PayInComponent: React.FC = () => {
                   type="button"
                 >
                   {isLoadingSum ? (
-                    <LoadingIcon icon="tail-spin" className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <LoadingIcon
+                      icon="tail-spin"
+                      className="w-3 h-3 sm:w-4 sm:h-4"
+                    />
                   ) : (
-                    <Lucide icon="RefreshCw" className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <Lucide
+                      icon="RefreshCw"
+                      className="w-3 h-3 sm:w-4 sm:h-4"
+                    />
                   )}
                 </button>
               </div>
@@ -282,12 +286,19 @@ const PayInComponent: React.FC = () => {
                     : 'bg-slate-50 dark:bg-darkmode-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-darkmode-700'
                 }`}
                 as="button"
-                style={selected ? {
-                  position: 'relative',
-                  zIndex: 10
-                } : {}}
+                style={
+                  selected
+                    ? {
+                        position: 'relative',
+                        zIndex: 10,
+                      }
+                    : {}
+                }
               >
-                <Lucide icon="List" className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]" />
+                <Lucide
+                  icon="List"
+                  className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]"
+                />
                 <span className="hidden sm:inline">All Payments</span>
                 <span className="sm:hidden">All</span>
               </Tab.Button>
@@ -302,10 +313,14 @@ const PayInComponent: React.FC = () => {
                     : 'bg-slate-50 dark:bg-darkmode-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-darkmode-700'
                 }`}
                 as="button"
-                style={selected ? {
-                  position: 'relative',
-                  zIndex: 10
-                } : {}}
+                style={
+                  selected
+                    ? {
+                        position: 'relative',
+                        zIndex: 10,
+                      }
+                    : {}
+                }
               >
                 <Lucide
                   icon="CheckCircle2"
@@ -325,12 +340,19 @@ const PayInComponent: React.FC = () => {
                     : 'bg-slate-50 dark:bg-darkmode-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-darkmode-700'
                 }`}
                 as="button"
-                style={selected ? {
-                  position: 'relative',
-                  zIndex: 10
-                } : {}}
+                style={
+                  selected
+                    ? {
+                        position: 'relative',
+                        zIndex: 10,
+                      }
+                    : {}
+                }
               >
-                <Lucide icon="Clock" className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]" />
+                <Lucide
+                  icon="Clock"
+                  className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]"
+                />
                 <span className="hidden sm:inline">Processing</span>
                 <span className="sm:hidden">Process</span>
               </Tab.Button>
@@ -345,39 +367,52 @@ const PayInComponent: React.FC = () => {
                     : 'bg-slate-50 dark:bg-darkmode-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-darkmode-700'
                 }`}
                 as="button"
-                style={selected ? {
-                  position: 'relative',
-                  zIndex: 10
-                } : {}}
+                style={
+                  selected
+                    ? {
+                        position: 'relative',
+                        zIndex: 10,
+                      }
+                    : {}
+                }
               >
-                <Lucide icon="XOctagon" className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]" />
+                <Lucide
+                  icon="XOctagon"
+                  className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]"
+                />
                 Failed
               </Tab.Button>
             )}
           </Tab>
-          <Tab className="relative flex-1">
-            {({ selected }) => (
-              <Tab.Button
-                className={`w-full py-2 sm:py-3 flex items-center justify-center gap-1 text-[10px] sm:text-xs md:text-sm transition-all duration-200 relative ${
-                  selected
-                    ? 'bg-white dark:bg-darkmode-700 text-slate-900 dark:text-white border-t-4 border-l-4 border-r-4 border-gray-100 dark:border-darkmode-400 rounded-tl-xl rounded-tr-xl shadow-sm'
-                    : 'bg-slate-50 dark:bg-darkmode-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-darkmode-700'
-                }`}
-                as="button"
-                style={selected ? {
-                  position: 'relative',
-                  zIndex: 10
-                } : {}}
-              >
-                <Lucide
-                  icon="AlertTriangle"
-                  className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]"
-                />
-                <span className="hidden sm:inline">Under Review</span>
-                <span className="sm:hidden">Review</span>
-              </Tab.Button>
-            )}
-          </Tab>
+          {role && role !== Role.MERCHANT && (
+            <Tab className="relative flex-1">
+              {({ selected }) => (
+                <Tab.Button
+                  className={`w-full py-2 sm:py-3 flex items-center justify-center gap-1 text-[10px] sm:text-xs md:text-sm transition-all duration-200 relative ${
+                    selected
+                      ? 'bg-white dark:bg-darkmode-700 text-slate-900 dark:text-white border-t-4 border-l-4 border-r-4 border-gray-100 dark:border-darkmode-400 rounded-tl-xl rounded-tr-xl shadow-sm'
+                      : 'bg-slate-50 dark:bg-darkmode-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-darkmode-700'
+                  }`}
+                  as="button"
+                  style={
+                    selected
+                      ? {
+                          position: 'relative',
+                          zIndex: 10,
+                        }
+                      : {}
+                  }
+                >
+                  <Lucide
+                    icon="AlertTriangle"
+                    className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 stroke-[2.5]"
+                  />
+                  <span className="hidden sm:inline">Under Review</span>
+                  <span className="sm:hidden">Review</span>
+                </Tab.Button>
+              )}
+            </Tab>
+          )}
         </Tab.List>
         <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400">
           <Tab.Panel className="p-2 sm:p-4 md:p-5 leading-relaxed">

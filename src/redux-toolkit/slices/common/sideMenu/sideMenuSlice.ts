@@ -122,14 +122,14 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
   //     title: "Bank Details",
   //   }
   // ];
-  const userItems = [
-    "TEAM",
-    {
-      icon: "UsersRound" as keyof typeof icons,
-      pathname: "/auth/users",
-      title: "Team Members",
-    }
-  ];
+  // const userItems = [
+  //   "TEAM",
+  //   {
+  //     icon: "UsersRound" as keyof typeof icons,
+  //     pathname: "/auth/users",
+  //     title: "Team Members",
+  //   }
+  // ];
 
   const reports = [
     "ANALYTICS",
@@ -163,9 +163,9 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
     case Role.VENDOR_ADMIN:
       return [...baseMenu, ...settlements_chargebacks, ...users_disputes, ...adminItems, ...commonItems, ...reports];
     case Role.MERCHANT:
-      return [...baseMenu, ...settlements_chargebacks, ...userItems, ...commonItems, ...reports];
+      return [...baseMenu, ...settlements_chargebacks, ...reports];
     case Role.SUB_MERCHANT:
-      return [...baseMenu, ...userItems, ...commonItems, ...reports];
+      return [...baseMenu, ...reports];
     case Role.MERCHANT_OPERATIONS:
       return [...baseMenu];
     case Role.VENDOR_OPERATIONS:
