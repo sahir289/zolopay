@@ -61,11 +61,11 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
   ];
 
   const users_disputes = [
-    "TEAM",
+    "Users",
     {
       icon: "UsersRound" as keyof typeof icons,
       pathname: "/auth/users",
-      title: "Team Members",
+      title: " Users",
     },
     "DISPUTES",
     {
