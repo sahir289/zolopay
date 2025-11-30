@@ -64,7 +64,6 @@ import { getPayOutsReports } from '@/redux-toolkit/slices/payout/payoutAPI';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotifications';
-import MultiSelect from '@/components/MultiSelect/MultiSelect';
 import clsx from 'clsx';
 
 dayjs.extend(utc);
