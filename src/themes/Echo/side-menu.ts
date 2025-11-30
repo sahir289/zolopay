@@ -116,7 +116,6 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
         menuItem.subMenu = [
           {
             title: "Deposits",
-            pathname: "/auth/transaction-list/payins",
             icon: "ArrowDownCircle" as const,
             subMenu: [
               {
@@ -148,7 +147,6 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           },
           {
             title: "Withdrawals",
-            pathname: "/auth/transaction-list/payouts",
             icon: "ArrowUpCircle" as const,
             subMenu: [
               {
@@ -175,6 +173,7 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
           },
         ];
       }
+
       if (menuItem.title === "Settlements") {
         menuItem.subMenu = [
           ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role

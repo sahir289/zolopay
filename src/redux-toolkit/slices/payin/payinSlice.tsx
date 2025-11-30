@@ -16,7 +16,8 @@ const initialState: PayInState = {
 interface FilterState {
   merchant_id?: string[];
   status?: string;
-  [key: string]: string | string[] | undefined;
+  updatedPayin?: boolean;
+  [key: string]: string | string[] | boolean | undefined;
 }
 
 // Define interface for PayIn with active tab

@@ -9,18 +9,6 @@ import Users from '@/pages/Users/index';
 import MerchantsClients from '@/pages/Clients/Merchant';
 import VendorsClients from '@/pages/Clients/Vendors';
 import Roles from '@/pages/Roles/index';
-// import PayInTransaction from '@/pages/TransactionList/Payin';
-import AllPayin from '@/pages/TransactionList/Payin/AllPayin';
-import CompletedPayin from '@/pages/TransactionList/Payin/CompletedPayin';
-import InProgressPayin from '@/pages/TransactionList/Payin/ProgressPayin';
-import DroppedPayin from '@/pages/TransactionList/Payin/DroppedPayin';
-import ReviewPayin from '@/pages/TransactionList/Payin/Review';
-import RejectedPayout from '@/pages/TransactionList/Payout/RejectedPayout';
-import ProgressPayout from '@/pages/TransactionList/Payout/ProgressPayout';
-import CompletedPayout from '@/pages/TransactionList/Payout/CompletedPayout';
-import AllPayout from '@/pages/TransactionList/Payout/AllPayout';
-
-
 import Chat from '@/pages/Chat/index';
 import Login from '@/pages/Login/index';
 import Register from '@/pages/Register/index';
@@ -43,6 +31,15 @@ import MerchantSettlement from '@/pages/Settlement/MerchantSettlement';
 import VendorSettlement from '@/pages/Settlement/VendorSettlement';
 import VendorAccountReports from '@/pages/Reports/VendorAccountReports';
 import AccountReports from '@/pages/Reports/AccountReports';
+import AllPayIn from '@/pages/TransactionList/Payin/allPayin';
+import CompletedPayIn from '@/pages/TransactionList/Payin/completedPayin';
+import DroppedPayIn from '@/pages/TransactionList/Payin/droppedPayin';
+import InProgressPayIn from '@/pages/TransactionList/Payin/inProgressPayin';
+import InReviewPayIn from '@/pages/TransactionList/Payin/review';
+import AllPayOut from '@/pages/TransactionList/Payout/allPayout';
+import CompletedPayOut from '@/pages/TransactionList/Payout/completedPayout';
+import InProgressPayOut from '@/pages/TransactionList/Payout/inProgressPayout';
+import RejectedPayOut from '@/pages/TransactionList/Payout/rejectedPayout';
 
 function Router(): React.ReactElement | null {
   const routes = [
@@ -258,46 +255,46 @@ function Router(): React.ReactElement | null {
               children: [
                 {
                   path: 'all',
-                  element: <AllPayin />,
-                },
-                {
-                  path: 'progress',
-                  element: <InProgressPayin />,
+                  element: <AllPayIn />
                 },
                 {
                   path: 'completed',
-                  element: <CompletedPayin />,
+                  element: <CompletedPayIn />
                 },
                 {
                   path: 'dropped',
-                  element: <DroppedPayin />,
+                  element: <DroppedPayIn />
+                },
+                {
+                  path: 'progress',
+                  element: <InProgressPayIn />
                 },
                 {
                   path: 'review',
-                  element: <ReviewPayin />,
+                  element: <InReviewPayIn />
                 },
-              ],
+              ]
             },
             {
               path: 'payouts',
               children: [
                 {
                   path: 'all',
-                  element: <AllPayout />,
-                },
-                {
-                  path: 'progress',
-                  element: <ProgressPayout />,
+                  element: <AllPayOut />
                 },
                 {
                   path: 'completed',
-                  element: <CompletedPayout />,
+                  element: <CompletedPayOut />
+                },
+                {
+                  path: 'progress',
+                  element: <InProgressPayOut />
                 },
                 {
                   path: 'rejected',
-                  element: <RejectedPayout />,
+                  element: <RejectedPayOut />
                 },
-              ],
+              ]
             },
           ],
         },
