@@ -7,7 +7,10 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Table from '@/components/Base/Table';
 import Pagination from '@/components/Base/Pagination';
 import Lucide, { icons } from '@/components/Base/Lucide';
-import { FormCheck, FormSwitch, FormSelect } from '@/components/Base/Form';
+import { FormCheck, FormSelect } from '@/components/Base/Form';
+import { Switch } from '@headlessui/react';
+import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import clsx from 'clsx';
 import Tippy from '@/components/Base/Tippy';
 import Modal from '../Modal/modals';
 import ModalContent from '@/components/Modal/ModalContent/ModalContent';
@@ -230,12 +233,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
       }
     );
   };
-  const roleData = localStorage.getItem('userData');
-  let user_name = '';
-  if (roleData) {
-    const parsedData = JSON.parse(roleData);
-    user_name = parsedData.name || '';
-  }
+  
 
   const [, setHoveredAction] = useState<{
     rowIndex: number | null;
@@ -458,17 +456,33 @@ const CommonTable: React.FC<CommonTableProps> = ({
 
         return [
           formatKey(key),
-          <FormSwitch key={key} className="dark:border-red-500 rounded-lg">
-            <FormSwitch.Label className="ml-0">
-              <FormSwitch.Input
-                className="ml-0 mr-0 border-2 border-slate-300 h-5 w-10 appearance-none rounded-full bg-gray-300 checked:bg-blue-500 checked:border-blue-500 cursor-pointer transition-colors"
-                type="checkbox"
-                checked={boolValue}
-                disabled={true}
-                onClick={(e) => e.stopPropagation()}
-              />
-            </FormSwitch.Label>
-          </FormSwitch>,
+          (
+            <Switch
+              key={key}
+              checked={boolValue}
+              onChange={() => {}}
+              disabled={true}
+              className={clsx(
+                'relative inline-flex h-6 w-12 shrink-0 cursor-default items-center rounded-full p-1 outline-none transition-colors duration-200 ease-in-out focus:outline-none',
+                boolValue ? 'this:primary bg-this dark:bg-this-light' : 'bg-gray-300 dark:bg-surface-1',
+              )}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span className="sr-only">Use setting</span>
+              <span
+                aria-hidden="true"
+                className={`${
+                  boolValue ? 'translate-x-6 bg-white rtl:-translate-x-6' : 'translate-x-0 bg-white dark:bg-dark-50'
+                } pointer-events-none flex size-4 transform items-center justify-center rounded-full shadow-lg ring-0 transition duration-200 ease-in-out`}
+              >
+                {boolValue ? (
+                  <CheckIcon className="size-3 text-primary-500" style={{ strokeWidth: 3 }} />
+                ) : (
+                  <XMarkIcon className="size-3 text-gray-500 dark:text-dark-400" style={{ strokeWidth: 3 }} />
+                )}
+              </span>
+            </Switch>
+          ),
         ] as [string, JSX.Element];
       } else if (isAmountField && typeof value === 'number') {
         return [
@@ -1669,63 +1683,85 @@ const CommonTable: React.FC<CommonTableProps> = ({
                           </div>
                         ) : col.type === 'toggle' ? (
                           source === 'Beneficiaries' && row.vendors ? null : (
-                            <FormSwitch
-                              className="dark:border-red-500 rounded-lg"
+                            <Switch
+                              checked={
+                                row
+                                  ? typeof row[col.key] === 'undefined'
+                                    ? row.config &&
+                                      row.config[col.key] !== undefined
+                                      ? row.config[col.key]
+                                      : false
+                                    : row[col.key]
+                                  : false
+                              }
+                              onChange={(newVal) => {
+                                if (
+                                  row &&
+                                  !row.disabled &&
+                                  !row.is_obsolete &&
+                                  handleToggleClick
+                                ) {
+                                  handleToggleClick(row.id, newVal, col.key);
+                                }
+                              }}
+                              className={clsx(
+                                'relative inline-flex h-6 w-12 shrink-0 cursor-pointer items-center rounded-full p-1 outline-none transition-colors duration-200 ease-in-out focus:outline-none',
+                                (row
+                                  ? typeof row[col.key] === 'undefined'
+                                    ? row.config &&
+                                      row.config[col.key] !== undefined
+                                      ? row.config[col.key]
+                                      : false
+                                    : row[col.key]
+                                  : false)
+                                  ? 'this:primary bg-this dark:bg-this-light'
+                                  : 'bg-gray-300 dark:bg-surface-1',
+                              )}
                               onClick={(e) => e.stopPropagation()}
+                              disabled={
+                                (row.config?.is_freeze &&
+                                  row.config?.is_freeze === true) ||
+                                row.is_freezed === true ||
+                                row.is_obsolete === true ||
+                                row?.disabled === true
+                              }
                             >
-                              <FormSwitch.Label
-                                htmlFor={`toggle-${rowIndex}-${colIndex}`}
-                                className="ml-0"
-                              >
-                                {user_name !== row.user_name && (
-                                  <FormSwitch.Input
-                                    id={`toggle-${rowIndex}-${colIndex}`}
-                                    className="ml-0 mr-0 border-2 border-slate-300"
-                                    type="checkbox"
-                                    checked={
-                                      row
-                                        ? typeof row[col.key] === 'undefined'
-                                          ? row.config &&
-                                            row.config[col.key] !== undefined
-                                            ? row.config[col.key]
-                                            : false
-                                          : row[col.key]
+                              <span className="sr-only">Use setting</span>
+                              <span
+                                aria-hidden="true"
+                                className={`${
+                                  (row
+                                    ? typeof row[col.key] === 'undefined'
+                                      ? row.config &&
+                                        row.config[col.key] !== undefined
+                                        ? row.config[col.key]
                                         : false
-                                    }
-                                    onClick={() => {
-                                      if (
-                                        row &&
-                                        !row.disabled &&
-                                        !row.is_obsolete &&
-                                        handleToggleClick
-                                      ) {
-                                        // Get current value considering both direct property and config
-                                        const currentValue =
-                                          typeof row[col.key] === 'undefined'
-                                            ? row.config &&
-                                              row.config[col.key] !== undefined
-                                              ? row.config[col.key]
-                                              : false
-                                            : row[col.key];
-
-                                        handleToggleClick(
-                                          row.id,
-                                          !currentValue,
-                                          col.key,
-                                        );
-                                      }
-                                    }}
-                                    disabled={
-                                      (row.config?.is_freeze &&
-                                        row.config?.is_freeze === true) ||
-                                      row.is_freezed === true ||
-                                      row.is_obsolete === true ||
-                                      row?.disabled === true
-                                    }
+                                      : row[col.key]
+                                    : false)
+                                    ? 'translate-x-6 bg-white rtl:-translate-x-6'
+                                    : 'translate-x-0 bg-white dark:bg-dark-50'
+                                } pointer-events-none flex size-4 transform items-center justify-center rounded-full shadow-lg ring-0 transition duration-200 ease-in-out`}
+                              >
+                                {(row
+                                  ? typeof row[col.key] === 'undefined'
+                                    ? row.config &&
+                                      row.config[col.key] !== undefined
+                                      ? row.config[col.key]
+                                      : false
+                                    : row[col.key]
+                                  : false) ? (
+                                  <CheckIcon
+                                    className="size-3 text-primary-500"
+                                    style={{ strokeWidth: 3 }}
+                                  />
+                                ) : (
+                                  <XMarkIcon
+                                    className="size-3 text-gray-500 dark:text-dark-400"
+                                    style={{ strokeWidth: 3 }}
                                   />
                                 )}
-                              </FormSwitch.Label>
-                            </FormSwitch>
+                              </span>
+                            </Switch>
                           )
                         ) : col.type === 'limits' ? (
                           <div>

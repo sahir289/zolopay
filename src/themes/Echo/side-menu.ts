@@ -1,7 +1,7 @@
-import { NavigateFunction } from "react-router-dom";
-import { Menu } from "@/redux-toolkit/slices/common/sideMenu/sideMenuSlice";
-import { slideUp, slideDown } from "@/utils/helper";
-import { Role } from "@/constants";
+import { NavigateFunction } from 'react-router-dom';
+import { Menu } from '@/redux-toolkit/slices/common/sideMenu/sideMenuSlice';
+import { slideUp, slideDown } from '@/utils/helper';
+import { Role } from '@/constants';
 
 interface Location {
   pathname: string;
@@ -36,7 +36,7 @@ const findActiveMenu = (subMenu: Menu[], location: Location): boolean => {
 
 const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
   // Fetch the role dynamically from localStorage
-  const data = localStorage.getItem("userData");
+  const data = localStorage.getItem('userData');
   let role: keyof typeof Role | null = null;
 
   if (data) {
@@ -44,18 +44,20 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
       const parsedData = JSON.parse(data);
       role = parsedData.role || null;
     } catch (error) {
-      console.error("Failed to parse userData from localStorage:", error);
+      console.error('Failed to parse userData from localStorage:', error);
     }
   }
 
   // Log a warning if role is null
   if (!role) {
-    console.warn("Role is null in side menu. Ensure userData is set correctly.");
+    console.warn(
+      'Role is null in side menu. Ensure userData is set correctly.',
+    );
   }
 
   const formattedMenu: Array<FormattedMenu | string> = [];
   menu.forEach((item) => {
-    if (typeof item !== "string") {
+    if (typeof item !== 'string') {
       const menuItem: FormattedMenu = {
         icon: item.icon,
         title: item.title,
@@ -85,7 +87,7 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
         // Recursively process nested submenus
         const subMenu: Array<FormattedMenu> = [];
         nestedMenu(menuItem.subMenu, location).map((subItem) => {
-          if (typeof subItem !== "string") {
+          if (typeof subItem !== 'string') {
             subMenu.push(subItem);
           }
         });
@@ -93,198 +95,263 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
       }
 
       // Example: Add submenus under "Dashboard"
-      if (menuItem.title === "Overview") {
+      if (menuItem.title === 'Overview') {
         menuItem.subMenu = [
-          ...(Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-                title: "Payment Partner",
-                pathname: "/auth/dashboard/merchant",
-                icon: "TrendingUp" as "BarChart",
-              }]
+          ...(Role.MERCHANT === role ||
+          Role.ADMIN === role ||
+          Role.SUB_MERCHANT === role ||
+          Role.TRANSACTIONS === role ||
+          Role.OPERATIONS === role
+            ? [
+                {
+                  title: 'Payment Partner',
+                  pathname: '/auth/dashboard/merchant',
+                  icon: 'TrendingUp' as 'BarChart',
+                },
+              ]
             : []),
-          ...(Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-                title: "Banking Partner",
-                pathname: "/auth/dashboard/vendor",
-                icon: "LineChart" as "BarChart2",
-              }]
+          ...(Role.VENDOR === role ||
+          Role.ADMIN === role ||
+          Role.SUB_VENDOR === role ||
+          Role.TRANSACTIONS === role ||
+          Role.OPERATIONS === role
+            ? [
+                {
+                  title: 'Banking Partner',
+                  pathname: '/auth/dashboard/vendor',
+                  icon: 'LineChart' as 'BarChart2',
+                },
+              ]
             : []),
         ];
       }
 
-      if (menuItem.title === "Payments") {
+      if (menuItem.title === 'Payments') {
         menuItem.subMenu = [
           {
-            title: "Deposits",
-            pathname: "/auth/transaction-list/payins",
-            icon: "ArrowDownCircle" as const,
+            title: 'Deposits',
+            pathname: '/auth/transaction-list/payins',
+            icon: 'ArrowDownCircle' as const,
             subMenu: [
               {
-                title: "All",
-                pathname: "/auth/transaction-list/payins/all",
-                icon: "ArrowDownCircle" as const,
+                title: 'All',
+                pathname: '/auth/transaction-list/payins/all',
+                icon: 'ArrowDownCircle' as const,
               },
               {
-                title: "Progress",
-                pathname: "/auth/transaction-list/payins/progress",
-                icon: "ArrowUpCircle" as const,
+                title: 'Progress',
+                pathname: '/auth/transaction-list/payins/progress',
+                icon: 'ArrowUpCircle' as const,
               },
               {
-                title: "Completed",
-                pathname: "/auth/transaction-list/payins/completed",
-                icon: "CheckCircle" as const,
+                title: 'Completed',
+                pathname: '/auth/transaction-list/payins/completed',
+                icon: 'CheckCircle' as const,
               },
               {
-                title: "Dropped",
-                pathname: "/auth/transaction-list/payins/dropped",
-                icon: "XCircle" as const,
+                title: 'Dropped',
+                pathname: '/auth/transaction-list/payins/dropped',
+                icon: 'XCircle' as const,
               },
-              {
-                title: "Review",
-                pathname: "/auth/transaction-list/payins/review",
-                icon: "XCircle" as const,
-              },
-            ]
+              ...(Role.ADMIN === role ||
+              Role.TRANSACTIONS === role ||
+              Role.OPERATIONS === role
+                ? [
+                    {
+                      title: 'Review',
+                      pathname: '/auth/transaction-list/payins/review',
+                      icon: 'XCircle' as const,
+                    },
+                  ]
+                : []),
+            ],
           },
           {
-            title: "Withdrawals",
-            pathname: "/auth/transaction-list/payouts",
-            icon: "ArrowUpCircle" as const,
+            title: 'Withdrawals',
+            pathname: '/auth/transaction-list/payouts',
+            icon: 'ArrowUpCircle' as const,
             subMenu: [
               {
-                title: "All",
-                pathname: "/auth/transaction-list/payouts/all",
-                icon: "ArrowDownCircle" as const,
+                title: 'All',
+                pathname: '/auth/transaction-list/payouts/all',
+                icon: 'ArrowDownCircle' as const,
               },
               {
-                title: "Progress",
-                pathname: "/auth/transaction-list/payouts/progress",
-                icon: "ArrowUpCircle" as const,
+                title: 'Progress',
+                pathname: '/auth/transaction-list/payouts/progress',
+                icon: 'ArrowUpCircle' as const,
               },
               {
-                title: "Completed",
-                pathname: "/auth/transaction-list/payouts/completed",
-                icon: "CheckCircle" as const,
+                title: 'Completed',
+                pathname: '/auth/transaction-list/payouts/completed',
+                icon: 'CheckCircle' as const,
               },
               {
-                title: "Dropped",
-                pathname: "/auth/transaction-list/payouts/rejected",
-                icon: "XCircle" as const,
+                title: 'Rejected',
+                pathname: '/auth/transaction-list/payouts/rejected',
+                icon: 'XCircle' as const,
               },
-            ]
+            ],
           },
         ];
       }
-      if (menuItem.title === "Settlements") {
+      if (menuItem.title === 'Settlements') {
         menuItem.subMenu = [
-          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Payment Partner",
-            pathname: "/auth/settlement/merchants",
-            icon: "Coins" as const,
-            }]
-            : [],
-          ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Banking Partner",
-            pathname: "/auth/settlement/vendors",
-            icon: "Wallet" as const,
-            }]
-            : [],
-        ];
-      }
-
-      if (menuItem.title === "Analytics") {
-        menuItem.subMenu = [
-          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Payment Partner",
-            pathname: "/auth/reports/merchants",
-            icon: "FileBarChart" as const,
-            }]
-            : [],
-          ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Banking Partner",
-            pathname: "/auth/reports/vendors",
-            icon: "FileSpreadsheet" as const, 
-            }]
-            : [],
-        ];
-      }
-      if (menuItem.title === "Payee Accounts") {
-        menuItem.subMenu = [
-          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Payment Partner",
-            pathname: "/auth/beneficiaryaccounts/merchants",
-            icon: "User" as const,
-            }]
-            : [],
-          ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Banking Partner",
-            pathname: "/auth/beneficiaryaccounts/vendors",
-            icon: "Users" as const,
-            }]
-            : [],
+          ...(Role.MERCHANT === role ||
+          Role.ADMIN === role ||
+          Role.SUB_MERCHANT === role ||
+          Role.TRANSACTIONS === role ||
+          Role.OPERATIONS === role
+            ? [
+                {
+                  title: 'Payment Partner',
+                  pathname: '/auth/settlement/merchants',
+                  icon: 'Coins' as const,
+                },
+              ]
+            : []),
+          ...(Role.VENDOR === role ||
+          Role.ADMIN === role ||
+          Role.SUB_VENDOR === role ||
+          Role.TRANSACTIONS === role ||
+          Role.OPERATIONS === role
+            ? [
+                {
+                  title: 'Banking Partner',
+                  pathname: '/auth/settlement/vendors',
+                  icon: 'Wallet' as const,
+                },
+              ]
+            : []),
         ];
       }
 
-      if (menuItem.title === "Partners") {
+      if (menuItem.title === 'Analytics') {
         menuItem.subMenu = [
-          ...Role.MERCHANT === role || Role.ADMIN === role || Role.SUB_MERCHANT === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Payment Partners",
-            pathname: "/auth/clients/merchants",
-            icon: "Store" as const,
-            }]
-            : [],
-          ...Role.VENDOR === role || Role.ADMIN === role || Role.SUB_VENDOR === role || Role.TRANSACTIONS === role || Role.OPERATIONS === role
-            ? [{
-            title: "Banking Partners",
-            pathname: "/auth/clients/vendors",
-            icon: "Building" as const,
-            }]
-            : [],
+          ...(Role.MERCHANT === role ||
+          Role.ADMIN === role ||
+          Role.SUB_MERCHANT === role ||
+          Role.TRANSACTIONS === role ||
+          Role.OPERATIONS === role
+            ? [
+                {
+                  title: 'Payment Partner',
+                  pathname: '/auth/reports/merchants',
+                  icon: 'FileBarChart' as const,
+                },
+              ]
+            : []),
+          ...(Role.VENDOR === role ||
+          Role.ADMIN === role ||
+          Role.SUB_VENDOR === role ||
+          Role.TRANSACTIONS === role ||
+          Role.OPERATIONS === role
+            ? [
+                {
+                  title: 'Banking Partner',
+                  pathname: '/auth/reports/vendors',
+                  icon: 'FileSpreadsheet' as const,
+                },
+              ]
+            : []),
+        ];
+      }
+      if (menuItem.title === 'Payee Accounts') {
+        menuItem.subMenu = [
+          ...(Role.MERCHANT === role ||
+          Role.ADMIN === role ||
+          Role.SUB_MERCHANT === role ||
+          Role.TRANSACTIONS === role ||
+          Role.OPERATIONS === role
+            ? [
+                {
+                  title: 'Payment Partner',
+                  pathname: '/auth/beneficiaryaccounts/merchants',
+                  icon: 'User' as const,
+                },
+              ]
+            : []),
+          ...(Role.VENDOR === role ||
+          Role.ADMIN === role ||
+          Role.SUB_VENDOR === role ||
+          Role.TRANSACTIONS === role ||
+          Role.OPERATIONS === role
+            ? [
+                {
+                  title: 'Banking Partner',
+                  pathname: '/auth/beneficiaryaccounts/vendors',
+                  icon: 'Users' as const,
+                },
+              ]
+            : []),
         ];
       }
 
-      if (menuItem.title === "Banking") {
+      if (menuItem.title === 'Partners') {
+        menuItem.subMenu = [
+          ...(Role.MERCHANT === role ||
+          Role.ADMIN === role ||
+          Role.SUB_MERCHANT === role ||
+          Role.TRANSACTIONS === role ||
+          Role.OPERATIONS === role
+            ? [
+                {
+                  title: 'Payment Partners',
+                  pathname: '/auth/clients/merchants',
+                  icon: 'Store' as const,
+                },
+              ]
+            : []),
+          ...(Role.VENDOR === role ||
+          Role.ADMIN === role ||
+          Role.SUB_VENDOR === role ||
+          Role.TRANSACTIONS === role ||
+          Role.OPERATIONS === role
+            ? [
+                {
+                  title: 'Banking Partners',
+                  pathname: '/auth/clients/vendors',
+                  icon: 'Building' as const,
+                },
+              ]
+            : []),
+        ];
+      }
+
+      if (menuItem.title === 'Banking') {
         menuItem.subMenu = [
           {
-            title: "Deposit Accounts",
-            pathname: "/auth/bankaccounts/payins",
-            icon: "ArrowDown",
+            title: 'Deposit Accounts',
+            pathname: '/auth/bankaccounts/payins',
+            icon: 'ArrowDown',
           },
           {
-            title: "Withdrawal Accounts",
-            pathname: "/auth/bankaccounts/payouts",
-            icon: "ArrowUp",
+            title: 'Withdrawal Accounts',
+            pathname: '/auth/bankaccounts/payouts',
+            icon: 'ArrowUp',
           },
         ];
       }
 
-      if (menuItem.title === "Records") {
+      if (menuItem.title === 'Records') {
         menuItem.subMenu = [
           {
-            title: "Add Data",
-            pathname: "/auth/data-entries/add-data",
-            icon: "ArrowDownCircle" as const,
+            title: 'Add Data',
+            pathname: '/auth/data-entries/add-data',
+            icon: 'ArrowDownCircle' as const,
           },
           {
-            title: "Check Utr",
-            pathname: "/auth/data-entries/check-utr",
-            icon: "ArrowUpCircle" as const,
+            title: 'Check Utr',
+            pathname: '/auth/data-entries/check-utr',
+            icon: 'ArrowUpCircle' as const,
           },
           {
-            title: "Reset Data",
-            pathname: "/auth/data-entries/Reset-data",
-            icon: "ArrowUpCircle" as const,
+            title: 'Reset Data',
+            pathname: '/auth/data-entries/Reset-data',
+            icon: 'ArrowUpCircle' as const,
           },
         ];
-      } 
-
+      }
 
       formattedMenu.push(menuItem);
     } else {
