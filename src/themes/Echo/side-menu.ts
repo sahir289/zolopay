@@ -167,7 +167,7 @@ const nestedMenu = (menu: Array<Menu | string>, location: Location) => {
                 icon: "CheckCircle" as const,
               },
               {
-                title: "Dropped",
+                title: "Rejected",
                 pathname: "/auth/transaction-list/payouts/rejected",
                 icon: "XCircle" as const,
               },

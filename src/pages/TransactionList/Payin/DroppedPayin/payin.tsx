@@ -113,9 +113,9 @@ const PayInComponent: React.FC = () => {
 
   return (
     <div className="flex flex-col">
-            <div>
+            {/* <div>
       <h2 className="font-semibold text-lg mr-auto text-gray-800 dark:text-white pb-2">Dropped Deposits</h2>
-      </div>
+      </div> */}
       <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
         <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400">
           {/* <Tab.Panel className="p-2 sm:p-4 md:p-5 leading-relaxed"> */}
