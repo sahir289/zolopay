@@ -88,7 +88,7 @@ const PayOut: React.FC = () => {
   return (
     <div className="flex flex-col p-3 sm:p-5">
       <div>
-      <h2 className="font-semibold text-lg mr-auto text-gray-800 dark:text-white pb-2">Completed Payouts</h2>
+      <h2 className="font-semibold text-lg mr-auto text-gray-800 dark:text-white pb-2">Completed Withdrawals</h2>
       </div>
       <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
         <Tab.Panels className="border-b border-l border-r border-gray-100 dark:border-darkmode-400 border-t-4 border-t-gray-100 dark:border-t-darkmode-400">

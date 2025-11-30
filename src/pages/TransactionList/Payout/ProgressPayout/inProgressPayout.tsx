@@ -68,6 +68,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotifications';
+import clsx from 'clsx';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -1551,20 +1552,28 @@ const InProgressPayOut: React.FC<AllPayOutProps> = ({
                   <Tab.List variant="tabs">
                     <Tab>
                       <Tab.Button
-                        className="w-full py-2 flex items-center justify-center"
-                        as="button"
+                        className={clsx(
+                          "px-6 py-2 rounded-lg font-medium transition-all flex items-center justify-center",
+                          selectedSubTab === Status.INITIATED
+                            ? "bg-black text-white shadow-md"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        )}
                       >
                         <Lucide icon="HardDrive" className="w-4 h-4 mr-2" />
-                        INITIATED
+                        <span>INITIATED</span>
                       </Tab.Button>
                     </Tab>
                     <Tab>
                       <Tab.Button
-                        className="w-full py-2 flex items-center justify-center"
-                        as="button"
+                        className={clsx(
+                          "px-6 py-2 rounded-lg font-medium transition-all flex items-center justify-center",
+                          selectedSubTab === Status.PENDING
+                            ? "bg-black text-white shadow-md"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        )}
                       >
                         <Lucide icon="Timer" className="w-4 h-4 mr-2" />
-                        PENDING
+                        <span>PENDING</span>
                       </Tab.Button>
                     </Tab>
                   </Tab.List>
