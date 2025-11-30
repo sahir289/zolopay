@@ -52,6 +52,14 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
     },
   ];
 
+  const chargebacks = [
+    {
+      icon: "Building2" as keyof typeof icons,
+      pathname: "/auth/beneficiaryaccounts",
+      title: "Payee Accounts",
+    },
+  ];
+
   const users_disputes = [
     "TEAM",
     {
@@ -163,7 +171,7 @@ const generateMenuForRole = (role?: keyof typeof Role): Array<Menu | string> => 
     case Role.VENDOR_ADMIN:
       return [...baseMenu, ...settlements_chargebacks, ...users_disputes, ...adminItems, ...commonItems, ...reports];
     case Role.MERCHANT:
-      return [...baseMenu, ...settlements_chargebacks, ...reports];
+      return [...baseMenu, ...chargebacks, ...reports];
     case Role.SUB_MERCHANT:
       return [...baseMenu, ...reports];
     case Role.MERCHANT_OPERATIONS:
