@@ -64,7 +64,7 @@ import { getPayOutsReports } from '@/redux-toolkit/slices/payout/payoutAPI';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { addAllNotification } from '@/redux-toolkit/slices/AllNoti/allNotifications';
-// import MultiSelect from '@/components/MultiSelect/MultiSelect';
+import clsx from 'clsx';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -1768,29 +1768,41 @@ const BankAccount: React.FC = () => {
                   </div>
                 </div>
                 <Tab.Group
-                  selectedIndex={selectedSubTab ? 0 : 1}
-                  onChange={(index) => handleSubTabChange(index === 0)}
-                >
-                  <Tab.List variant="tabs">
-                    <Tab>
-                      <Tab.Button
-                        className="w-full py-2 flex items-center justify-center"
-                        as="button"
-                      >
-                        <Lucide icon="CheckCircle2" className="w-4 h-4 mr-2" />
-                        Active {selectedMethod} Bank
-                      </Tab.Button>
-                    </Tab>
-                    <Tab>
-                      <Tab.Button
-                        className="w-full py-2 flex items-center justify-center"
-                        as="button"
-                      >
-                        <Lucide icon="XOctagon" className="w-4 h-4 mr-2" />
-                        Inactive {selectedMethod} Bank
-                      </Tab.Button>
-                    </Tab>
-                  </Tab.List>
+                    selectedIndex={selectedSubTab ? 0 : 1}
+                    onChange={(index) => handleSubTabChange(index === 0)}
+                  >
+                    <Tab.List variant="tabs">
+                      <Tab>
+                        <Tab.Button
+                        className={clsx(
+                          "px-6 py-2 rounded-lg font-medium transition-all flex items-center justify-center",
+                          parentTab === 0
+                            ? "bg-black text-white shadow-md"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        )}
+                        >
+                          <Lucide icon="CheckCircle2" className="w-4 h-4 mr-2" />
+                          <span>
+                          Active {selectedMethod} Bank
+                          </span>
+                        </Tab.Button>
+                      </Tab>
+                      <Tab>
+                        <Tab.Button
+                        className={clsx(
+                          "px-6 py-2 rounded-lg font-medium transition-all flex items-center justify-center",
+                          parentTab === 0
+                            ? "bg-black text-white shadow-md"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        )}
+                        >
+                          <Lucide icon="XOctagon" className="w-4 h-4 mr-2" />
+                          <span>
+                          Inactive {selectedMethod} Bank
+                          </span>
+                        </Tab.Button>
+                      </Tab>
+                    </Tab.List>
                 </Tab.Group>
               </Tab.Group>
               <div className="overflow-auto border-b border-l border-r xl:overflow-visible">
