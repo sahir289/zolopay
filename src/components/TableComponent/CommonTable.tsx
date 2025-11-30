@@ -233,12 +233,7 @@ const CommonTable: React.FC<CommonTableProps> = ({
       }
     );
   };
-  const roleData = localStorage.getItem('userData');
-  let user_name = '';
-  if (roleData) {
-    const parsedData = JSON.parse(roleData);
-    user_name = parsedData.name || '';
-  }
+  
 
   const [, setHoveredAction] = useState<{
     rowIndex: number | null;
